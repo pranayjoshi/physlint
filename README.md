@@ -111,4 +111,4 @@ Physlint does not train policies, host datasets, repair source files, infer task
 
 Validation is offline. Reports contain source references, timestamps, and numeric evidence—not embedded images or full samples. Treat all dataset parsers as an attack surface and see [SECURITY.md](SECURITY.md) before reporting a vulnerability.
 
-Licensed under Apache-2.0. Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+Licensed under MIT. Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
