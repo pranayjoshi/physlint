@@ -1,3 +1,18 @@
 # Local product and implementation planning
 docs/plan/
 
+# Python/build artifacts
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Physlint output
+.physlint/
