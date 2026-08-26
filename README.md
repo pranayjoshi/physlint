@@ -1,18 +1,220 @@
+<div align="center">
+
 # Physlint
 
-Physlint is a local-first, format-extensible integrity validator for physical-AI recordings and robot-learning datasets. It finds concrete defects before robot data reaches training, explains their impact, identifies the affected episode and stream, and returns a stable CI exit code.
+### Robot data integrity, before training.
 
-The `0.1.0a1` public alpha ships with a production-tested adapter for **local LeRobot Dataset v3.x directories**. MCAP/ROS 2 recording validation and Robomimic HDF5 dataset validation are planned next. Physlint never modifies the source dataset and makes no network requests during a check.
+Local-first, deterministic validation for physical-AI recordings and robot-learning datasets.
 
-## Validation evidence
+[![CI](https://img.shields.io/github/actions/workflow/status/pranayjoshi/physlint/ci.yml?branch=master&style=flat-square&label=CI)](https://github.com/pranayjoshi/physlint/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/pranayjoshi/physlint?include_prereleases&style=flat-square)](https://github.com/pranayjoshi/physlint/releases)
+![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
+[![MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
+![Status](https://img.shields.io/badge/Status-Public%20Alpha-f59e0b?style=flat-square)
 
-The alpha release gate covers four immutable public repositories from four producers: 74 episodes, 31,258 frames, four embodiments, and six video streams. All four clean snapshots pass with zero findings or rule errors, while three independently generated corruptions are detected 3/3. The manifest, corruption recipes, sanitized reports, checksums, and publication CSV are committed under [`validation/`](validation/README.md).
+[Quickstart](#quickstart) · [Demo](#see-it-catch-a-real-defect) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
 
-![Physlint alpha validation: four of four clean snapshots passed, three of three controlled corruptions detected, across 74 episodes and 31,258 frames.](docs/assets/launch/validation-summary.svg)
+<img src="docs/assets/launch/exports/validation-summary.png" alt="Physlint public-alpha validation: four of four clean snapshots passed and three of three controlled corruptions were detected across 74 episodes and 31,258 frames." width="100%">
 
-These results characterize the tested LeRobot v3 boundary; they are not a claim that every physical-AI dataset is defect-free or that passing data guarantees a safe or successful policy.
+</div>
 
-## Format compatibility
+Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
+
+The `0.1.0a1` public alpha ships with a publicly validated **LeRobot Dataset v3.x** adapter. The engine is designed to grow into recording and dataset profiles for MCAP/ROS 2, Robomimic HDF5, RLDS/TFDS, and other physical-AI formats without pretending those adapters already exist.
+
+> [!IMPORTANT]
+> Physlint validates configured data-integrity contracts. A pass does not certify policy quality, task success, or robot safety.
+
+## Why Physlint?
+
+- **Catch failures before GPU time:** malformed manifests, broken episode ranges, reordered clocks, missing values, corrupt video, frozen cameras, and black frames become actionable findings.
+- **Keep robot data local:** `physlint check` performs no network requests and never modifies its source dataset.
+- **Get evidence, not a mystery score:** every finding includes a stable rule ID, severity, source location, observed condition, expected condition, impact, and remediation.
+- **Use it in CI:** deterministic execution, versioned JSON, atomic report writes, strict configuration, and documented exit codes.
+- **Trust scoped claims:** the public release gate pins exact dataset revisions and commits sanitized reports, corruption recipes, checksums, and publication metrics.
+
+## Quickstart
+
+Physlint requires Python 3.11 or newer.
+
+### Install from PyPI
+
+```bash
+python -m pip install "physlint[video]==0.1.0a1"
+```
+
+Until the package is published to PyPI, install this GitHub release directly:
+
+```bash
+python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.1.0a1"
+```
+
+### Check a local LeRobot v3 dataset
+
+```bash
+physlint inspect /path/to/lerobot-dataset
+physlint check /path/to/lerobot-dataset
+```
+
+Write JSON to an exact destination:
+
+```bash
+physlint check /path/to/lerobot-dataset \
+  --output json \
+  --json-output artifacts/physlint-report.json
+```
+
+The source remains untouched. Exit code `0` means the configured contract passed; `1` means validation completed with a blocking finding.
+
+## See it catch a real defect
+
+These captures use the pinned Panda source from the release gate. The second dataset is a fully dereferenced copy with one deterministic NaN injected at episode 0, sample 5, state dimension 0.
+
+<table>
+  <tr>
+    <th width="50%">Clean pinned snapshot</th>
+    <th width="50%">Controlled NaN corruption</th>
+  </tr>
+  <tr>
+    <td><img src="docs/assets/launch/exports/clean-validation.png" alt="Physlint terminal output showing the clean pinned Panda LeRobot dataset passing 11 applicable rules with zero failures and zero errors."></td>
+    <td><img src="docs/assets/launch/exports/controlled-nan-failure.png" alt="Physlint terminal output showing a controlled NaN corruption failing numeric.finite_values with remediation guidance."></td>
+  </tr>
+</table>
+
+Physlint owns NaN and infinity semantics in `numeric.finite_values`; the same sample is not duplicated as a missing-stream finding.
+
+## What Physlint checks
+
+Seventeen deterministic rules are enabled by default:
+
+| Area | Checks |
+|---|---|
+| **Manifest** | Required files, declared/stored schema agreement, required streams, and feature shapes |
+| **Episodes** | Unique identifiers, positive lengths, non-overlapping boundaries, and stored-row agreement |
+| **Temporal** | Strictly monotonic timestamps, FPS cadence, FPS-aware maximum gaps, complete stream overlap, and observation/action delay when independently timestamped |
+| **Numeric** | NaN/Inf, configured physical bounds, and configured discontinuity limits |
+| **Video** | Complete decode, motion-aware frozen-frame runs, and grouped black/near-empty frames |
+
+List or explain the installed rule contract:
+
+```bash
+physlint rules
+physlint rules --json
+physlint explain temporal.max_gap
+physlint explain video.frozen_frames
+```
+
+Rules whose required inputs are unavailable return `not_run` with a reason; they are never misreported as passed. Robot-specific bounds and discontinuity checks stay `not_run` until the user supplies meaningful thresholds.
+
+Read the complete [MVP rule specifications](docs/rules/mvp-rules.md).
+
+## Configuration
+
+Run `physlint init` to generate a documented quality contract, or create `physlint.yaml` yourself:
+
+```yaml
+config_version: 1
+adapter: auto
+required_streams:
+  - observation.state
+  - action
+fail_on: error
+
+rules:
+  temporal.max_gap:
+    options:
+      # Default limit is 2× the interval implied by declared FPS.
+      max_gap_multiplier: 2.0
+
+  video.frozen_frames:
+    options:
+      max_consecutive_frames: 5
+      # Action is preferred over noisier observed state by default.
+      motion_streams: [action, observation.state]
+
+  numeric.configured_bounds:
+    options:
+      limits:
+        action:
+          min: [-1.0, -1.0]
+          max: [1.0, 1.0]
+
+  numeric.discontinuity:
+    options:
+      max_delta:
+        observation.state: [0.25, 0.25]
+
+reports:
+  json: true
+  output_dir: .physlint/reports
+```
+
+Use it explicitly when needed:
+
+```bash
+physlint check /path/to/dataset --config physlint.yaml
+```
+
+Unknown top-level keys, rule IDs, rule options, duplicate required streams, and invalid values are rejected instead of silently ignored.
+
+## CI integration
+
+The CLI has stable exit codes and writes reports atomically, so a basic GitHub Actions gate is small:
+
+```yaml
+- name: Install Physlint
+  run: python -m pip install "physlint[video]==0.1.0a1"
+
+- name: Validate robot dataset
+  run: |
+    physlint check "$DATASET_PATH" \
+      --json-output artifacts/physlint-report.json
+
+- uses: actions/upload-artifact@v4
+  if: always()
+  with:
+    name: physlint-report
+    path: artifacts/physlint-report.json
+```
+
+| Exit code | Meaning |
+|---:|---|
+| `0` | Validation completed and the configured contract passed |
+| `1` | Validation completed and the contract failed |
+| `2` | Invalid command or configuration |
+| `3` | Dataset or adapter failure |
+| `4` | Internal Physlint error |
+| `130` | Interrupted by the user |
+
+## Reproducible public-data evidence
+
+The alpha release gate evaluates four immutable public snapshots from four producers:
+
+| Dataset | Robot | Episodes | Frames | Applicable rules | Result |
+|---|---|---:|---:|---:|---|
+| [`ViaCatalyst/robomimic-can-ph-lerobot-v3`](https://huggingface.co/datasets/ViaCatalyst/robomimic-can-ph-lerobot-v3) | Panda | 10 | 1,160 | 11 | Pass |
+| [`cagataydev/scout-earth-rover-mini-20260616-053232`](https://huggingface.co/datasets/cagataydev/scout-earth-rover-mini-20260616-053232) | Earth Rover Mini | 3 | 4,176 | 14 | Pass |
+| [`lerobot/svla_so101_pickplace`](https://huggingface.co/datasets/lerobot/svla_so101_pickplace) | SO-101 | 50 | 11,939 | 14 | Pass |
+| [`vikram-avea/sentinel-demo-09`](https://huggingface.co/datasets/vikram-avea/sentinel-demo-09) | YAM humanoid | 11 | 13,983 | 14 | Pass |
+
+Clean-source result: **4/4 snapshots pass with zero findings and zero rule errors.** Controlled-defect recall: **3/3** for a non-finite value, reordered timestamps, and a deleted source row.
+
+Everything needed to audit or rerun those claims is versioned:
+
+- [Pinned repository manifest](validation/manifest.yaml)
+- [Deterministic corruption and execution harness](validation/harness.py)
+- [Sanitized reports and SHA-256 values](validation/reports/real-data-2026-08-24/summary.json)
+- [Publication-ready CSV](validation/reports/real-data-2026-08-24/summary.csv)
+- [Manual classification and performance analysis](docs/validation/real-data-2026-08-23.md)
+- [Reproduction instructions](validation/README.md)
+
+Runtime measurements are observations from the documented machine and run—not universal performance guarantees.
+
+## Format roadmap
+
+The storage format is an adapter boundary, not the product boundary.
+
+<img src="docs/assets/launch/exports/format-compatibility.png" alt="Physlint format compatibility table: LeRobot v3 implemented and validated; MCAP with ROS 2 profiles and Robomimic planned; RLDS, TFDS, ROS bag2, and ROS 1 bag under research." width="100%">
 
 | Format | Status | Intended mode |
 |---|---|---|
@@ -22,117 +224,86 @@ These results characterize the tested LeRobot v3 boundary; they are not a claim 
 | RLDS/TFDS | Researching | Episode/step datasets |
 | ROS bag2 SQLite and ROS 1 bag | Researching | Recordings |
 
-See the [cross-format roadmap](docs/roadmap.md) and [MCAP/ROS design proposal](docs/design/mcap-ros.md). Requests backed by public examples and real failure modes are welcome through the adapter issue template.
+MCAP needs two honest layers: container/channel health that works without training semantics, and an explicit profile mapping topics to actions, state, cameras, and episode boundaries. See the [cross-format roadmap](docs/roadmap.md) and [MCAP/ROS proposal](docs/design/mcap-ros.md).
 
-```console
-$ physlint check /data/connector-insertion-v14
-Dataset: connector-insertion-v14
-Result: FAIL
-Rules: 11 passed, 2 failed, 4 not run, 0 errored
-
-Error
-  temporal.max_gap Gap of 164.2 ms exceeds limit (episode_000042, timestamp)
-  video.frozen_frames wrist_camera froze for 23 consecutive frames
-
-Report: .physlint/reports/2026-08-23T143011Z.json
-```
-
-## Install
-
-Physlint requires Python 3.11 or newer.
-
-```bash
-python -m pip install 'physlint[video]==0.1.0a1'
-```
-
-Until the alpha is published to PyPI, install the repository checkout with `python -m pip install -e '.[video]'`.
-
-If an older environment reports `Repetition level histogram size mismatch` while reading episode metadata, check `python -c 'import pyarrow; print(pyarrow.__version__)'` and run `python -m pip install --upgrade 'pyarrow>=19.0.1'`. PyArrow 19.0.0 has a Parquet reader regression; the project declares the fixed minimum explicitly.
-
-For contributors:
-
-```bash
-python -m pip install -e '.[video,dev]'
-pytest
-ruff check .
-mypy
-```
-
-## Use
-
-```bash
-physlint inspect /path/to/lerobot-dataset
-physlint check /path/to/lerobot-dataset
-physlint rules
-physlint explain temporal.max_gap
-physlint init
-```
-
-`check` writes a versioned JSON report atomically. Use `--output json` for JSON on stdout, `--json-output PATH` for a specific report destination, or `--config PATH` for an explicit quality contract.
-
-```yaml
-config_version: 1
-adapter: auto
-required_streams: [observation.state, action]
-fail_on: error
-rules:
-  temporal.max_gap:
-    options:
-      # Defaults to 2x the interval implied by the dataset FPS.
-      max_gap_multiplier: 2.0
-      # Set max_gap_ms for an explicit absolute override.
-  numeric.configured_bounds:
-    options:
-      limits:
-        action:
-          min: [-1.0, -1.0]
-          max: [1.0, 1.0]
-  numeric.discontinuity:
-    options:
-      max_delta:
-        observation.state: [0.25, 0.25]
-reports:
-  json: true
-  output_dir: .physlint/reports
-```
-
-Unknown configuration keys, rule IDs, and rule options are rejected. A rule whose inputs are unavailable is reported as `not_run`; it is never reported as passed.
-
-## Built-in rules
-
-Seventeen deterministic rules are enabled by default:
-
-| Area | Rules |
-|---|---|
-| Manifest | required files, schema agreement, required streams, shape consistency |
-| Episode | unique identifiers, valid boundaries |
-| Temporal | monotonic timestamps, sampling interval, maximum gap, complete stream overlap, observation/action delay |
-| Numeric | finite values, configured bounds, configured discontinuity thresholds |
-| Video | complete decoding, frozen-frame runs, black/near-empty frames |
-
-Robot-specific bounds and discontinuity rules return `not_run` until thresholds are configured. Observation/action delay returns `not_run` unless separate `observation.timestamp` and `action.timestamp` features exist. Video rules return `not_run` for datasets without video capability. Frozen-frame findings require aligned robot motion, preferring action over observed state by default so stationary scenes and noisy sensors do not masquerade as camera failures.
-
-## Exit codes
-
-| Code | Meaning |
-|---:|---|
-| `0` | Validation completed and the contract passed |
-| `1` | Validation completed and the contract failed |
-| `2` | Invalid command or configuration |
-| `3` | Dataset unreadable or adapter failure |
-| `4` | Internal Physlint error |
-| `130` | Interrupted by the user |
+Use the adapter-request issue form to contribute an immutable public example and a real failure mode.
 
 ## Current LeRobot boundary
 
-This alpha supports the v3 chunked layout: `meta/info.json`, Parquet episode metadata under `meta/episodes/`, Parquet samples under `data/`, and optional MP4 shards under `videos/`. It does not download Hub datasets, import the LeRobot/PyTorch runtime, support v2.1, or interpret arbitrary custom codecs. See [the adapter documentation](docs/adapters/lerobot.md).
+Supported:
 
-## Non-goals
+- LeRobot v3.x `meta/info.json` schema and path templates
+- Chunked Parquet episode metadata and sample shards
+- Multiple episodes per shared Parquet/MP4 file
+- Fixed-size and regular vector features
+- Shared video segments using per-camera timestamp ranges
+- Metadata-first discovery and bounded batch iteration
 
-Physlint does not train policies, host datasets, repair source files, infer task success, calculate an opaque quality score, or certify that a robot or policy is safe. Passing means only that the configured integrity contract completed without a blocking finding.
+Not currently supported:
+
+- LeRobot v2.0/v2.1
+- Remote Hub identifiers passed directly to `physlint check`
+- Image-directory features in the video rule set
+- Arbitrary codecs unavailable to the installed OpenCV build
+- Inferred safety, calibration, task-success, or coordinate-frame conclusions
+
+Read the [LeRobot adapter boundary](docs/adapters/lerobot.md).
+
+## Design principles
+
+```text
+source format → read-only adapter → canonical episodes/streams → capability planner
+                                                        ↓
+                                           deterministic rule engine
+                                                        ↓
+                                      terminal + versioned JSON evidence
+```
+
+- **Read only:** source datasets are never repaired or rewritten.
+- **Lazy by default:** metadata first, bounded Parquet batches, and one shared privacy-safe video analysis pass.
+- **Explicit applicability:** adapters advertise capabilities; unavailable checks explain why they did not run.
+- **Stable evidence:** rule versions, fingerprints, source revisions, and report schema are serialized.
+- **Exception isolation:** one rule failure cannot masquerade as a clean dataset pass.
 
 ## Security and privacy
 
-Validation is offline. Reports contain source references, timestamps, and numeric evidence—not embedded images or full samples. Treat all dataset parsers as an attack surface and see [SECURITY.md](SECURITY.md) before reporting a vulnerability.
+Validation is offline. Reports contain source references, timestamps, aggregate statistics, and targeted evidence—not embedded images or complete source samples. Treat every dataset parser as an attack surface and report suspected vulnerabilities privately through [GitHub Security Advisories](https://github.com/pranayjoshi/physlint/security/advisories/new).
 
-Licensed under MIT. Contributions are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md).
+See [SECURITY.md](SECURITY.md) before submitting a vulnerability. Do not attach private datasets or sensitive reports to public issues.
+
+## Contributing
+
+Contributions are welcome, particularly:
+
+- Public healthy and defective datasets for adapter release gates
+- False-positive reproductions
+- MCAP/ROS recording schemas and failure modes
+- New deterministic rules with controlled corruptions
+- Documentation, performance characterization, and privacy reviews
+
+Development setup:
+
+```bash
+git clone https://github.com/pranayjoshi/physlint.git
+cd physlint
+python -m pip install -e ".[video,dev]"
+
+ruff check .
+ruff format --check .
+mypy
+pytest
+```
+
+Rules require positive and negative fixtures, stable remediation, a bounded finding count, and controlled corruption evidence where applicable. Adapters must remain read-only, metadata-first, lazy over samples, and explicit about capabilities.
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md), open a format request, or join [GitHub Discussions](https://github.com/pranayjoshi/physlint/discussions).
+
+## Project status
+
+Physlint is an alpha. Its current claims are deliberately limited to the documented LeRobot v3 boundary and committed release evidence. The project does not train policies, repair data, host datasets, infer task success, produce an opaque quality score, or certify that a robot or policy is safe.
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
+## License
+
+Physlint is available under the [MIT License](LICENSE).
