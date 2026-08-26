@@ -43,7 +43,7 @@ Physlint requires Python 3.11 or newer.
 python -m pip install "physlint[video]==0.1.0a1"
 ```
 
-Until the package is published to PyPI, install this GitHub release directly:
+To test the exact tagged source instead of the PyPI distribution, install the GitHub release directly:
 
 ```bash
 python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.1.0a1"
