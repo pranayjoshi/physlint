@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.1.0a1",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "ViaCatalyst/robomimic-can-ph-lerobot-v3",
+  "source_revision": "71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "dataset_path": "hf://datasets/ViaCatalyst/robomimic-can-ph-lerobot-v3@71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "source_fingerprint": "a43e3c38edf3a73765b32215d06864b2e1d371f0b979221cdb5fa7fde16471b9",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "c997bb8f5ebb07b4aae4695a65dd0bf7e77f578d38d7a962427d6268faa1fa5c",
+  "started_at": "2026-08-25T17:42:08.132002Z",
+  "finished_at": "2026-08-25T17:42:08.357994Z",
+  "status": "passed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.155624991748482,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.3655420043505728,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.002291009877808392,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.003000008291564882,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 3.0892919894540682,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 83.10816599987447,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 5.056875001173466,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 4.243792005581781,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 3.19183299143333,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 57.89195800025482,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 62.50400000135414,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.02174999099224806,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0038339931052178144,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "failed": 0,
+    "not_run": 6,
+    "errored": 0,
+    "findings": 0
+  }
+}

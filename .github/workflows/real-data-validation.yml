@@ -1,0 +1,31 @@
+name: Pinned real-data validation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e '.[video,dev]' huggingface_hub
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub
+          key: physlint-real-data-${{ hashFiles('validation/manifest.yaml') }}
+      - run: python -m validation.harness --output validation/reports/ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sanitized-validation-reports
+          path: validation/reports/ci/
+          if-no-files-found: warn

@@ -108,6 +108,7 @@ def run_validation(
         adapter=dataset.inventory.adapter,
         adapter_version=getattr(dataset, "version", "unknown"),
         dataset=dataset.inventory.name,
+        source_revision=dataset.inventory.source_revision,
         dataset_path=str(dataset.root),
         source_fingerprint=source_fingerprint(dataset.root),
         configuration_digest=config.digest(),

@@ -60,15 +60,23 @@ def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
             raise ConfigurationError(f"{rule_id}.{key} must be a non-negative integer")
     for key in (
         "tolerance_fraction",
-        "max_gap_ms",
+        "max_gap_multiplier",
         "max_delay_ms",
         "mean_absolute_difference",
         "max_mean_intensity",
         "max_stddev",
+        "motion_delta_threshold",
+        "min_motion_fraction",
     ):
         if key in options and (not isinstance(options[key], (int, float)) or float(options[key]) < 0):
             raise ConfigurationError(f"{rule_id}.{key} must be a non-negative number")
-    for key in ("required_streams", "streams"):
+    if options.get("max_gap_ms") is not None and (
+        not isinstance(options["max_gap_ms"], (int, float)) or float(options["max_gap_ms"]) < 0
+    ):
+        raise ConfigurationError(f"{rule_id}.max_gap_ms must be a non-negative number or null")
+    if "min_motion_fraction" in options and float(options["min_motion_fraction"]) > 1:
+        raise ConfigurationError(f"{rule_id}.min_motion_fraction must be at most 1")
+    for key in ("required_streams", "streams", "motion_streams"):
         if key in options and (
             not isinstance(options[key], list) or not all(isinstance(value, str) for value in options[key])
         ):

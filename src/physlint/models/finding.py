@@ -82,6 +82,7 @@ class Report(BaseModel):
     adapter: str
     adapter_version: str
     dataset: str
+    source_revision: str | None = None
     dataset_path: str
     source_fingerprint: str
     source_fingerprint_method: str = "metadata-and-file-stat-sha256-v1"

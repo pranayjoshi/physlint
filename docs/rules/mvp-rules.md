@@ -8,11 +8,11 @@ Fails when the difference between adjacent timestamps within an episode is zero 
 
 ## `temporal.max_gap`
 
-Fails when an adjacent positive timestamp delta exceeds `max_gap_ms` (default 80 ms). Evidence includes the first sample after the gap and the observed duration. Negative deltas are left to `temporal.monotonic`, avoiding duplicate interpretations.
+Fails when an adjacent positive timestamp delta exceeds an explicit `max_gap_ms` or, by default, twice the interval implied by declared FPS (`max_gap_multiplier: 2.0`). Adjacent violations are grouped into ranges with counts and maximum duration. Negative deltas are left to `temporal.monotonic`, avoiding duplicate interpretations.
 
 ## `video.frozen_frames`
 
-Downsamples each decoded image spatially and compares adjacent grayscale frames by mean absolute difference. A run longer than `max_consecutive_frames` (default 5) whose differences remain at or below `mean_absolute_difference` (default 0.5 intensity levels) fails. Static scenes are a known false-positive case, so exact run evidence is always reported.
+Uses shared spatially sampled video statistics to compare adjacent grayscale frames by mean absolute difference. A run longer than `max_consecutive_frames` (default 5) whose differences remain at or below `mean_absolute_difference` (default 0.5 intensity levels) fails only when aligned robot motion crosses `min_motion_fraction` (default 0.25). The first available `motion_streams` entry is used; action precedes observed state by default to avoid treating sensor quantization in a stationary scene as camera failure.
 
 ## `numeric.finite_values`
 
@@ -30,9 +30,9 @@ Fails for non-positive episode lengths, reversed ranges, a mismatch between decl
 - `episode.unique_ids`: canonical episode identifiers are unique.
 - `manifest.shape_consistency`: stored sample dimensions match `info.json`.
 - `temporal.sampling_interval`: cadence remains within a fraction of declared FPS.
-- `temporal.stream_overlap`: required streams have a value at every episode sample.
+- `temporal.stream_overlap`: required streams have a non-null, non-empty value at every episode sample; NaN/Inf belong to `numeric.finite_values`.
 - `temporal.observation_action_delay`: separate stream timestamps stay within the delay limit.
 - `numeric.configured_bounds`: values respect configured per-stream minima and maxima.
 - `numeric.discontinuity`: adjacent values respect configured maximum absolute deltas.
 - `video.decode`: decoded frame count matches episode length within tolerance.
-- `video.black_frames`: frame mean and standard deviation are not both near zero.
+- `video.black_frames`: frame mean and standard deviation are not both near zero; adjacent bad frames are grouped.

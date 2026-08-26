@@ -32,7 +32,20 @@ def test_large_gap_is_detected(dataset_factory):
     timestamps = [0, 1 / 30, 2 / 30, 0.5, 0.5 + 1 / 30, 0.5 + 2 / 30] * 2
     result = result_for(dataset_factory(timestamps=timestamps), "temporal.max_gap")
     assert result.status == RuleStatus.FAILED
-    assert result.findings[0].observed["gap_ms"] > 80
+    assert result.findings[0].observed["max_gap_ms"] > 80
+
+
+def test_default_gap_limit_scales_with_declared_fps(dataset_factory):
+    result = result_for(dataset_factory(fps=4), "temporal.max_gap")
+    assert result.status == RuleStatus.PASSED
+
+
+def test_explicit_gap_limit_is_preserved_and_repeated_gaps_are_grouped(dataset_factory):
+    config = Config(rules={"temporal.max_gap": {"options": {"max_gap_ms": 80}}})
+    result = result_for(dataset_factory(fps=4), "temporal.max_gap", config)
+    assert result.status == RuleStatus.FAILED
+    assert len(result.findings) == 2
+    assert result.findings[0].observed["count"] == 5
 
 
 def test_sampling_jitter_is_detected(dataset_factory):
@@ -51,6 +64,9 @@ def test_nan_and_infinity_are_detected(dataset_factory):
         "episode_000000",
         "episode_000001",
     }
+
+    overlap = result_for(dataset_factory(states=states), "temporal.stream_overlap")
+    assert overlap.status == RuleStatus.PASSED
 
 
 def test_required_stream_is_detected(dataset_factory):
@@ -107,7 +123,48 @@ def test_frozen_video_is_detected(dataset_factory):
     assert result.status == RuleStatus.FAILED
 
 
+def test_static_scene_without_robot_motion_is_not_a_camera_freeze(dataset_factory):
+    stationary = [[0.0, 0.0] for _ in range(12)]
+    result = result_for(
+        dataset_factory(
+            include_video=True,
+            video_mode="frozen",
+            states=stationary,
+            actions=stationary,
+        ),
+        "video.frozen_frames",
+    )
+    assert result.status == RuleStatus.PASSED
+
+
+def test_action_motion_takes_priority_over_noisy_observed_state(dataset_factory):
+    actions = [[0.0, 0.0] for _ in range(12)]
+    result = result_for(
+        dataset_factory(include_video=True, video_mode="frozen", actions=actions),
+        "video.frozen_frames",
+    )
+    assert result.status == RuleStatus.PASSED
+
+
 def test_black_video_is_detected(dataset_factory):
     result = result_for(dataset_factory(include_video=True, video_mode="black"), "video.black_frames")
     assert result.status == RuleStatus.FAILED
     assert result.findings[0].location.episode == "episode_000001"
+    assert len(result.findings) == 1
+    assert result.findings[0].observed["count"] == 6
+
+
+def test_video_statistics_are_decoded_once_per_episode_and_stream(dataset_factory, monkeypatch):
+    dataset = discover(dataset_factory(include_video=True))
+    original = dataset.iter_video_frames
+    calls = 0
+
+    def counted(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(dataset, "iter_video_frames", counted)
+    report = run_validation(dataset, Config())
+    assert report.summary.errored == 0
+    assert calls == 2

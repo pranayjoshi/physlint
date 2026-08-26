@@ -79,7 +79,7 @@ fail_on: error
 rules:
   temporal.max_gap:
     options:
-      max_gap_ms: 80
+      max_gap_multiplier: 2.0
   video.frozen_frames:
     options:
       max_consecutive_frames: 5

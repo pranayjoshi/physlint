@@ -1,8 +1,28 @@
 # Physlint
 
-Physlint is a local-first integrity validator for physical-AI datasets. It finds concrete defects before robot data reaches training, explains their impact, identifies the affected episode and stream, and returns a stable CI exit code.
+Physlint is a local-first, format-extensible integrity validator for physical-AI recordings and robot-learning datasets. It finds concrete defects before robot data reaches training, explains their impact, identifies the affected episode and stream, and returns a stable CI exit code.
 
-The `0.1.0-alpha` MVP supports **local LeRobot Dataset v3.x directories**. It reads LeRobot metadata directly, streams bounded Parquet batches, and decodes video only for video rules. It never modifies the source dataset and makes no network requests.
+The `0.1.0a1` public alpha ships with a production-tested adapter for **local LeRobot Dataset v3.x directories**. MCAP/ROS 2 recording validation and Robomimic HDF5 dataset validation are planned next. Physlint never modifies the source dataset and makes no network requests during a check.
+
+## Validation evidence
+
+The alpha release gate covers four immutable public repositories from four producers: 74 episodes, 31,258 frames, four embodiments, and six video streams. All four clean snapshots pass with zero findings or rule errors, while three independently generated corruptions are detected 3/3. The manifest, corruption recipes, sanitized reports, checksums, and publication CSV are committed under [`validation/`](validation/README.md).
+
+![Physlint alpha validation: four of four clean snapshots passed, three of three controlled corruptions detected, across 74 episodes and 31,258 frames.](docs/assets/launch/validation-summary.svg)
+
+These results characterize the tested LeRobot v3 boundary; they are not a claim that every physical-AI dataset is defect-free or that passing data guarantees a safe or successful policy.
+
+## Format compatibility
+
+| Format | Status | Intended mode |
+|---|---|---|
+| LeRobot Dataset v3.x | **Alpha—implemented and publicly validated** | Training datasets |
+| MCAP with ROS 2 profiles | Planned—seeking design partners | Recordings and derived datasets |
+| Robomimic HDF5 | Planned | Demonstration datasets |
+| RLDS/TFDS | Researching | Episode/step datasets |
+| ROS bag2 SQLite and ROS 1 bag | Researching | Recordings |
+
+See the [cross-format roadmap](docs/roadmap.md) and [MCAP/ROS design proposal](docs/design/mcap-ros.md). Requests backed by public examples and real failure modes are welcome through the adapter issue template.
 
 ```console
 $ physlint check /data/connector-insertion-v14
@@ -22,10 +42,12 @@ Report: .physlint/reports/2026-08-23T143011Z.json
 Physlint requires Python 3.11 or newer.
 
 ```bash
-python -m pip install -e .
-# Include MP4 checks:
-python -m pip install -e '.[video]'
+python -m pip install 'physlint[video]==0.1.0a1'
 ```
+
+Until the alpha is published to PyPI, install the repository checkout with `python -m pip install -e '.[video]'`.
+
+If an older environment reports `Repetition level histogram size mismatch` while reading episode metadata, check `python -c 'import pyarrow; print(pyarrow.__version__)'` and run `python -m pip install --upgrade 'pyarrow>=19.0.1'`. PyArrow 19.0.0 has a Parquet reader regression; the project declares the fixed minimum explicitly.
 
 For contributors:
 
@@ -56,7 +78,9 @@ fail_on: error
 rules:
   temporal.max_gap:
     options:
-      max_gap_ms: 80
+      # Defaults to 2x the interval implied by the dataset FPS.
+      max_gap_multiplier: 2.0
+      # Set max_gap_ms for an explicit absolute override.
   numeric.configured_bounds:
     options:
       limits:
@@ -86,7 +110,7 @@ Seventeen deterministic rules are enabled by default:
 | Numeric | finite values, configured bounds, configured discontinuity thresholds |
 | Video | complete decoding, frozen-frame runs, black/near-empty frames |
 
-Robot-specific bounds and discontinuity rules return `not_run` until thresholds are configured. Observation/action delay returns `not_run` unless separate `observation.timestamp` and `action.timestamp` features exist. Video rules return `not_run` for datasets without video capability.
+Robot-specific bounds and discontinuity rules return `not_run` until thresholds are configured. Observation/action delay returns `not_run` unless separate `observation.timestamp` and `action.timestamp` features exist. Video rules return `not_run` for datasets without video capability. Frozen-frame findings require aligned robot motion, preferring action over observed state by default so stationary scenes and noisy sensors do not masquerade as camera failures.
 
 ## Exit codes
 
@@ -99,7 +123,7 @@ Robot-specific bounds and discontinuity rules return `not_run` until thresholds 
 | `4` | Internal Physlint error |
 | `130` | Interrupted by the user |
 
-## Supported LeRobot boundary
+## Current LeRobot boundary
 
 This alpha supports the v3 chunked layout: `meta/info.json`, Parquet episode metadata under `meta/episodes/`, Parquet samples under `data/`, and optional MP4 shards under `videos/`. It does not download Hub datasets, import the LeRobot/PyTorch runtime, support v2.1, or interpret arbitrary custom codecs. See [the adapter documentation](docs/adapters/lerobot.md).
 

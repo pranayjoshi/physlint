@@ -4,15 +4,30 @@ build-backend = "hatchling.build"
 
 [project]
 name = "physlint"
-version = "0.1.0a0"
-description = "Local-first integrity validation for physical-AI datasets"
+version = "0.1.0a1"
+description = "Local-first integrity validation for physical-AI and robot-learning data"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "Physlint contributors" }]
+authors = [{ name = "Pranay Joshi" }]
+keywords = ["robotics", "physical-ai", "dataset-validation", "lerobot", "data-quality"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Typing :: Typed",
+]
 dependencies = [
   "numpy>=1.26,<2.5",
-  "pyarrow>=16",
+  "pyarrow>=19.0.1",
   "pydantic>=2.8",
   "PyYAML>=6",
   "rich>=13",
@@ -32,12 +47,22 @@ dev = [
 [project.scripts]
 physlint = "physlint.cli:app"
 
+[project.urls]
+Homepage = "https://github.com/pranayjoshi/physlint"
+Documentation = "https://github.com/pranayjoshi/physlint#readme"
+Issues = "https://github.com/pranayjoshi/physlint/issues"
+Source = "https://github.com/pranayjoshi/physlint"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/physlint"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.trunk"]
 
 [tool.pytest.ini_options]
 addopts = "-q"
 testpaths = ["tests"]
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 120

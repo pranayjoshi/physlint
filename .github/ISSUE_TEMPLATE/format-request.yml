@@ -1,0 +1,43 @@
+name: Format or adapter request
+description: Propose support for another physical-AI recording or dataset format.
+title: "[adapter]: "
+labels: ["adapter", "enhancement"]
+body:
+  - type: input
+    id: format
+    attributes:
+      label: Format and version
+      placeholder: MCAP with ROS 2 messages
+    validations:
+      required: true
+  - type: dropdown
+    id: data_kind
+    attributes:
+      label: Primary use
+      options:
+        - Recording/session validation
+        - Training-dataset validation
+        - Both
+    validations:
+      required: true
+  - type: textarea
+    id: semantics
+    attributes:
+      label: Stream and episode semantics
+      description: Explain how actions, observations, cameras, timestamps, and episode boundaries are represented.
+    validations:
+      required: true
+  - type: textarea
+    id: samples
+    attributes:
+      label: Public examples
+      description: Link immutable, redistributable examples and their expected healthy/defective behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: rules
+    attributes:
+      label: Highest-value checks
+      description: Which defects have caused real collection or training failures?
+    validations:
+      required: true

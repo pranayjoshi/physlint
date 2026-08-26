@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <title>Physlint public alpha validation summary</title>
+  <desc>Four of four clean snapshots passed, three of three corruptions detected, 74 episodes and 31,258 frames.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="1" stop-color="#10182d"/>
+    </linearGradient>
+    <style>
+      text { font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif; }
+      .eyebrow { fill: #64d8cb; font-size: 24px; font-weight: 700; letter-spacing: 2px; }
+      .title { fill: #f7fafc; font-size: 58px; font-weight: 760; }
+      .subtitle { fill: #b7c3d8; font-size: 25px; }
+      .metric { fill: #ffffff; font-size: 44px; font-weight: 760; }
+      .label { fill: #aebbd1; font-size: 18px; }
+      .footer { fill: #8291ab; font-size: 19px; }
+    </style>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <circle cx="1080" cy="70" r="180" fill="#2dd4bf" opacity="0.08"/>
+  <text x="70" y="86" class="eyebrow">PHYSLINT · PUBLIC ALPHA</text>
+  <text x="70" y="165" class="title">Robot data integrity, before training.</text>
+  <text x="70" y="220" class="subtitle">Reproducible validation on pinned public LeRobot v3 snapshots</text>
+  <rect x="70" y="275" width="250" height="165" rx="18" fill="#151d33"/><text x="94" y="345" class="metric">4/4</text><text x="94" y="390" class="label">clean snapshots passed</text><rect x="350" y="275" width="250" height="165" rx="18" fill="#151d33"/><text x="374" y="345" class="metric">3/3</text><text x="374" y="390" class="label">corruptions detected</text><rect x="630" y="275" width="250" height="165" rx="18" fill="#151d33"/><text x="654" y="345" class="metric">74</text><text x="654" y="390" class="label">episodes</text><rect x="910" y="275" width="250" height="165" rx="18" fill="#151d33"/><text x="934" y="345" class="metric">31,258</text><text x="934" y="390" class="label">frames</text>
+  <text x="70" y="535" class="footer">Local-first · privacy-safe evidence · deterministic CI exit codes</text>
+  <text x="70" y="575" class="footer">github.com/pranayjoshi/physlint</text>
+</svg>

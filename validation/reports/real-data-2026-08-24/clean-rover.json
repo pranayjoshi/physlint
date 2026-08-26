@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.1.0a1",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "cagataydev/scout-earth-rover-mini-20260616-053232",
+  "source_revision": "8b160af785bedf7dfe7e6d9441beb35e23c28330",
+  "dataset_path": "hf://datasets/cagataydev/scout-earth-rover-mini-20260616-053232@8b160af785bedf7dfe7e6d9441beb35e23c28330",
+  "source_fingerprint": "73d8ca4563d0b724102765935026e83396781f9b9c8d9d6134cad70ecf980427",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "c997bb8f5ebb07b4aae4695a65dd0bf7e77f578d38d7a962427d6268faa1fa5c",
+  "started_at": "2026-08-25T17:42:08.815157Z",
+  "finished_at": "2026-08-25T17:42:11.027246Z",
+  "status": "passed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.15770900063216686,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.6825830059824511,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.005040987161919475,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0020000006770715117,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.6867919912328944,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 31.102249995456077,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2.260332999867387,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.782292005373165,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 1.7863329994725063,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 21.140333003131673,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 22.77429201058112,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.009458002750761807,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.001167005393654108,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 2099.2715830070665,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 25.833416992099956,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 0.07274998642969877,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    }
+  ],
+  "summary": {
+    "passed": 14,
+    "failed": 0,
+    "not_run": 3,
+    "errored": 0,
+    "findings": 0
+  }
+}

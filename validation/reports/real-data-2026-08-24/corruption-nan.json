@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.1.0a1",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "ViaCatalyst/robomimic-can-ph-lerobot-v3 [corruption:nan]",
+  "source_revision": "71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "dataset_path": "generated://nan@71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "source_fingerprint": "fda454c71c176f0034c9d3a41d8abbc7eb7c5b6f53644aadcf8fd85f464d9336",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "c997bb8f5ebb07b4aae4695a65dd0bf7e77f578d38d7a962427d6268faa1fa5c",
+  "started_at": "2026-08-25T17:42:44.911032Z",
+  "finished_at": "2026-08-25T17:42:45.085295Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.10354199912399054,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.16733299707993865,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0014999968698248267,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0022500025806948543,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2.123458994901739,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 62.74858399410732,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2.862041990738362,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2.5274159997934476,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 2.4451250064885244,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 48.936124992906116,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 51.32887500803918,
+      "findings": [
+        {
+          "rule_id": "numeric.finite_values",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "Numeric values are finite",
+          "message": "Non-finite value in observation.state",
+          "impact": "NaN and infinite observations or actions poison losses and model parameters.",
+          "remediation": "Remove or recollect affected samples and fix the producing sensor or transform.",
+          "observed": {
+            "non_finite_dimensions": [
+              0
+            ]
+          },
+          "expected": "all values finite",
+          "location": {
+            "episode": "episode_000000",
+            "stream": "observation.state",
+            "sample_index": 5,
+            "timestamp": null,
+            "source": null
+          },
+          "evidence": {},
+          "fingerprint": "7732b21ad06db964e7a3dc09ee0cd8e1d98bbb8d0822eb11e4f1d65a51fcd0a3"
+        }
+      ],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0028340000426396728,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0009160139597952366,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "failed": 1,
+    "not_run": 6,
+    "errored": 0,
+    "findings": 1
+  }
+}

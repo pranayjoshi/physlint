@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
-from typing import Any, cast
+from typing import Any
 
 import numpy as np
 
@@ -127,48 +127,61 @@ class SamplingIntervalRule:
 class MaxGapRule:
     metadata = RuleMetadata(
         id="temporal.max_gap",
-        version="1.0.0",
+        version="1.1.0",
         title="Timestamp gaps stay below the limit",
         description="Large gaps indicate dropped samples or a stalled collection process.",
         severity=Severity.ERROR,
         scope="episode",
         cost="linear",
         required_capabilities=frozenset({"timestamps", "episodes"}),
-        option_defaults={"max_gap_ms": 80.0, "max_findings": 50},
+        option_defaults={"max_gap_ms": None, "max_gap_multiplier": 2.0, "max_findings": 50},
         remediation="Inspect transport/recorder drops and recollect the affected time range.",
     )
 
     def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
-        limit = float(options["max_gap_ms"]) / 1000.0
+        configured_limit = options["max_gap_ms"]
+        limit_ms = (
+            float(configured_limit)
+            if configured_limit is not None
+            else (1000.0 / dataset.inventory.fps) * float(options["max_gap_multiplier"])
+        )
+        limit = limit_ms / 1000.0
         findings = []
         for episode in dataset.inventory.episodes:
-            previous: float | None = None
-            offset = 0
-            for batch in _timestamp_batches(dataset, episode):
-                values = np.asarray(batch.columns["timestamp"], dtype=float).reshape(-1)
-                combined = values if previous is None else np.concatenate(([previous], values))
-                diffs = np.diff(combined)
-                for index in np.flatnonzero(diffs > limit):
-                    findings.append(
-                        finding(
-                            self.metadata,
-                            severity,
-                            f"Gap of {diffs[index] * 1000:.1f} ms exceeds limit",
-                            location=Location(
-                                episode=episode.identifier,
-                                stream="timestamp",
-                                sample_index=offset + int(index),
-                                timestamp=float(combined[index + 1]),
-                            ),
-                            observed={"gap_ms": float(diffs[index] * 1000)},
-                            expected={"max_gap_ms": float(options["max_gap_ms"])},
-                        )
+            chunks = [
+                np.asarray(batch.columns["timestamp"], dtype=float).reshape(-1)
+                for batch in _timestamp_batches(dataset, episode)
+            ]
+            values = np.concatenate(chunks) if chunks else np.asarray([], dtype=float)
+            diffs = np.diff(values)
+            for start, end in _contiguous_runs(np.flatnonzero(diffs > limit)):
+                run = diffs[start : end + 1]
+                max_gap_ms = float(np.max(run) * 1000)
+                findings.append(
+                    finding(
+                        self.metadata,
+                        severity,
+                        f"{len(run)} timestamp gap(s) exceed {limit_ms:.1f} ms",
+                        location=Location(
+                            episode=episode.identifier,
+                            stream="timestamp",
+                            sample_index=start + 1,
+                            timestamp=float(values[start + 1]),
+                        ),
+                        observed={
+                            "count": len(run),
+                            "start_sample": start + 1,
+                            "end_sample": end + 1,
+                            "max_gap_ms": max_gap_ms,
+                        },
+                        expected={
+                            "max_gap_ms": limit_ms,
+                            "basis": "configured" if configured_limit is not None else "declared_fps",
+                        },
                     )
-                    if len(findings) >= options["max_findings"]:
-                        return findings
-                if values.size:
-                    previous = float(values[-1])
-                offset += len(values)
+                )
+                if len(findings) >= options["max_findings"]:
+                    return findings
         return findings
 
 
@@ -274,11 +287,20 @@ def _missing_rows(values: np.ndarray) -> np.ndarray:
     array = np.asarray(values)
     if array.dtype == object:
         return np.asarray([value is None or (hasattr(value, "__len__") and len(value) == 0) for value in array])
-    if np.issubdtype(array.dtype, np.floating):
-        missing = np.isnan(array)
-        result = missing if missing.ndim == 1 else np.any(missing, axis=tuple(range(1, missing.ndim)))
-        return cast(np.ndarray, result)
     return np.zeros(array.shape[0], dtype=bool)
+
+
+def _contiguous_runs(indices: np.ndarray) -> Iterator[tuple[int, int]]:
+    if indices.size == 0:
+        return
+    start = previous = int(indices[0])
+    for raw in indices[1:]:
+        current = int(raw)
+        if current != previous + 1:
+            yield start, previous
+            start = current
+        previous = current
+    yield start, previous
 
 
 TEMPORAL_RULES: list[Rule] = [

@@ -550,7 +550,7 @@ wheels = [
 
 [[package]]
 name = "physlint"
-version = "0.1.0a0"
+version = "0.1.0a1"
 source = { editable = "." }
 dependencies = [
     { name = "numpy" },
@@ -578,7 +578,7 @@ requires-dist = [
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.11" },
     { name = "numpy", specifier = ">=1.26,<2.5" },
     { name = "opencv-python-headless", marker = "extra == 'video'", specifier = ">=4.9" },
-    { name = "pyarrow", specifier = ">=16" },
+    { name = "pyarrow", specifier = ">=19.0.1" },
     { name = "pydantic", specifier = ">=2.8" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.2" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5" },

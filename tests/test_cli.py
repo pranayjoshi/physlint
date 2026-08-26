@@ -72,4 +72,4 @@ def test_init_refuses_overwrite(tmp_path):
 def test_version_command():
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
-    assert result.stdout.strip() == "0.1.0a0"
+    assert result.stdout.strip() == "0.1.0a1"

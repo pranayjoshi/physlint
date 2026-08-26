@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.1.0a1",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "lerobot/svla_so101_pickplace",
+  "source_revision": "f641879e22172be7e8161d5e6c1503c2d2feb657",
+  "dataset_path": "hf://datasets/lerobot/svla_so101_pickplace@f641879e22172be7e8161d5e6c1503c2d2feb657",
+  "source_fingerprint": "eff704eda5eaf3eceb164c80863a057932375f7edb6b56c0fcb5bb245322573b",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "c997bb8f5ebb07b4aae4695a65dd0bf7e77f578d38d7a962427d6268faa1fa5c",
+  "started_at": "2026-08-25T17:42:11.448246Z",
+  "finished_at": "2026-08-25T17:42:28.092628Z",
+  "status": "passed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.9294579940615222,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.5510829942068085,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.003416993422433734,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.00870799703989178,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 31.88741700432729,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 887.6086660020519,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 45.31808299361728,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 42.58862500137184,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 42.98479200224392,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 646.7607499944279,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 666.8242500018096,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.012667005648836493,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.001124994014389813,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 13949.459583003772,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 325.471624993952,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 0.49199999193660915,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    }
+  ],
+  "summary": {
+    "passed": 14,
+    "failed": 0,
+    "not_run": 3,
+    "errored": 0,
+    "findings": 0
+  }
+}

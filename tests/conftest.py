@@ -24,6 +24,8 @@ def dataset_factory(tmp_path: Path):
         include_action_declaration: bool = True,
         include_video: bool = False,
         video_mode: str = "clean",
+        fps: float = 30,
+        repo_id: str | None = "tests/fixture",
     ) -> Path:
         nonlocal counter
         counter += 1
@@ -32,7 +34,7 @@ def dataset_factory(tmp_path: Path):
         (root / "data" / "chunk-000").mkdir(parents=True)
         total = sum(episode_lengths)
         if timestamps is None:
-            timestamps = [i / 30 for length in episode_lengths for i in range(length)]
+            timestamps = [i / fps for length in episode_lengths for i in range(length)]
         if states is None:
             states = [[float(i), float(i + 1)] for i in range(total)]
         if actions is None:
@@ -61,14 +63,15 @@ def dataset_factory(tmp_path: Path):
             }
         info = {
             "codebase_version": "v3.0",
-            "repo_id": "tests/fixture",
             "robot_type": "testbot",
-            "fps": 30,
+            "fps": fps,
             "total_episodes": 2,
             "total_frames": total,
             "features": features,
             "data_path": "data/chunk-{chunk_index:03d}/file-{file_index:03d}.parquet",
         }
+        if repo_id is not None:
+            info["repo_id"] = repo_id
         if include_video:
             info["video_path"] = "videos/{video_key}/chunk-{chunk_index:03d}/file-{file_index:03d}.mp4"
         (root / "meta" / "info.json").write_text(json.dumps(info), encoding="utf-8")
@@ -106,11 +109,11 @@ def dataset_factory(tmp_path: Path):
                 {
                     f"{stream}/chunk_index": [0, 0],
                     f"{stream}/file_index": [0, 0],
-                    f"{stream}/from_timestamp": [0.0, first_length / 30],
-                    f"{stream}/to_timestamp": [first_length / 30, total / 30],
+                    f"{stream}/from_timestamp": [0.0, first_length / fps],
+                    f"{stream}/to_timestamp": [first_length / fps, total / fps],
                 }
             )
-            _write_video(root, total, video_mode, first_length)
+            _write_video(root, total, video_mode, first_length, fps)
         pq.write_table(
             pa.Table.from_pydict(episodes),
             root / "meta" / "episodes" / "chunk-000" / "file-000.parquet",
@@ -120,11 +123,11 @@ def dataset_factory(tmp_path: Path):
     return make
 
 
-def _write_video(root: Path, total: int, mode: str, first_length: int) -> None:
+def _write_video(root: Path, total: int, mode: str, first_length: int, fps: float) -> None:
     cv2 = pytest.importorskip("cv2")
     path = root / "videos" / "observation.images.wrist" / "chunk-000" / "file-000.mp4"
     path.parent.mkdir(parents=True)
-    writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"mp4v"), 30, (64, 48))
+    writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (64, 48))
     assert writer.isOpened()
     for index in range(total):
         if mode == "frozen":

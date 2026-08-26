@@ -2,6 +2,8 @@
 
 Physlint `0.1.x` recognizes a local directory as LeRobot when `meta/info.json` declares `features`, `fps`, and a `codebase_version` beginning with `v3`.
 
+The adapter requires PyArrow `>=19.0.1`. PyArrow 19.0.0 can raise `Repetition level histogram size mismatch` on valid nested episode metadata; reinstall the project dependencies if that version is already present.
+
 ## Supported
 
 - v3.x `info.json` feature and path templates

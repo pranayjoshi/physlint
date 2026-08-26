@@ -1,0 +1,230 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.1.0a1",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "ViaCatalyst/robomimic-can-ph-lerobot-v3 [corruption:truncated]",
+  "source_revision": "71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "dataset_path": "generated://truncated@71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "source_fingerprint": "1e953c48750d7b883c458aacffc24b74cbaf450b432bd55ec5e1a1691953a166",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "c997bb8f5ebb07b4aae4695a65dd0bf7e77f578d38d7a962427d6268faa1fa5c",
+  "started_at": "2026-08-25T17:42:45.306792Z",
+  "finished_at": "2026-08-25T17:42:45.480264Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.10858300083782524,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.17458399815950543,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0015419936971738935,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0022500025806948543,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 2.084332998492755,
+      "findings": [
+        {
+          "rule_id": "episode.valid_boundaries",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "Episode boundaries are valid",
+          "message": "Invalid boundaries for episode_000000",
+          "impact": "Empty, overlapping, or inconsistent episode ranges indicate incomplete data.",
+          "remediation": "Finalize recording or rebuild episode metadata from the source logs.",
+          "observed": {
+            "length": 118,
+            "from_index": 0,
+            "to_index": 118,
+            "stored_rows": 117
+          },
+          "expected": "positive length, ordered non-overlapping range matching length",
+          "location": {
+            "episode": "episode_000000",
+            "stream": null,
+            "sample_index": null,
+            "timestamp": null,
+            "source": "data/chunk-000/file-000.parquet"
+          },
+          "evidence": {},
+          "fingerprint": "93b7df952ef7d7a10250a9bdf80b1a3fa46ba2d29c140c58dea82070a411ce47"
+        }
+      ],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 62.87158299528528,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2.7823340060422197,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 2.745040997979231,
+      "findings": [
+        {
+          "rule_id": "temporal.sampling_interval",
+          "rule_version": "1.0.0",
+          "severity": "warning",
+          "title": "Sampling interval matches declared FPS",
+          "message": "Unexpected sampling interval in episode_000000",
+          "impact": "Unstable sample cadence changes the physical meaning of actions and velocities.",
+          "remediation": "Check recorder scheduling and clock sources; recollect unstable episodes.",
+          "observed": {
+            "interval_ms": 99.99990463256836
+          },
+          "expected": {
+            "interval_ms": 50.0,
+            "tolerance_ms": 10.000000000000002
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "timestamp",
+            "sample_index": 49,
+            "timestamp": 2.549999952316284,
+            "source": null
+          },
+          "evidence": {},
+          "fingerprint": "be03384b68e15ed3baf2bbbc77430a55e9821cf05079ed2973aec00d0bbfc264"
+        }
+      ],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 2.337583006010391,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 48.489291992154904,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 50.86754199874122,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0024170003598555923,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0009999930625781417,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "failed": 2,
+    "not_run": 6,
+    "errored": 0,
+    "findings": 2
+  }
+}

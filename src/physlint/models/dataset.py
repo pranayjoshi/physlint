@@ -46,6 +46,7 @@ class DatasetInventory(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     name: str
+    source_revision: str | None = None
     path: str
     adapter: str
     format_version: str
@@ -76,6 +77,21 @@ class VideoFrame:
     image: np.ndarray = field(repr=False)
 
 
+@dataclass(frozen=True)
+class VideoAnalysis:
+    """Privacy-safe frame statistics shared by all video rules."""
+
+    frame_indices: np.ndarray
+    timestamps: np.ndarray
+    mean_intensities: np.ndarray
+    stddevs: np.ndarray
+    mean_absolute_differences: np.ndarray
+
+    @property
+    def decoded_frames(self) -> int:
+        return int(self.frame_indices.size)
+
+
 class DatasetView(Protocol):
     """Lazy adapter contract consumed by rules."""
 
@@ -90,5 +106,7 @@ class DatasetView(Protocol):
     ) -> Iterator[SampleBatch]: ...
 
     def iter_video_frames(self, episode: Episode, stream: str, stride: int = 1) -> Iterator[VideoFrame]: ...
+
+    def video_analysis(self, episode: Episode, stream: str) -> VideoAnalysis: ...
 
     def parquet_schema(self, episode: Episode) -> dict[str, Any]: ...

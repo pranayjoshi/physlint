@@ -1,0 +1,50 @@
+schema_version: 1
+run_id: real-data-2026-08-24
+physlint_version: 0.1.0a1
+
+datasets:
+  - id: panda
+    repo_id: ViaCatalyst/robomimic-can-ph-lerobot-v3
+    revision: 71bfefc1ff8ef8735840bb761d41f4fc3a527f20
+    robot: Panda
+    size_bytes: 565248
+    baseline_rule_time_seconds: 0.21
+  - id: rover
+    repo_id: cagataydev/scout-earth-rover-mini-20260616-053232
+    revision: 8b160af785bedf7dfe7e6d9441beb35e23c28330
+    robot: Earth Rover Mini
+    size_bytes: 117440512
+    baseline_rule_time_seconds: 11.60
+  - id: so101
+    repo_id: lerobot/svla_so101_pickplace
+    revision: f641879e22172be7e8161d5e6c1503c2d2feb657
+    robot: SO-101
+    size_bytes: 85983232
+    baseline_rule_time_seconds: 164.94
+  - id: sentinel
+    repo_id: vikram-avea/sentinel-demo-09
+    revision: 4235380e380937a95ffb7b25ca82aa6b13645409
+    robot: YAM humanoid
+    size_bytes: 176160768
+    baseline_rule_time_seconds: 187.73
+
+corruptions:
+  - id: nan
+    base_dataset: panda
+    mutation: insert_nan
+    sample: 5
+    dimension: 0
+    stream: observation.state
+    expected_rules: [numeric.finite_values]
+    forbidden_rules: [temporal.stream_overlap]
+  - id: reordered
+    base_dataset: panda
+    mutation: swap_timestamps
+    first: 10
+    second: 11
+    expected_rules: [temporal.monotonic]
+  - id: truncated
+    base_dataset: panda
+    mutation: delete_row
+    sample: 50
+    expected_rules: [episode.valid_boundaries]

@@ -17,6 +17,7 @@ from physlint.models.dataset import (
     Episode,
     SampleBatch,
     Stream,
+    VideoAnalysis,
     VideoFrame,
 )
 
@@ -36,13 +37,16 @@ class LeRobotAdapter:
         self._features = self._read_features()
         self._episodes = self._read_episodes()
         self._schema_cache: dict[Path, pa.Schema] = {}
+        self._video_analysis_cache: dict[tuple[int, str], VideoAnalysis] = {}
+        inferred_name, source_revision = _hugging_face_identity(root)
         capabilities = {"metadata", "episodes", "timestamps", "numeric"}
         if any(stream.kind == "video" for stream in self._features):
             capabilities.add("video")
         if any(stream.key.endswith(".timestamp") for stream in self._features):
             capabilities.add("stream_timestamps")
         self.inventory = DatasetInventory(
-            name=str(self._info.get("repo_id") or root.name),
+            name=str(self._info.get("repo_id") or inferred_name or root.name),
+            source_revision=source_revision,
             path=str(root),
             adapter=self.name,
             format_version=str(self._info.get("codebase_version", "unknown")),
@@ -101,6 +105,11 @@ class LeRobotAdapter:
                 table = pq.read_table(path)
                 records.extend(table.to_pylist())
         except (OSError, pa.ArrowException) as exc:
+            if "Repetition level histogram size mismatch" in str(exc):
+                raise AdapterError(
+                    "cannot read episode metadata because PyArrow 19.0.0 has a Parquet repetition-level "
+                    "reader bug; upgrade PyArrow to >=19.0.1 and rerun the validation"
+                ) from exc
             raise AdapterError(f"cannot read episode metadata: {exc}") from exc
         episodes = [self._episode_from_record(record) for record in records]
         return sorted(episodes, key=lambda episode: episode.index)
@@ -244,9 +253,65 @@ class LeRobotAdapter:
         finally:
             capture.release()
 
+    def video_analysis(self, episode: Episode, stream: str) -> VideoAnalysis:
+        """Decode once and cache small, non-image statistics for every video rule."""
+        key = (episode.index, stream)
+        cached = self._video_analysis_cache.get(key)
+        if cached is not None:
+            return cached
+
+        frame_indices: list[int] = []
+        timestamps: list[float] = []
+        means: list[float] = []
+        stddevs: list[float] = []
+        differences: list[float] = []
+        previous: np.ndarray | None = None
+        for frame in self.iter_video_frames(episode, stream):
+            small = _small_grayscale(frame.image)
+            frame_indices.append(frame.frame_index)
+            timestamps.append(frame.timestamp)
+            means.append(float(np.mean(small)))
+            stddevs.append(float(np.std(small)))
+            if previous is not None:
+                differences.append(float(np.mean(np.abs(small - previous))))
+            previous = small
+        analysis = VideoAnalysis(
+            frame_indices=np.asarray(frame_indices, dtype=np.int64),
+            timestamps=np.asarray(timestamps, dtype=float),
+            mean_intensities=np.asarray(means, dtype=float),
+            stddevs=np.asarray(stddevs, dtype=float),
+            mean_absolute_differences=np.asarray(differences, dtype=float),
+        )
+        self._video_analysis_cache[key] = analysis
+        return analysis
+
 
 def _optional_int(value: Any) -> int | None:
     return None if value is None else int(value)
+
+
+def _small_grayscale(image: np.ndarray) -> np.ndarray:
+    """Spatially sample first, avoiding full-resolution color reductions."""
+    row_stride = max(1, image.shape[0] // 64)
+    col_stride = max(1, image.shape[1] // 64)
+    small = image[::row_stride, ::col_stride]
+    gray = np.mean(small, axis=2) if small.ndim == 3 else small
+    return np.asarray(gray, dtype=np.float32)
+
+
+def _hugging_face_identity(root: Path) -> tuple[str | None, str | None]:
+    """Recover repo/revision from a Hugging Face snapshot cache path."""
+    parts = root.resolve().parts
+    for index, part in enumerate(parts):
+        if not part.startswith("datasets--") or index + 2 >= len(parts):
+            continue
+        if parts[index + 1] != "snapshots":
+            continue
+        encoded = part.removeprefix("datasets--")
+        namespace, separator, repository = encoded.partition("--")
+        if separator and namespace and repository:
+            return f"{namespace}/{repository}", parts[index + 2]
+    return None, None
 
 
 def _arrow_to_numpy(array: pa.Array) -> np.ndarray:
