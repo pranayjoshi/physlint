@@ -8,7 +8,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 [![CI](https://img.shields.io/github/actions/workflow/status/pranayjoshi/physlint/ci.yml?branch=master&style=flat-square&label=CI)](https://github.com/pranayjoshi/physlint/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/pranayjoshi/physlint?include_prereleases&style=flat-square)](https://github.com/pranayjoshi/physlint/releases)
-[![Downloads per month](https://img.shields.io/pypi/dm/physlint?style=flat-square&label=downloads%2Fmonth)](https://pypistats.org/packages/physlint)
+[![Downloads per month](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpranayjoshi%2Fphyslint%2Fmaster%2Fdocs%2Fmetrics%2Fdownloads.json&style=flat-square)](https://pypistats.org/packages/physlint)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
 [![MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
 ![Status](https://img.shields.io/badge/Status-Public%20Alpha-f59e0b?style=flat-square)
