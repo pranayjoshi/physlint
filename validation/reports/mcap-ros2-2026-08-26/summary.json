@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "run_id": "mcap-ros2-2026-08-26",
+  "physlint_version": "0.2.0a1",
+  "recordings": 3,
+  "public_recordings": 1,
+  "controlled_recordings": 2,
+  "expected_outcomes_verified": 3,
+  "results": [
+    {
+      "id": "foxglove-ten-messages",
+      "title": "Foxglove MCAP TenMessages conformance case",
+      "format": "MCAP",
+      "profile": "generic",
+      "provenance": "public",
+      "status": "failed",
+      "messages": 10,
+      "rules_checked": 7,
+      "findings": 5,
+      "failed_rules": [
+        "mcap.timestamp_order",
+        "mcap.duplicate_timestamps"
+      ],
+      "source_revision": "68f77c8c1bba4a17ebc6ba0c409ebb933adb791c",
+      "source_fingerprint": "358413d53e6fb2753efb3eac682bc9d776bb2afb1de5e395817efd8f16303fbc",
+      "artifact": "foxglove-ten-messages.json"
+    },
+    {
+      "id": "ros2-joint-state-clean",
+      "title": "Controlled ROS 2 JointState recording",
+      "format": "MCAP",
+      "profile": "ros2",
+      "provenance": "controlled",
+      "status": "passed",
+      "messages": 3,
+      "rules_checked": 13,
+      "findings": 0,
+      "failed_rules": [],
+      "source_revision": "recipe:joint_state_clean",
+      "source_fingerprint": "db8adb3a3cd8a4f448416efe5fc3b57ec0556a41dec065a77f9823e0aa98988d",
+      "artifact": "ros2-joint-state-clean.json"
+    },
+    {
+      "id": "ros2-joint-state-corrupt",
+      "title": "Controlled ROS 2 cadence and dimensions corruption",
+      "format": "MCAP",
+      "profile": "ros2",
+      "provenance": "controlled",
+      "status": "failed",
+      "messages": 3,
+      "rules_checked": 13,
+      "findings": 2,
+      "failed_rules": [
+        "ros2.topic_gaps",
+        "ros2.semantic_consistency"
+      ],
+      "source_revision": "recipe:joint_state_gap_and_dimension_mismatch",
+      "source_fingerprint": "7982bfa6b6a89f4a66e63e1e9a13a3fd8bb9c82aeeca16d77c64742454507a5a",
+      "artifact": "ros2-joint-state-corrupt.json"
+    }
+  ]
+}

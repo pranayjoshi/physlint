@@ -27,7 +27,7 @@ from physlint.rules import BUILTIN_RULES
 
 app = typer.Typer(
     name="physlint",
-    help="Find concrete integrity defects in physical-AI datasets.",
+    help="Find concrete integrity defects in physical-AI datasets and recordings.",
     no_args_is_help=True,
     pretty_exceptions_enable=False,
 )
@@ -38,6 +38,12 @@ error_console = Console(stderr=True)
 class OutputFormat(StrEnum):
     TERMINAL = "terminal"
     JSON = "json"
+
+
+class ProfileChoice(StrEnum):
+    AUTO = "auto"
+    GENERIC = "generic"
+    ROS2 = "ros2"
 
 
 def _version_callback(value: bool) -> None:
@@ -58,7 +64,7 @@ def main(
 
 @app.command()
 def check(
-    path: Annotated[Path, typer.Argument(help="Local LeRobot v3 dataset directory.")],
+    path: Annotated[Path, typer.Argument(help="Local LeRobot v3 dataset directory or MCAP recording.")],
     config: Annotated[Path | None, typer.Option("--config", "-c", help="Quality contract YAML file.")] = None,
     output: Annotated[
         OutputFormat, typer.Option("--output", "-o", help="Terminal or JSON stdout output.")
@@ -69,7 +75,7 @@ def check(
     try:
         root = path.expanduser().resolve()
         settings = load_config(config.expanduser().resolve() if config else None, root)
-        dataset = discover(root, settings.adapter)
+        dataset = discover(root, settings.adapter, settings.profile)
         report = run_validation(dataset, settings)
         report_path: Path | None = None
         if json_output is not None:
@@ -95,7 +101,7 @@ def check(
         error_console.print(f"[red]Configuration error:[/red] {exc}")
         raise typer.Exit(2) from exc
     except AdapterError as exc:
-        error_console.print(f"[red]Dataset error:[/red] {exc}")
+        error_console.print(f"[red]Source error:[/red] {exc}")
         raise typer.Exit(3) from exc
     except typer.Exit:
         raise
@@ -106,18 +112,22 @@ def check(
 
 @app.command()
 def inspect(
-    path: Annotated[Path, typer.Argument(help="Local LeRobot v3 dataset directory.")],
+    path: Annotated[Path, typer.Argument(help="Local LeRobot v3 dataset directory or MCAP recording.")],
     output_json: Annotated[bool, typer.Option("--json", help="Print the inventory as JSON.")] = False,
+    profile: Annotated[
+        ProfileChoice,
+        typer.Option("--profile", help="Auto-detect, use generic MCAP, or use ROS 2 semantics."),
+    ] = ProfileChoice.AUTO,
 ) -> None:
     """Show streams, schemas, rates, and episode inventory."""
     try:
-        inventory = discover(path).inventory
+        inventory = discover(path, profile=profile.value).inventory
         if output_json:
             typer.echo(inventory.model_dump_json(indent=2))
         else:
             render_inventory(inventory, console)
     except AdapterError as exc:
-        error_console.print(f"[red]Dataset error:[/red] {exc}")
+        error_console.print(f"[red]Source error:[/red] {exc}")
         raise typer.Exit(3) from exc
     except KeyboardInterrupt as exc:
         raise typer.Exit(130) from exc

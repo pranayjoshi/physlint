@@ -1,0 +1,37 @@
+schema_version: 1
+run_id: mcap-ros2-2026-08-26
+physlint_version: 0.2.0a1
+public_recordings:
+  - id: foxglove-ten-messages
+    title: Foxglove MCAP TenMessages conformance case
+    format: MCAP
+    profile: generic
+    source_revision: 68f77c8c1bba4a17ebc6ba0c409ebb933adb791c
+    source_url: https://media.githubusercontent.com/media/foxglove/mcap/68f77c8c1bba4a17ebc6ba0c409ebb933adb791c/tests/conformance/data/TenMessages/TenMessages-ch-chx-mx-pad-rch-rsh-st-sum.mcap
+    sha256: 358413d53e6fb2753efb3eac682bc9d776bb2afb1de5e395817efd8f16303fbc
+    expected_status: failed
+    expected_failed_rules:
+      - mcap.timestamp_order
+      - mcap.duplicate_timestamps
+controlled_recordings:
+  - id: ros2-joint-state-clean
+    title: Controlled ROS 2 JointState recording
+    format: MCAP
+    profile: ros2
+    recipe: joint_state_clean
+    expected_status: passed
+    required_topics:
+      - /joint_states
+  - id: ros2-joint-state-corrupt
+    title: Controlled ROS 2 cadence and dimensions corruption
+    format: MCAP
+    profile: ros2
+    recipe: joint_state_gap_and_dimension_mismatch
+    expected_status: failed
+    expected_failed_rules:
+      - ros2.topic_gaps
+      - ros2.semantic_consistency
+    required_topics:
+      - /joint_states
+    topic_rates_hz:
+      /joint_states: 10.0

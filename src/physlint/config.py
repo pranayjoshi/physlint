@@ -30,7 +30,8 @@ class Config(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     config_version: Literal[1] = 1
-    adapter: Literal["auto", "lerobot"] = "auto"
+    adapter: Literal["auto", "lerobot", "mcap"] = "auto"
+    profile: Literal["auto", "generic", "ros2"] = "auto"
     required_streams: list[str] = Field(default_factory=lambda: ["observation.state", "action"])
     fail_on: Literal["critical", "error", "warning", "notice"] = "error"
     rules: dict[str, RuleSettings] = Field(default_factory=dict)
@@ -55,7 +56,8 @@ class ConfigurationError(ValueError):
 def load_config(path: Path | None, dataset_path: Path | None = None) -> Config:
     candidate = path
     if candidate is None and dataset_path is not None:
-        local = dataset_path / "physlint.yaml"
+        base = dataset_path if dataset_path.is_dir() else dataset_path.parent
+        local = base / "physlint.yaml"
         cwd = Path.cwd() / "physlint.yaml"
         candidate = local if local.is_file() else cwd if cwd.is_file() else None
     if candidate is None:
@@ -72,6 +74,7 @@ def load_config(path: Path | None, dataset_path: Path | None = None) -> Config:
 DEFAULT_CONFIG = """# Physlint quality contract
 config_version: 1
 adapter: auto
+profile: auto
 required_streams:
   - observation.state
   - action

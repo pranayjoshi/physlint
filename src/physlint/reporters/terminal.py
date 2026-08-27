@@ -59,11 +59,16 @@ def render_report(report: Report, report_path: Path | None = None, console: Cons
 def render_inventory(inventory: DatasetInventory, console: Console | None = None) -> None:
     console = console or Console()
     console.print(f"Dataset: [bold]{inventory.name}[/bold]")
-    console.print(
-        f"Adapter: {inventory.adapter} {inventory.format_version}  "
-        f"Episodes: {len(inventory.episodes)}  Frames: {inventory.total_frames}  "
-        f"FPS: {inventory.fps:g}"
-    )
+    parts = [f"Adapter: {inventory.adapter} {inventory.format_version}"]
+    if inventory.profile:
+        parts.append(f"Profile: {inventory.profile}")
+    if inventory.total_messages is not None:
+        parts.append(f"Messages: {inventory.total_messages}")
+    else:
+        parts.extend([f"Episodes: {len(inventory.episodes)}", f"Frames: {inventory.total_frames}"])
+    if inventory.fps is not None:
+        parts.append(f"FPS: {inventory.fps:g}")
+    console.print("  ".join(parts))
     table = Table("Stream", "Kind", "Dtype", "Shape")
     for stream in inventory.streams:
         table.add_row(stream.key, stream.kind, stream.dtype, str(stream.shape))

@@ -50,9 +50,11 @@ class DatasetInventory(BaseModel):
     path: str
     adapter: str
     format_version: str
+    profile: str | None = None
     robot_type: str | None = None
-    fps: float
-    total_frames: int
+    fps: float | None = None
+    total_frames: int | None = None
+    total_messages: int | None = None
     streams: list[Stream]
     episodes: list[Episode]
     capabilities: frozenset[str]

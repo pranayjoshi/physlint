@@ -1,29 +1,29 @@
-# MCAP/ROS validation proposal
+# MCAP/ROS validation design
 
-Status: design proposal; no MCAP support is included in `0.1.0a1`.
+Status: generic MCAP and ROS 2-over-MCAP layers implemented in the `0.2.0a1` development line. Training-semantic profiles remain proposed.
 
 MCAP is a heterogeneous timestamped channel container rather than a training-dataset schema. Physlint should therefore provide useful recording checks without pretending to know which channel represents an action, observation, camera, or episode boundary.
 
-## Layer 1: format-level checks without a profile
+## Layer 1: format-level checks without a profile — implemented
 
 - Header/footer, chunk, summary, and index readability
 - Referenced schema availability and supported message encoding
 - Per-channel log/publish timestamp monotonicity
 - Duplicate timestamps, large gaps, unstable rates, and recording truncation
-- Image/compressed-image decode failures and black-frame runs
 - Attachment and metadata inventory
-- Privacy-safe evidence containing channel, time, schema, and source offsets
+- Privacy-safe evidence containing channel, time, and schema
 
-## Layer 2: ROS profile checks
+Black/frozen image analysis is deferred; it needs motion-aware sampling comparable to the LeRobot video contract.
+## Layer 2: ROS profile checks — implemented
 
 - Required topic presence
 - ROS clock discontinuities
 - `/tf` and `/tf_static` parent/child consistency and long transform gaps
-- `sensor_msgs/Image` and `CompressedImage` cadence/decode
+- `sensor_msgs/Image` and `CompressedImage` payload/decode invariants
 - `JointState` name/value dimension agreement
 - Header timestamp versus MCAP log-time skew
 
-## Layer 3: training-semantic profiles
+## Layer 3: training-semantic profiles — proposed
 
 ```yaml
 adapter: mcap

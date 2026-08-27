@@ -26,7 +26,7 @@ def test_core_cli_workflow(dataset_factory, tmp_path):
 
     rules = runner.invoke(app, ["rules", "--json"])
     assert rules.exit_code == 0
-    assert len(json.loads(rules.stdout)) == 17
+    assert len(json.loads(rules.stdout)) == 31
 
     explain = runner.invoke(app, ["explain", "temporal.max_gap"])
     assert explain.exit_code == 0
@@ -57,7 +57,7 @@ def test_cli_configuration_and_dataset_exit_codes(dataset_factory, tmp_path):
 
     dataset_result = runner.invoke(app, ["check", str(tmp_path / "missing")])
     assert dataset_result.exit_code == 3
-    assert "Dataset error" in dataset_result.output
+    assert "Source error" in dataset_result.output
 
 
 def test_init_refuses_overwrite(tmp_path):
@@ -72,4 +72,38 @@ def test_init_refuses_overwrite(tmp_path):
 def test_version_command():
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
-    assert result.stdout.strip() == "0.1.0a1"
+    assert result.stdout.strip() == "0.2.0a1"
+
+
+def test_cli_checks_and_inspects_mcap(mcap_factory, tmp_path):
+    source = mcap_factory()
+    report_path = tmp_path / "mcap-report.json"
+    check = runner.invoke(
+        app,
+        ["check", str(source), "--output", "json", "--json-output", str(report_path)],
+    )
+    assert check.exit_code == 0, check.output
+    report = json.loads(check.stdout)
+    assert report["adapter"] == "mcap"
+    assert report["source_fingerprint_method"] == "file-content-sha256-v1"
+    assert report_path.is_file()
+
+    inspect = runner.invoke(app, ["inspect", str(source), "--json"])
+    assert inspect.exit_code == 0, inspect.output
+    inventory = json.loads(inspect.stdout)
+    assert inventory["profile"] == "generic"
+    assert inventory["total_messages"] == 3
+
+
+def test_cli_force_ros2_profile(ros2_mcap_factory):
+    source = ros2_mcap_factory()
+    result = runner.invoke(app, ["inspect", str(source), "--profile", "ros2", "--json"])
+    assert result.exit_code == 0, result.output
+    assert json.loads(result.stdout)["profile"] == "ros2"
+
+
+def test_generated_cross_format_config_does_not_block_mcap(mcap_factory, tmp_path):
+    config = tmp_path / "physlint.yaml"
+    assert runner.invoke(app, ["init", "--path", str(config)]).exit_code == 0
+    result = runner.invoke(app, ["check", str(mcap_factory()), "--config", str(config)])
+    assert result.exit_code == 0, result.output

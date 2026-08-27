@@ -9,7 +9,7 @@ import numpy as np
 
 from physlint.models.dataset import DatasetView, Episode, SampleBatch
 from physlint.models.finding import Finding, Location, Severity
-from physlint.models.rule import Rule, RuleMetadata
+from physlint.models.rule import Rule, RuleMetadata, RuleNotApplicable
 from physlint.rules.common import finding
 
 
@@ -17,6 +17,12 @@ def _timestamp_batches(dataset: DatasetView, episode: Episode) -> Iterator[Sampl
     if "timestamp" not in dataset.parquet_schema(episode):
         return iter(())
     return dataset.iter_batches(episode, ("timestamp",))
+
+
+def _fps(dataset: DatasetView) -> float:
+    if dataset.inventory.fps is None or dataset.inventory.fps <= 0:
+        raise RuleNotApplicable("source does not declare a positive FPS")
+    return dataset.inventory.fps
 
 
 class MonotonicTimestampsRule:
@@ -85,7 +91,7 @@ class SamplingIntervalRule:
     )
 
     def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
-        expected = 1.0 / dataset.inventory.fps
+        expected = 1.0 / _fps(dataset)
         tolerance = expected * float(options["tolerance_fraction"])
         findings = []
         for episode in dataset.inventory.episodes:
@@ -143,7 +149,7 @@ class MaxGapRule:
         limit_ms = (
             float(configured_limit)
             if configured_limit is not None
-            else (1000.0 / dataset.inventory.fps) * float(options["max_gap_multiplier"])
+            else (1000.0 / _fps(dataset)) * float(options["max_gap_multiplier"])
         )
         limit = limit_ms / 1000.0
         findings = []

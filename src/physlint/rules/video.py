@@ -134,7 +134,7 @@ class FrozenFramesRule:
                             length,
                             threshold,
                             motion_fraction,
-                            dataset.inventory.fps,
+                            dataset.inventory.fps or 1.0,
                         )
                     )
                     if len(findings) >= options["max_findings"]:

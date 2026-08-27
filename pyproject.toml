@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "physlint"
-version = "0.1.0a1"
+version = "0.2.0a1"
 description = "Local-first integrity validation for physical-AI and robot-learning data"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Pranay Joshi" }]
-keywords = ["robotics", "physical-ai", "dataset-validation", "lerobot", "data-quality"]
+keywords = ["robotics", "physical-ai", "dataset-validation", "lerobot", "mcap", "ros2", "data-quality"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
@@ -26,6 +26,8 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
+  "mcap>=1.4,<2",
+  "mcap-ros2-support>=0.5.7,<0.6",
   "numpy>=1.26,<2.5",
   "pyarrow>=19.0.1",
   "pydantic>=2.8",
@@ -57,7 +59,18 @@ Source = "https://github.com/pranayjoshi/physlint"
 packages = ["src/physlint"]
 
 [tool.hatch.build.targets.sdist]
-exclude = ["/.trunk"]
+exclude = [
+  "/.trunk",
+  "/dist",
+  "/observatory/.next",
+  "/observatory/.vinext",
+  "/observatory/.wrangler",
+  "/observatory/dist",
+  "/observatory/node_modules",
+  "/observatory/outputs",
+  "/observatory/work",
+  "/validation/.work",
+]
 
 [tool.pytest.ini_options]
 addopts = "-q"

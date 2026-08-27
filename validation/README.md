@@ -29,3 +29,19 @@ python -m validation.harness \
 Committed reports replace machine-local paths with `hf://` or `generated://` identifiers. They contain no images or complete samples. Runtime fields are measurements, not golden assertions; statuses, finding ownership, revisions, counts, and checksums are the release evidence.
 
 The human classification and before/after analysis are in [`docs/validation/real-data-2026-08-23.md`](../docs/validation/real-data-2026-08-23.md). Publication-ready metrics are in [`reports/real-data-2026-08-24/summary.csv`](reports/real-data-2026-08-24/summary.csv).
+
+## MCAP and ROS 2 gate
+
+The second harness combines one exact upstream Foxglove conformance fixture with deterministic ROS 2 positive and negative recordings:
+
+```bash
+python -m validation.mcap_harness
+```
+
+For a fully offline run, first obtain the pinned public fixture and pass it explicitly. Its SHA-256 must match the manifest:
+
+```bash
+python -m validation.mcap_harness --public-recording /path/to/pinned-ten-messages.mcap
+```
+
+The immutable inputs and expected outcomes are in [`mcap_manifest.yaml`](mcap_manifest.yaml). Sanitized evidence is committed under [`reports/mcap-ros2-2026-08-26/`](reports/mcap-ros2-2026-08-26/). Controlled ROS 2 MCAP files are generated locally and are not committed.

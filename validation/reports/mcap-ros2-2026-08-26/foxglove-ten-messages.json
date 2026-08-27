@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.2.0a1",
+  "adapter": "mcap",
+  "adapter_version": "1.0",
+  "dataset": "Foxglove MCAP TenMessages conformance case",
+  "source_revision": "68f77c8c1bba4a17ebc6ba0c409ebb933adb791c",
+  "dataset_path": "github://foxglove/mcap@68f77c8c1bba4a17ebc6ba0c409ebb933adb791c/physlint-ten-messages.mcap",
+  "source_fingerprint": "358413d53e6fb2753efb3eac682bc9d776bb2afb1de5e395817efd8f16303fbc",
+  "source_fingerprint_method": "file-content-sha256-v1",
+  "configuration_digest": "8338ba37f947d0e8d031a68e4b3259aa54e736ef1d083a9eca5d4c2bfe42a6f1",
+  "started_at": "2026-08-27T05:13:45.981366Z",
+  "finished_at": "2026-08-27T05:13:45.981907Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "mcap.readable",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.2049169852398336,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "mcap.summary_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.007124996045604348,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "mcap.index_coverage",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.001334003172814846,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "mcap.channel_schema",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0029580260161310434,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "mcap.timestamp_order",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 0.13066601241007447,
+      "findings": [
+        {
+          "rule_id": "mcap.timestamp_order",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "MCAP channel timestamps do not move backward",
+          "message": "Log time moved backward on example (2 transition(s) total)",
+          "impact": "Backward log or publish time breaks replay ordering and synchronization.",
+          "remediation": "Fix recorder clock ordering or split the recording at the clock reset.",
+          "observed": {
+            "delta_ns": -1,
+            "transition_count": 2
+          },
+          "expected": "timestamp delta >= 0",
+          "location": {
+            "episode": null,
+            "stream": "example",
+            "sample_index": 2,
+            "timestamp": 1e-9,
+            "source": "physlint-ten-messages.mcap"
+          },
+          "evidence": {},
+          "fingerprint": "34a43ed6c53e25b18f0019f8b210d454b232eef347b484d6c6179fbefd716db0"
+        },
+        {
+          "rule_id": "mcap.timestamp_order",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "MCAP channel timestamps do not move backward",
+          "message": "Log time moved backward on example (2 transition(s) total)",
+          "impact": "Backward log or publish time breaks replay ordering and synchronization.",
+          "remediation": "Fix recorder clock ordering or split the recording at the clock reset.",
+          "observed": {
+            "delta_ns": -1,
+            "transition_count": 2
+          },
+          "expected": "timestamp delta >= 0",
+          "location": {
+            "episode": null,
+            "stream": "example",
+            "sample_index": 6,
+            "timestamp": 4e-9,
+            "source": "physlint-ten-messages.mcap"
+          },
+          "evidence": {},
+          "fingerprint": "c087bf41593f2e21d452cf5701aae7478055c55aa7457982f411a4277a426be9"
+        },
+        {
+          "rule_id": "mcap.timestamp_order",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "MCAP channel timestamps do not move backward",
+          "message": "Publish time moved backward on example (2 transition(s) total)",
+          "impact": "Backward log or publish time breaks replay ordering and synchronization.",
+          "remediation": "Fix recorder clock ordering or split the recording at the clock reset.",
+          "observed": {
+            "delta_ns": -1,
+            "transition_count": 2
+          },
+          "expected": "timestamp delta >= 0",
+          "location": {
+            "episode": null,
+            "stream": "example",
+            "sample_index": 2,
+            "timestamp": 1e-9,
+            "source": "physlint-ten-messages.mcap"
+          },
+          "evidence": {},
+          "fingerprint": "34a43ed6c53e25b18f0019f8b210d454b232eef347b484d6c6179fbefd716db0"
+        },
+        {
+          "rule_id": "mcap.timestamp_order",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "MCAP channel timestamps do not move backward",
+          "message": "Publish time moved backward on example (2 transition(s) total)",
+          "impact": "Backward log or publish time breaks replay ordering and synchronization.",
+          "remediation": "Fix recorder clock ordering or split the recording at the clock reset.",
+          "observed": {
+            "delta_ns": -1,
+            "transition_count": 2
+          },
+          "expected": "timestamp delta >= 0",
+          "location": {
+            "episode": null,
+            "stream": "example",
+            "sample_index": 6,
+            "timestamp": 4e-9,
+            "source": "physlint-ten-messages.mcap"
+          },
+          "evidence": {},
+          "fingerprint": "c087bf41593f2e21d452cf5701aae7478055c55aa7457982f411a4277a426be9"
+        }
+      ],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "mcap.duplicate_timestamps",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 0.020291015971451998,
+      "findings": [
+        {
+          "rule_id": "mcap.duplicate_timestamps",
+          "rule_version": "1.0.0",
+          "severity": "warning",
+          "title": "MCAP duplicate timestamps are visible",
+          "message": "example contains 1 duplicate log timestamp(s)",
+          "impact": "Repeated timestamps can make ordering ambiguous even when the clock never moves backward.",
+          "remediation": "Confirm the recorder provides sufficient timestamp resolution and a deterministic sequence field.",
+          "observed": {
+            "duplicate_transitions": 1
+          },
+          "expected": "unique log time or an explicit sequence contract",
+          "location": {
+            "episode": null,
+            "stream": "example",
+            "sample_index": null,
+            "timestamp": null,
+            "source": "physlint-ten-messages.mcap"
+          },
+          "evidence": {},
+          "fingerprint": "a5c6c71fe49fb95fb579c1a2e5480a7930086c984316385970e62467c8cdd618"
+        }
+      ],
+      "reason": null,
+      "error_kind": null
+    },
+    {
+      "rule_id": "mcap.sequence_continuity",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0010420044418424368,
+      "findings": [],
+      "reason": null,
+      "error_kind": null
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 2,
+    "not_run": 0,
+    "errored": 0,
+    "findings": 5
+  }
+}

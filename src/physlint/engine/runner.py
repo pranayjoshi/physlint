@@ -111,6 +111,9 @@ def run_validation(
         source_revision=dataset.inventory.source_revision,
         dataset_path=str(dataset.root),
         source_fingerprint=source_fingerprint(dataset.root),
+        source_fingerprint_method=(
+            "file-content-sha256-v1" if dataset.root.is_file() else "metadata-and-file-stat-sha256-v1"
+        ),
         configuration_digest=config.digest(),
         started_at=started,
         finished_at=clock(),
@@ -123,6 +126,11 @@ def run_validation(
 def source_fingerprint(root: Path) -> str:
     """Hash metadata content and source-file size/mtime without reading all payload bytes."""
     digest = hashlib.sha256()
+    if root.is_file():
+        with root.open("rb") as handle:
+            for block in iter(lambda: handle.read(1_048_576), b""):
+                digest.update(block)
+        return digest.hexdigest()
     metadata_paths = sorted((root / "meta").glob("**/*"))
     payload_paths = sorted((root / "data").glob("**/*.parquet")) + sorted((root / "videos").glob("**/*"))
     for path in metadata_paths:

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0a1 — development
+
+- Add standalone generic MCAP discovery, content fingerprints, CRC-aware scanning, and seven container rules.
+- Add a ROS 2-over-MCAP profile with portable CDR decode and seven topic/semantic rules.
+- Keep timing evidence bounded with exact discontinuity counters and deterministic interval sampling.
+- Detect rosbag2 SQLite sources and return explicit MCAP conversion guidance.
+- Add pinned Foxglove MCAP evidence, clean/corrupt ROS 2 recipes, and sanitized reports.
+- Add the profile-aware Physlint Observatory site for LeRobot, MCAP, and ROS 2 evidence.
+
 ## 0.1.0a1 — public alpha
 
 - Add 17 deterministic LeRobot v3 integrity rules and stable CI exit codes.

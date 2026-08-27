@@ -1,6 +1,6 @@
 schema_version: 1
 run_id: real-data-2026-08-24
-physlint_version: 0.1.0a1
+physlint_version: 0.2.0a1
 
 datasets:
   - id: panda

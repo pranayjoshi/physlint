@@ -13,7 +13,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 [![MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
 ![Status](https://img.shields.io/badge/Status-Public%20Alpha-f59e0b?style=flat-square)
 
-[Quickstart](#quickstart) · [Demo](#see-it-catch-a-real-defect) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
+[Quickstart](#quickstart) · [Demo](#see-it-catch-a-real-defect) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Observatory](#physlint-observatory) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
 
 <img src="docs/assets/launch/exports/validation-summary.png" alt="Physlint public-alpha validation: four of four clean snapshots passed and three of three controlled corruptions were detected across 74 episodes and 31,258 frames." width="100%">
 
@@ -21,7 +21,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
 
-The `0.1.0a1` public alpha ships with a publicly validated **LeRobot Dataset v3.x** adapter. The engine is designed to grow into recording and dataset profiles for MCAP/ROS 2, Robomimic HDF5, RLDS/TFDS, and other physical-AI formats without pretending those adapters already exist.
+The released `0.1.0a1` public alpha supports **LeRobot Dataset v3.x**. The current `0.2.0a1` development line adds generic **MCAP** container validation and a **ROS 2-over-MCAP** semantic profile, backed by pinned public and controlled evidence. Native rosbag2 SQLite remains a conversion workflow for now.
 
 > [!IMPORTANT]
 > Physlint validates configured data-integrity contracts. A pass does not certify policy quality, task success, or robot safety.
@@ -50,11 +50,17 @@ To test the exact tagged source instead of the PyPI distribution, install the Gi
 python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.1.0a1"
 ```
 
-### Check a local LeRobot v3 dataset
+### Check a LeRobot dataset or MCAP recording
 
 ```bash
 physlint inspect /path/to/lerobot-dataset
 physlint check /path/to/lerobot-dataset
+
+physlint inspect /path/to/recording.mcap
+physlint check /path/to/recording.mcap
+
+# Force ROS 2 semantics when an MCAP header does not declare the profile.
+physlint inspect /path/to/recording.mcap --profile ros2
 ```
 
 Write JSON to an exact destination:
@@ -86,7 +92,7 @@ Physlint owns NaN and infinity semantics in `numeric.finite_values`; the same sa
 
 ## What Physlint checks
 
-Seventeen deterministic rules are enabled by default:
+Thirty-one deterministic rules are installed. Physlint plans only the rules for the detected adapter and profile:
 
 | Area | Checks |
 |---|---|
@@ -95,6 +101,8 @@ Seventeen deterministic rules are enabled by default:
 | **Temporal** | Strictly monotonic timestamps, FPS cadence, FPS-aware maximum gaps, complete stream overlap, and observation/action delay when independently timestamped |
 | **Numeric** | NaN/Inf, configured physical bounds, and configured discontinuity limits |
 | **Video** | Complete decode, motion-aware frozen-frame runs, and grouped black/near-empty frames |
+| **MCAP** | Record/CRC readability, summary consistency, index coverage, channel/schema coherence, timestamp order, duplicate timestamps, and sequence continuity |
+| **ROS 2** | Portable CDR schemas, full decode, required topics, cadence gaps, configured header/log skew, known message invariants, and TF parent consistency |
 
 List or explain the installed rule contract:
 
@@ -107,7 +115,29 @@ physlint explain video.frozen_frames
 
 Rules whose required inputs are unavailable return `not_run` with a reason; they are never misreported as passed. Robot-specific bounds and discontinuity checks stay `not_run` until the user supplies meaningful thresholds.
 
-Read the complete [MVP rule specifications](docs/rules/mvp-rules.md).
+Read the complete [LeRobot MVP rules](docs/rules/mvp-rules.md) and [MCAP/ROS 2 rules](docs/rules/mcap-ros2-rules.md).
+
+For ROS 2 contracts, configure the topics and timing assumptions that Physlint cannot infer honestly:
+
+```yaml
+config_version: 1
+adapter: mcap
+profile: ros2
+fail_on: error
+rules:
+  ros2.required_topics:
+    options:
+      required_topics: [/joint_states, /tf, /camera/front/image_raw]
+  ros2.topic_gaps:
+    options:
+      topic_rates_hz:
+        /joint_states: 100
+        /camera/front/image_raw: 30
+      max_gap_multiplier: 5
+  ros2.header_clock_skew:
+    options:
+      max_header_skew_ms: 25
+```
 
 ## Configuration
 
@@ -211,21 +241,34 @@ Everything needed to audit or rerun those claims is versioned:
 
 Runtime measurements are observations from the documented machine and run—not universal performance guarantees.
 
+The MCAP/ROS 2 release gate additionally verifies an exact Foxglove conformance fixture and two deterministic ROS 2 recordings:
+
+| Recording | Profile | Provenance | Checks | Expected outcome |
+|---|---|---|---:|---|
+| Foxglove `TenMessages` conformance case | Generic MCAP | Public, revision-pinned | 7 | Timestamp-order and duplicate-time findings reproduced |
+| JointState baseline | ROS 2 | Controlled recipe | 13 | Pass |
+| JointState cadence + dimension corruption | ROS 2 | Controlled recipe | 13 | Gap and semantic findings reproduced |
+
+See the [MCAP/ROS 2 manifest](validation/mcap_manifest.yaml), [reproduction harness](validation/mcap_harness.py), and [sanitized summary](validation/reports/mcap-ros2-2026-08-26/summary.json).
+
+## Physlint Observatory
+
+The repository now includes the first [Physlint Observatory](observatory/): a profile-aware public evidence index spanning LeRobot, MCAP, and ROS 2. It deliberately does not collapse unlike contracts into one universal quality score. Every row exposes provenance, applicable checks, findings, and a report link.
+
 ## Format roadmap
 
 The storage format is an adapter boundary, not the product boundary.
 
-<img src="docs/assets/launch/exports/format-compatibility.png" alt="Physlint format compatibility table: LeRobot v3 implemented and validated; MCAP with ROS 2 profiles and Robomimic planned; RLDS, TFDS, ROS bag2, and ROS 1 bag under research." width="100%">
-
 | Format | Status | Intended mode |
 |---|---|---|
 | LeRobot Dataset v3.x | **Alpha—implemented and publicly validated** | Training datasets |
-| MCAP with ROS 2 profiles | Planned—seeking design partners | Recordings and derived datasets |
+| Generic MCAP | **Alpha preview—implemented and validated** | Recording/container integrity |
+| ROS 2 over MCAP | **Alpha preview—implemented and validated** | Topic/schema/semantic recording checks |
 | Robomimic HDF5 | Planned | Demonstration datasets |
 | RLDS/TFDS | Researching | Episode/step datasets |
 | ROS bag2 SQLite and ROS 1 bag | Researching | Recordings |
 
-MCAP needs two honest layers: container/channel health that works without training semantics, and an explicit profile mapping topics to actions, state, cameras, and episode boundaries. See the [cross-format roadmap](docs/roadmap.md) and [MCAP/ROS proposal](docs/design/mcap-ros.md).
+MCAP support intentionally separates container/channel health from ROS 2 semantics. Training mappings from arbitrary topics to actions, state, cameras, and episode boundaries remain a later explicit profile. See the [cross-format roadmap](docs/roadmap.md) and [MCAP/ROS design](docs/design/mcap-ros.md).
 
 Use the adapter-request issue form to contribute an immutable public example and a real failure mode.
 
@@ -249,6 +292,28 @@ Not currently supported:
 - Inferred safety, calibration, task-success, or coordinate-frame conclusions
 
 Read the [LeRobot adapter boundary](docs/adapters/lerobot.md).
+
+## Current MCAP and ROS 2 boundary
+
+Supported:
+
+- Standalone MCAP files and directories containing exactly one MCAP file
+- MCAP profile auto-detection plus explicit `generic` and `ros2` overrides
+- CRC-aware single-pass scanning with bounded timing evidence
+- Summary/statistics consistency, index coverage, schemas, timestamps, and sequences
+- ROS 2 CDR decode using embedded `ros2msg` schemas without a ROS installation
+- `JointState`, `Image`, `CompressedImage`, `/tf`, and `/tf_static` invariants
+- User-defined required topics, expected rates, gap multipliers, and header/log skew
+
+Not currently supported:
+
+- Native rosbag2 SQLite `.db3`; Physlint returns conversion guidance
+- Multi-file/split MCAP bag directories
+- Custom message invariants beyond portable decode
+- Automatic action/state/camera/episode training-semantic mappings
+- Safety, calibration, task-success, or coordinate-frame correctness certification
+
+Read the [MCAP and ROS 2 adapter boundary](docs/adapters/mcap-ros2.md).
 
 ## Design principles
 
@@ -301,7 +366,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md), open a format request, or join [GitHub 
 
 ## Project status
 
-Physlint is an alpha. Its current claims are deliberately limited to the documented LeRobot v3 boundary and committed release evidence. The project does not train policies, repair data, host datasets, infer task success, produce an opaque quality score, or certify that a robot or policy is safe.
+Physlint is an alpha. Its claims are deliberately limited to the documented LeRobot, generic MCAP, and ROS 2-over-MCAP boundaries and their committed evidence. The project does not train policies, repair data, host datasets, infer task success, produce an opaque quality score, or certify that a robot or policy is safe.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

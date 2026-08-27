@@ -9,7 +9,7 @@ from physlint.config import Config, ConfigurationError
 from physlint.models.dataset import DatasetView
 from physlint.models.finding import Severity
 from physlint.models.rule import Rule
-from physlint.rules import BUILTIN_RULES
+from physlint.rules import BUILTIN_RULES, rules_for
 
 
 @dataclass(frozen=True)
@@ -25,9 +25,10 @@ def plan_rules(dataset: DatasetView, config: Config) -> list[PlannedRule]:
     unknown_rules = set(config.rules) - set(registry)
     if unknown_rules:
         raise ConfigurationError(f"unknown rule IDs: {', '.join(sorted(unknown_rules))}")
+    active_rules = rules_for(dataset.inventory.adapter, dataset.inventory.profile)
     available_streams = {stream.key for stream in dataset.inventory.streams}
     planned: list[PlannedRule] = []
-    for rule in BUILTIN_RULES:
+    for rule in active_rules:
         settings = config.rules.get(rule.metadata.id)
         if settings is not None and not settings.enabled:
             continue
@@ -52,7 +53,7 @@ def plan_rules(dataset: DatasetView, config: Config) -> list[PlannedRule]:
 
 
 def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
-    for key in ("max_findings", "stride"):
+    for key in ("max_findings", "stride", "min_messages"):
         if key in options and (not isinstance(options[key], int) or options[key] <= 0):
             raise ConfigurationError(f"{rule_id}.{key} must be a positive integer")
     for key in ("max_consecutive_frames", "frame_count_tolerance"):
@@ -67,8 +68,13 @@ def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
         "max_stddev",
         "motion_delta_threshold",
         "min_motion_fraction",
+        "max_header_skew_ms",
     ):
-        if key in options and (not isinstance(options[key], (int, float)) or float(options[key]) < 0):
+        if (
+            key in options
+            and options[key] is not None
+            and (not isinstance(options[key], (int, float)) or float(options[key]) < 0)
+        ):
             raise ConfigurationError(f"{rule_id}.{key} must be a non-negative number")
     if options.get("max_gap_ms") is not None and (
         not isinstance(options["max_gap_ms"], (int, float)) or float(options["max_gap_ms"]) < 0
@@ -76,11 +82,15 @@ def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
         raise ConfigurationError(f"{rule_id}.max_gap_ms must be a non-negative number or null")
     if "min_motion_fraction" in options and float(options["min_motion_fraction"]) > 1:
         raise ConfigurationError(f"{rule_id}.min_motion_fraction must be at most 1")
-    for key in ("required_streams", "streams", "motion_streams"):
+    for key in ("required_streams", "streams", "motion_streams", "required_topics"):
         if key in options and (
             not isinstance(options[key], list) or not all(isinstance(value, str) for value in options[key])
         ):
             raise ConfigurationError(f"{rule_id}.{key} must be a list of stream names")
-    for key in ("limits", "max_delta"):
+    for key in ("limits", "max_delta", "topic_rates_hz"):
         if key in options and not isinstance(options[key], dict):
             raise ConfigurationError(f"{rule_id}.{key} must be a mapping by stream name")
+    if "topic_rates_hz" in options and any(
+        not isinstance(value, (int, float)) or float(value) <= 0 for value in options["topic_rates_hz"].values()
+    ):
+        raise ConfigurationError(f"{rule_id}.topic_rates_hz values must be positive numbers")

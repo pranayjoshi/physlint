@@ -11,8 +11,8 @@ from physlint.models.dataset import DatasetInventory
 from physlint.models.finding import Report
 
 
-def inspect_dataset(path: str | Path, *, adapter: str = "auto") -> DatasetInventory:
-    return discover(path, adapter).inventory
+def inspect_dataset(path: str | Path, *, adapter: str = "auto", profile: str = "auto") -> DatasetInventory:
+    return discover(path, adapter, profile).inventory
 
 
 def check_dataset(
@@ -25,5 +25,5 @@ def check_dataset(
     resolved_config = config or load_config(
         Path(config_path).expanduser().resolve() if config_path is not None else None, root
     )
-    dataset = discover(root, resolved_config.adapter)
+    dataset = discover(root, resolved_config.adapter, resolved_config.profile)
     return run_validation(dataset, resolved_config)

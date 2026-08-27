@@ -230,7 +230,7 @@ class LeRobotAdapter:
         if not capture.isOpened():
             capture.release()
             raise AdapterError(f"cannot decode video: {path}")
-        fps = float(capture.get(cv2.CAP_PROP_FPS)) or self.inventory.fps
+        fps = float(capture.get(cv2.CAP_PROP_FPS)) or float(self._info["fps"])
         start, end = episode.video_ranges.get(stream, (0.0, episode.length / fps))
         start_frame = max(0, int(round(start * fps)))
         end_frame = max(start_frame, int(round(end * fps)))
