@@ -12,7 +12,7 @@ button,input { font:inherit; }
 .brand { display:flex; align-items:center; gap:10px; text-decoration:none; font-weight:800; letter-spacing:-.03em; }
 .brand>span:last-child { display:flex; flex-direction:column; }
 .brand small { color:var(--muted); font:500 9px/1.2 var(--font-geist-mono); letter-spacing:.08em; text-transform:uppercase; }
-.brand-mark { display:grid!important; place-items:center; width:36px; height:36px; background:var(--ink); color:var(--acid); font-family:var(--font-geist-mono); }
+.brand-mark { display:grid!important; place-items:center; width:36px; height:36px; background:var(--paper); color:var(--ink); border:1px solid var(--line); font-family:Arial,Helvetica,sans-serif; font-size:20px; font-weight:800; letter-spacing:-1px; }
 .nav-links { display:flex; align-items:center; gap:28px; font:650 13px/1 var(--font-geist-mono); }
 .nav-links a { text-underline-offset:4px; }
 .github { padding:11px 14px; border:1px solid var(--ink); text-decoration:none; }
