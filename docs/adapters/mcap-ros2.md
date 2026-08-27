@@ -1,6 +1,6 @@
 # MCAP and ROS 2 adapter boundary
 
-Status: implemented in the `0.2.0a1` development line.
+Status: implemented in the `0.2.0a1` development line and field-tested on a revision-pinned ARX X5 robot recording.
 
 Physlint treats MCAP as a recording container, not as a training-dataset schema. The generic profile checks portable container and channel properties. The ROS 2 profile adds semantics only when the file declares `profile=ros2` or the user explicitly selects it.
 
@@ -29,7 +29,7 @@ Embedded `ros2msg` schemas and CDR payloads are decoded through `mcap-ros2-suppo
 - `tf2_msgs/msg/TFMessage` empty/self-referencing frames and stable child parents;
 - any decoded message with a standard header for configured header/log skew.
 
-Required topics, topic rates, gap tolerance, and clock-skew tolerance are user contracts. They are not guessed.
+Required topics, topic rates, gap tolerance, and clock-skew tolerance are user contracts. They are not guessed. A required topic must contain at least one message; a zero-message declaration does not satisfy the contract.
 
 ## Unsupported cases
 

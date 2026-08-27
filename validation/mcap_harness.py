@@ -116,11 +116,7 @@ def assert_expected(report: Report, record: dict[str, Any]) -> None:
 
 def sanitized(report: Report, record: dict[str, Any], path: Path) -> Report:
     source_revision = record.get("source_revision") or f"recipe:{record['recipe']}"
-    source_path = (
-        f"github://foxglove/mcap@{source_revision}/{path.name}"
-        if record.get("source_url")
-        else f"generated://{record['recipe']}"
-    )
+    source_path = record.get("source_uri") or f"generated://{record['recipe']}"
     return report.model_copy(
         update={
             "dataset": str(record["title"]),
@@ -138,6 +134,10 @@ def result_row(report: Report, record: dict[str, Any], artifact: str) -> dict[st
         "format": record["format"],
         "profile": record["profile"],
         "provenance": "public" if record.get("source_url") else "controlled",
+        "evidence_type": record.get("evidence_type", "public" if record.get("source_url") else "controlled"),
+        "source_name": record.get("source_name"),
+        "source_page": record.get("source_page"),
+        "robot": record.get("robot"),
         "status": report.status,
         "messages": next((result for result in report.results if result.rule_id == "mcap.readable"), None) is not None,
         "rules_checked": report.summary.passed + report.summary.failed,
@@ -149,17 +149,34 @@ def result_row(report: Report, record: dict[str, Any], artifact: str) -> dict[st
     }
 
 
+def parse_recording_overrides(values: list[str] | None) -> dict[str, Path]:
+    overrides: dict[str, Path] = {}
+    for value in values or []:
+        identifier, separator, raw_path = value.partition("=")
+        if not separator or not identifier or not raw_path:
+            raise ValueError(f"recording override must be ID=PATH, got {value!r}")
+        if identifier in overrides:
+            raise ValueError(f"duplicate recording override for {identifier!r}")
+        overrides[identifier] = Path(raw_path).expanduser().resolve()
+    return overrides
+
+
 def run(args: argparse.Namespace) -> None:
     manifest = load_manifest(args.manifest)
     args.output.mkdir(parents=True, exist_ok=True)
     args.work.mkdir(parents=True, exist_ok=True)
     rows: list[dict[str, Any]] = []
     records = [*manifest["public_recordings"], *manifest["controlled_recordings"]]
+    overrides = parse_recording_overrides(getattr(args, "recording", None))
+    known_public_ids = {record["id"] for record in manifest["public_recordings"]}
+    unknown_overrides = set(overrides) - known_public_ids
+    if unknown_overrides:
+        raise ValueError(f"unknown public recording override(s): {', '.join(sorted(unknown_overrides))}")
     for record in records:
         path = args.work / f"{record['id']}.mcap"
         if record.get("source_url"):
-            if args.public_recording is not None:
-                path = args.public_recording.resolve()
+            if record["id"] in overrides:
+                path = overrides[record["id"]]
                 if sha256_file(path) != record["sha256"]:
                     raise AssertionError(f"checksum mismatch for override {path}")
             else:
@@ -194,9 +211,10 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     result.add_argument("--work", type=Path, default=DEFAULT_WORK)
     result.add_argument(
-        "--public-recording",
-        type=Path,
-        help="Use a checksum-verified local copy of the pinned public fixture instead of downloading it.",
+        "--recording",
+        action="append",
+        metavar="ID=PATH",
+        help="Use a checksum-verified local public recording; repeat for multiple IDs.",
     )
     return result
 

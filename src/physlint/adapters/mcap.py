@@ -9,7 +9,8 @@ from typing import Any
 
 from mcap.exceptions import McapError
 from mcap.reader import make_reader
-from mcap.records import Channel, Schema
+from mcap.records import Channel, DataEnd, Schema
+from mcap.stream_reader import StreamReader
 from mcap_ros2.decoder import DecoderFactory
 
 from physlint.adapters.base import AdapterError
@@ -168,6 +169,10 @@ class McapAdapter:
                         )
                 scan.attachment_count = sum(1 for _ in reader.iter_attachments())
                 scan.metadata_count = sum(1 for _ in reader.iter_metadata())
+                (
+                    scan.data_channel_record_count,
+                    scan.data_schema_record_count,
+                ) = _data_section_declaration_counts(self.root)
                 scan.crc_validated = True
         except (OSError, McapError, ValueError, struct.error) as exc:
             scan.read_error = f"{type(exc).__name__}: {exc}"
@@ -202,6 +207,27 @@ def has_mcap_magic(path: Path) -> bool:
             return handle.read(len(MCAP_MAGIC)) == MCAP_MAGIC
     except OSError:
         return False
+
+
+def _data_section_declaration_counts(path: Path) -> tuple[int, int]:
+    """Count declarations in the data section, excluding summary copies.
+
+    Summary maps may legitimately retain channels and schemas for topics that
+    recorded zero messages. MCAP Statistics counts the declarations written to
+    the data section, so comparing it with the summary maps creates false
+    corruption findings for those topics.
+    """
+    channel_count = 0
+    schema_count = 0
+    with path.open("rb") as handle:
+        for record in StreamReader(handle).records:
+            if isinstance(record, DataEnd):
+                break
+            if isinstance(record, Channel):
+                channel_count += 1
+            elif isinstance(record, Schema):
+                schema_count += 1
+    return channel_count, schema_count
 
 
 def _stream_from_channel(channel: Channel, schema: Schema | None) -> Stream:

@@ -32,7 +32,7 @@ The human classification and before/after analysis are in [`docs/validation/real
 
 ## MCAP and ROS 2 gate
 
-The second harness combines one exact upstream Foxglove conformance fixture with deterministic ROS 2 positive and negative recordings:
+The second harness combines an exact upstream Foxglove conformance fixture, a revision-pinned real RobotisAI robot episode, and deterministic ROS 2 positive and negative recordings:
 
 ```bash
 python -m validation.mcap_harness
@@ -41,7 +41,9 @@ python -m validation.mcap_harness
 For a fully offline run, first obtain the pinned public fixture and pass it explicitly. Its SHA-256 must match the manifest:
 
 ```bash
-python -m validation.mcap_harness --public-recording /path/to/pinned-ten-messages.mcap
+python -m validation.mcap_harness \
+  --recording foxglove-ten-messages=/path/to/pinned-ten-messages.mcap \
+  --recording robotis-arx5-button=/path/to/pinned-robotis-episode.mcap
 ```
 
 The immutable inputs and expected outcomes are in [`mcap_manifest.yaml`](mcap_manifest.yaml). Sanitized evidence is committed under [`reports/mcap-ros2-2026-08-26/`](reports/mcap-ros2-2026-08-26/). Controlled ROS 2 MCAP files are generated locally and are not committed.

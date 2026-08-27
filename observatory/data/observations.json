@@ -68,7 +68,7 @@
     {
       "id": "foxglove-ten-messages",
       "name": "Foxglove MCAP TenMessages conformance case",
-      "source": "foxglove/mcap conformance suite",
+      "source": "foxglove/mcap",
       "robot": "Generic channel",
       "profile": "MCAP",
       "provenance": "Public",
@@ -81,6 +81,21 @@
       "revision": "68f77c8c1bba4a17ebc6ba0c409ebb933adb791c"
     },
     {
+      "id": "robotis-arx5-button",
+      "name": "RobotisAI ARX X5 elevator-button episode",
+      "source": "RobotisAI/evButtonPush-arx5-260722-0-MCAP",
+      "robot": "ARX X5",
+      "profile": "ROS 2",
+      "provenance": "Public",
+      "scale": "7047 messages",
+      "checks": 12,
+      "findings": 0,
+      "status": "Passed",
+      "sourceUrl": "https://huggingface.co/datasets/RobotisAI/evButtonPush-arx5-260722-0-MCAP",
+      "reportPath": "mcap-ros2-2026-08-26/robotis-arx5-button.json",
+      "revision": "0aed43ed01aa25f01267f8e384b28565ece6f18e"
+    },
+    {
       "id": "ros2-joint-state-clean",
       "name": "Controlled ROS 2 JointState recording",
       "source": "recipe:joint_state_clean",
@@ -88,7 +103,7 @@
       "profile": "ROS 2",
       "provenance": "Controlled",
       "scale": "3 messages",
-      "checks": 13,
+      "checks": 12,
       "findings": 0,
       "status": "Passed",
       "sourceUrl": null,

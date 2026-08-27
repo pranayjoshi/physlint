@@ -21,7 +21,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
 
-The released `0.1.0a1` public alpha supports **LeRobot Dataset v3.x**. The current `0.2.0a1` development line adds generic **MCAP** container validation and a **ROS 2-over-MCAP** semantic profile, backed by pinned public and controlled evidence. Native rosbag2 SQLite remains a conversion workflow for now.
+The released `0.1.0a1` public alpha supports **LeRobot Dataset v3.x**. The current `0.2.0a1` development line adds generic **MCAP** container validation and a **ROS 2-over-MCAP** semantic profile, backed by pinned conformance data, a real robot-captured ROS 2 episode, and controlled evidence. Native rosbag2 SQLite remains a conversion workflow for now.
 
 > [!IMPORTANT]
 > Physlint validates configured data-integrity contracts. A pass does not certify policy quality, task success, or robot safety.
@@ -241,12 +241,13 @@ Everything needed to audit or rerun those claims is versioned:
 
 Runtime measurements are observations from the documented machine and run—not universal performance guarantees.
 
-The MCAP/ROS 2 release gate additionally verifies an exact Foxglove conformance fixture and two deterministic ROS 2 recordings:
+The MCAP/ROS 2 release gate additionally verifies an exact Foxglove conformance fixture, a public robot-captured RobotisAI episode, and two deterministic ROS 2 recordings:
 
 | Recording | Profile | Provenance | Checks | Expected outcome |
 |---|---|---|---:|---|
 | Foxglove `TenMessages` conformance case | Generic MCAP | Public, revision-pinned | 7 | Timestamp-order and duplicate-time findings reproduced |
-| JointState baseline | ROS 2 | Controlled recipe | 13 | Pass |
+| RobotisAI ARX X5 elevator-button episode | ROS 2 | Public robot capture, revision-pinned | 12 | 7,047 messages decoded; configured topic contract and applicable checks pass |
+| JointState baseline | ROS 2 | Controlled recipe | 12 | Pass |
 | JointState cadence + dimension corruption | ROS 2 | Controlled recipe | 13 | Gap and semantic findings reproduced |
 
 See the [MCAP/ROS 2 manifest](validation/mcap_manifest.yaml), [reproduction harness](validation/mcap_harness.py), and [sanitized summary](validation/reports/mcap-ros2-2026-08-26/summary.json).

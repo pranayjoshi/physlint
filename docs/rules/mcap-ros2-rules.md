@@ -21,9 +21,9 @@ The MCAP adapter installs seven container rules. The ROS 2 profile adds seven se
 | `ros2.encoding` | error | Channels use CDR with embedded `ros2msg` schemas. |
 | `ros2.decode` | error | Every message decodes with its embedded definition. |
 | `ros2.required_topics` | error | User-configured required topics are present. |
-| `ros2.topic_gaps` | warning | Maximum topic gaps stay within the explicit or locally inferred cadence contract. |
+| `ros2.topic_gaps` | warning | Maximum topic gaps stay within an explicit per-topic cadence contract. |
 | `ros2.header_clock_skew` | warning | Maximum header/log skew stays below the user-configured threshold. |
 | `ros2.semantic_consistency` | error | Known JointState, Image, CompressedImage, and TF invariants hold. |
 | `ros2.tf_tree` | warning | A TF child frame has one stable parent within the recording. |
 
-`ros2.required_topics` and `ros2.header_clock_skew` require explicit options. The gap rule uses configured rates when present; otherwise it uses a deterministic bounded interval sample as the local baseline.
+`ros2.required_topics`, `ros2.topic_gaps`, and `ros2.header_clock_skew` require explicit options. Required topics must contain at least one message. Cadence is never inferred for an unconfigured topic because event-driven ROS topics do not have a stable-rate contract.

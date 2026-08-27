@@ -36,8 +36,8 @@ export default function Home() {
         </div>
         <div className="hero-orbit" aria-hidden="true"><span className="orbit orbit-one"/><span className="orbit orbit-two"/><span className="core">P/</span><span className="signal signal-a"/><span className="signal signal-b"/><span className="signal signal-c"/></div>
         <div className="summary" aria-label="Validation summary">
-          <div><strong>7</strong><span>observations</span></div><div><strong>3</strong><span>quality profiles</span></div>
-          <div><strong>86</strong><span>rule runs</span></div><div><strong>31.3k</strong><span>public frames</span></div>
+          <div><strong>8</strong><span>observations</span></div><div><strong>3</strong><span>quality profiles</span></div>
+          <div><strong>97</strong><span>rule runs</span></div><div><strong>7,047</strong><span>real ROS messages</span></div>
         </div>
       </section>
 

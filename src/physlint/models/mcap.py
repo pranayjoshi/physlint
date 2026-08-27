@@ -46,6 +46,8 @@ class McapScan:
     chunk_index_count: int
     attachment_count: int
     metadata_count: int
+    data_channel_record_count: int = 0
+    data_schema_record_count: int = 0
     observed_schema_ids: set[int] = field(default_factory=set)
     channels: dict[int, McapChannelObservation] = field(default_factory=dict)
     message_count: int = 0

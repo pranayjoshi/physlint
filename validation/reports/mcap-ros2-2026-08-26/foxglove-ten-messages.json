@@ -5,12 +5,12 @@
   "adapter_version": "1.0",
   "dataset": "Foxglove MCAP TenMessages conformance case",
   "source_revision": "68f77c8c1bba4a17ebc6ba0c409ebb933adb791c",
-  "dataset_path": "github://foxglove/mcap@68f77c8c1bba4a17ebc6ba0c409ebb933adb791c/physlint-ten-messages.mcap",
+  "dataset_path": "github://foxglove/mcap@68f77c8c1bba4a17ebc6ba0c409ebb933adb791c/TenMessages-ch-chx-mx-pad-rch-rsh-st-sum.mcap",
   "source_fingerprint": "358413d53e6fb2753efb3eac682bc9d776bb2afb1de5e395817efd8f16303fbc",
   "source_fingerprint_method": "file-content-sha256-v1",
   "configuration_digest": "8338ba37f947d0e8d031a68e4b3259aa54e736ef1d083a9eca5d4c2bfe42a6f1",
-  "started_at": "2026-08-27T05:13:45.981366Z",
-  "finished_at": "2026-08-27T05:13:45.981907Z",
+  "started_at": "2026-08-27T05:36:30.803236Z",
+  "finished_at": "2026-08-27T05:36:30.804002Z",
   "status": "failed",
   "sampled": false,
   "results": [
@@ -18,7 +18,7 @@
       "rule_id": "mcap.readable",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.2049169852398336,
+      "duration_ms": 0.2860410022549331,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -27,7 +27,7 @@
       "rule_id": "mcap.summary_consistency",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.007124996045604348,
+      "duration_ms": 0.007458002073690295,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -36,7 +36,7 @@
       "rule_id": "mcap.index_coverage",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.001334003172814846,
+      "duration_ms": 0.0013750104699283838,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -45,7 +45,7 @@
       "rule_id": "mcap.channel_schema",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0029580260161310434,
+      "duration_ms": 0.0031250237952917814,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -54,7 +54,7 @@
       "rule_id": "mcap.timestamp_order",
       "rule_version": "1.0.0",
       "status": "failed",
-      "duration_ms": 0.13066601241007447,
+      "duration_ms": 0.12620899360626936,
       "findings": [
         {
           "rule_id": "mcap.timestamp_order",
@@ -74,7 +74,7 @@
             "stream": "example",
             "sample_index": 2,
             "timestamp": 1e-9,
-            "source": "physlint-ten-messages.mcap"
+            "source": "foxglove-ten-messages.mcap"
           },
           "evidence": {},
           "fingerprint": "34a43ed6c53e25b18f0019f8b210d454b232eef347b484d6c6179fbefd716db0"
@@ -97,7 +97,7 @@
             "stream": "example",
             "sample_index": 6,
             "timestamp": 4e-9,
-            "source": "physlint-ten-messages.mcap"
+            "source": "foxglove-ten-messages.mcap"
           },
           "evidence": {},
           "fingerprint": "c087bf41593f2e21d452cf5701aae7478055c55aa7457982f411a4277a426be9"
@@ -120,7 +120,7 @@
             "stream": "example",
             "sample_index": 2,
             "timestamp": 1e-9,
-            "source": "physlint-ten-messages.mcap"
+            "source": "foxglove-ten-messages.mcap"
           },
           "evidence": {},
           "fingerprint": "34a43ed6c53e25b18f0019f8b210d454b232eef347b484d6c6179fbefd716db0"
@@ -143,7 +143,7 @@
             "stream": "example",
             "sample_index": 6,
             "timestamp": 4e-9,
-            "source": "physlint-ten-messages.mcap"
+            "source": "foxglove-ten-messages.mcap"
           },
           "evidence": {},
           "fingerprint": "c087bf41593f2e21d452cf5701aae7478055c55aa7457982f411a4277a426be9"
@@ -156,7 +156,7 @@
       "rule_id": "mcap.duplicate_timestamps",
       "rule_version": "1.0.0",
       "status": "failed",
-      "duration_ms": 0.020291015971451998,
+      "duration_ms": 0.01895800232887268,
       "findings": [
         {
           "rule_id": "mcap.duplicate_timestamps",
@@ -175,7 +175,7 @@
             "stream": "example",
             "sample_index": null,
             "timestamp": null,
-            "source": "physlint-ten-messages.mcap"
+            "source": "foxglove-ten-messages.mcap"
           },
           "evidence": {},
           "fingerprint": "a5c6c71fe49fb95fb579c1a2e5480a7930086c984316385970e62467c8cdd618"
@@ -188,7 +188,7 @@
       "rule_id": "mcap.sequence_continuity",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0010420044418424368,
+      "duration_ms": 0.0009170034900307655,
       "findings": [],
       "reason": null,
       "error_kind": null

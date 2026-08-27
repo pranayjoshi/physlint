@@ -13,6 +13,31 @@ public_recordings:
     expected_failed_rules:
       - mcap.timestamp_order
       - mcap.duplicate_timestamps
+    source_name: foxglove/mcap
+    source_page: https://github.com/foxglove/mcap/tree/main/tests/conformance/data/TenMessages
+    source_uri: github://foxglove/mcap@68f77c8c1bba4a17ebc6ba0c409ebb933adb791c/TenMessages-ch-chx-mx-pad-rch-rsh-st-sum.mcap
+    evidence_type: conformance
+    robot: Generic channel
+  - id: robotis-arx5-button
+    title: RobotisAI ARX X5 elevator-button episode
+    format: MCAP
+    profile: ros2
+    source_revision: 0aed43ed01aa25f01267f8e384b28565ece6f18e
+    source_url: https://huggingface.co/datasets/RobotisAI/evButtonPush-arx5-260722-0-MCAP/resolve/0aed43ed01aa25f01267f8e384b28565ece6f18e/0/0_0.mcap?download=true
+    source_name: RobotisAI/evButtonPush-arx5-260722-0-MCAP
+    source_page: https://huggingface.co/datasets/RobotisAI/evButtonPush-arx5-260722-0-MCAP
+    source_uri: hf://datasets/RobotisAI/evButtonPush-arx5-260722-0-MCAP@0aed43ed01aa25f01267f8e384b28565ece6f18e/0/0_0.mcap
+    evidence_type: robot-captured
+    robot: ARX X5
+    sha256: f99e990595e5570d63047bfa16c3edc71b5ce196f23e39613328588128206879
+    expected_status: passed
+    required_topics:
+      - /arx5_position_cpp/joint_states
+      - /arx5_position_cpp/target
+      - /camera/cam_belly/color/image_raw/compressed
+      - /camera/cam_top/color/image_raw/compressed
+      - /camera/cam_wrist/color/image_rect_raw/compressed
+      - /tf
 controlled_recordings:
   - id: ros2-joint-state-clean
     title: Controlled ROS 2 JointState recording
@@ -20,6 +45,8 @@ controlled_recordings:
     profile: ros2
     recipe: joint_state_clean
     expected_status: passed
+    evidence_type: generated-positive
+    robot: ROS 2 fixture
     required_topics:
       - /joint_states
   - id: ros2-joint-state-corrupt
@@ -31,6 +58,8 @@ controlled_recordings:
     expected_failed_rules:
       - ros2.topic_gaps
       - ros2.semantic_consistency
+    evidence_type: generated-negative
+    robot: ROS 2 fixture
     required_topics:
       - /joint_states
     topic_rates_hz:

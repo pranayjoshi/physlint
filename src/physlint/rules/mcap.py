@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import numpy as np
-
 from physlint.adapters.mcap import McapAdapter
 from physlint.models.dataset import DatasetView
 from physlint.models.finding import Finding, Location, Severity
@@ -70,8 +68,18 @@ class McapSummaryConsistencyRule:
             raise RuleNotApplicable("recording has no summary section; coverage is reported by mcap.index_coverage")
         mismatches: list[tuple[str, Any, Any]] = []
         _compare(mismatches, "message_count", scan.message_count, scan.expected_message_count)
-        _compare(mismatches, "channel_count", len(scan.channels), scan.expected_channel_count)
-        _compare(mismatches, "schema_count", len(scan.observed_schema_ids), scan.expected_schema_count)
+        _compare(
+            mismatches,
+            "channel_count",
+            scan.data_channel_record_count,
+            scan.expected_channel_count,
+        )
+        _compare(
+            mismatches,
+            "schema_count",
+            scan.data_schema_record_count,
+            scan.expected_schema_count,
+        )
         _compare(mismatches, "attachment_count", scan.attachment_count, scan.expected_attachment_count)
         _compare(mismatches, "metadata_count", scan.metadata_count, scan.expected_metadata_count)
         for channel_id, expected in scan.expected_channel_counts.items():
@@ -379,7 +387,7 @@ class Ros2RequiredTopicsRule:
         required = list(options["required_topics"])
         if not required:
             raise RuleNotApplicable("no required ROS 2 topics configured")
-        available = {channel.topic for channel in _scan(dataset).channels.values()}
+        available = {channel.topic for channel in _scan(dataset).channels.values() if channel.message_count > 0}
         return [
             finding(
                 self.metadata,
@@ -405,22 +413,24 @@ class Ros2TopicGapRule:
         cost="linear",
         required_capabilities=frozenset({"ros2"}),
         option_defaults={"topic_rates_hz": {}, "max_gap_multiplier": 5.0, "min_messages": 3, "max_findings": 50},
-        limitations="Without an explicit rate, the median positive interval is used as the local cadence baseline.",
+        limitations="Only explicitly configured topics are checked; event-driven topic cadence is not inferred.",
         remediation="Inspect publisher health, QoS, transport loss, and recorder backpressure around the cited gap.",
     )
 
     def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
         rates = options["topic_rates_hz"]
+        if not rates:
+            raise RuleNotApplicable("no ROS 2 topic rates configured")
         findings = []
         for channel in _scan(dataset).channels.values():
+            if channel.topic not in rates:
+                continue
             if channel.message_count < int(options["min_messages"]) or channel.max_log_gap is None:
                 continue
             positive = channel.positive_log_intervals_ns
             if not positive:
                 continue
-            expected_ns = (
-                1_000_000_000 / float(rates[channel.topic]) if channel.topic in rates else float(np.median(positive))
-            )
+            expected_ns = 1_000_000_000 / float(rates[channel.topic])
             limit_ns = expected_ns * float(options["max_gap_multiplier"])
             index, timestamp, max_gap = channel.max_log_gap
             if max_gap > limit_ns:

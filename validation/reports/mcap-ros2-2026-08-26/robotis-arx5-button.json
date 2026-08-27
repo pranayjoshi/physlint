@@ -3,14 +3,14 @@
   "physlint_version": "0.2.0a1",
   "adapter": "mcap",
   "adapter_version": "1.0",
-  "dataset": "Controlled ROS 2 JointState recording",
-  "source_revision": "recipe:joint_state_clean",
-  "dataset_path": "generated://joint_state_clean",
-  "source_fingerprint": "db8adb3a3cd8a4f448416efe5fc3b57ec0556a41dec065a77f9823e0aa98988d",
+  "dataset": "RobotisAI ARX X5 elevator-button episode",
+  "source_revision": "0aed43ed01aa25f01267f8e384b28565ece6f18e",
+  "dataset_path": "hf://datasets/RobotisAI/evButtonPush-arx5-260722-0-MCAP@0aed43ed01aa25f01267f8e384b28565ece6f18e/0/0_0.mcap",
+  "source_fingerprint": "f99e990595e5570d63047bfa16c3edc71b5ce196f23e39613328588128206879",
   "source_fingerprint_method": "file-content-sha256-v1",
-  "configuration_digest": "7b94e8f93bfd91e2f689fb9b67815c3e7c20d5bd46b8bde440d5a3d76bc88596",
-  "started_at": "2026-08-27T05:36:33.949205Z",
-  "finished_at": "2026-08-27T05:36:33.949890Z",
+  "configuration_digest": "feb74c002f3d6a048445d0ebe2c3a7262f9c6fb9c37b57db35cdd935162e6c63",
+  "started_at": "2026-08-27T05:36:30.868726Z",
+  "finished_at": "2026-08-27T05:36:33.947880Z",
   "status": "passed",
   "sampled": false,
   "results": [
@@ -18,7 +18,7 @@
       "rule_id": "mcap.readable",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.5039169918745756,
+      "duration_ms": 3027.8500840067863,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -27,7 +27,7 @@
       "rule_id": "mcap.summary_consistency",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0036249984987080097,
+      "duration_ms": 0.013250013580545783,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -36,7 +36,7 @@
       "rule_id": "mcap.index_coverage",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.00100000761449337,
+      "duration_ms": 0.0018750142771750689,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -45,7 +45,7 @@
       "rule_id": "mcap.channel_schema",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0024160253815352917,
+      "duration_ms": 0.008333008736371994,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -54,7 +54,7 @@
       "rule_id": "mcap.timestamp_order",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0012080126907676458,
+      "duration_ms": 0.003958004526793957,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -63,7 +63,7 @@
       "rule_id": "mcap.duplicate_timestamps",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0007089984137564898,
+      "duration_ms": 0.0014159886632114649,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -72,7 +72,7 @@
       "rule_id": "mcap.sequence_continuity",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0008330098353326321,
+      "duration_ms": 0.0011249794624745846,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -81,7 +81,7 @@
       "rule_id": "ros2.encoding",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0014580145943909883,
+      "duration_ms": 0.0029579969123005867,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -90,7 +90,7 @@
       "rule_id": "ros2.decode",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0008329807315021753,
+      "duration_ms": 0.0011249794624745846,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -99,7 +99,7 @@
       "rule_id": "ros2.required_topics",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0014170072972774506,
+      "duration_ms": 0.0041660096030682325,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -108,7 +108,7 @@
       "rule_id": "ros2.topic_gaps",
       "rule_version": "1.0.0",
       "status": "not_run",
-      "duration_ms": 0.0021250161807984114,
+      "duration_ms": 0.004292000085115433,
       "findings": [],
       "reason": "no ROS 2 topic rates configured",
       "error_kind": null
@@ -117,7 +117,7 @@
       "rule_id": "ros2.header_clock_skew",
       "rule_version": "1.0.0",
       "status": "not_run",
-      "duration_ms": 0.0007500057108700275,
+      "duration_ms": 0.0015420082490891218,
       "findings": [],
       "reason": "no maximum ROS header/log skew configured",
       "error_kind": null
@@ -126,7 +126,7 @@
       "rule_id": "ros2.semantic_consistency",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0007080088835209608,
+      "duration_ms": 0.0015409896150231361,
       "findings": [],
       "reason": null,
       "error_kind": null
@@ -135,7 +135,7 @@
       "rule_id": "ros2.tf_tree",
       "rule_version": "1.0.0",
       "status": "passed",
-      "duration_ms": 0.0021659943740814924,
+      "duration_ms": 0.014167017070576549,
       "findings": [],
       "reason": null,
       "error_kind": null

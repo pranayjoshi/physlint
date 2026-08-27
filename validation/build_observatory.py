@@ -56,19 +56,15 @@ def build(output: Path = DEFAULT_OUTPUT) -> None:
             {
                 "id": row["id"],
                 "name": row["title"],
-                "source": "foxglove/mcap conformance suite" if is_public else row["source_revision"],
-                "robot": "Generic channel" if row["profile"] == "generic" else "ROS 2 fixture",
+                "source": row.get("source_name") or row["source_revision"],
+                "robot": row.get("robot") or ("Generic channel" if row["profile"] == "generic" else "ROS 2 fixture"),
                 "profile": "MCAP" if row["profile"] == "generic" else "ROS 2",
                 "provenance": "Public" if is_public else "Controlled",
                 "scale": f"{row['messages']} messages",
                 "checks": row["rules_checked"],
                 "findings": row["findings"],
                 "status": "Passed" if row["status"] == "passed" else "Issues found",
-                "sourceUrl": (
-                    "https://github.com/foxglove/mcap/tree/main/tests/conformance/data/TenMessages"
-                    if is_public
-                    else None
-                ),
+                "sourceUrl": row.get("source_page") if is_public else None,
                 "reportPath": f"mcap-ros2-2026-08-26/{row['artifact']}",
                 "revision": row["source_revision"],
             }
