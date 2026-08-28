@@ -15,7 +15,7 @@ def test_report_schema_and_atomic_writer(dataset_factory, tmp_path):
     destination = write_json_report(report, tmp_path / "nested" / "report.json")
     payload = json.loads(destination.read_text(encoding="utf-8"))
     assert payload["schema_version"] == "1.0"
-    assert payload["physlint_version"] == "0.2.0a1"
+    assert payload["physlint_version"] == "0.2.0a2"
     assert payload["source_fingerprint_method"] == "metadata-and-file-stat-sha256-v1"
     assert not list(destination.parent.glob("*.tmp"))
 

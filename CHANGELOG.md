@@ -21,3 +21,7 @@
 - Add a reproducible four-dataset and three-corruption release gate.
 
 This alpha supports local LeRobot v3.x directories. MCAP/ROS 2 and Robomimic are roadmap items, not implemented adapters.
+## 0.2.0a2
+
+- Refined the Physlint Observatory launch experience and branding.
+- Continued validation coverage for LeRobot, MCAP, and ROS 2 workflows.
