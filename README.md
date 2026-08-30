@@ -21,7 +21,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
 
-The released `0.3.0` supports **LeRobot Dataset v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
+The released `0.3.1` supports **LeRobot Dataset v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
 
 > [!IMPORTANT]
 > Physlint validates configured data-integrity contracts. A pass does not certify policy quality, task success, or robot safety.
@@ -41,13 +41,13 @@ Physlint requires Python 3.11 or newer.
 ### Install from PyPI
 
 ```bash
-python -m pip install "physlint[video]==0.3.0"
+python -m pip install "physlint[video]==0.3.1"
 ```
 
 To test the exact tagged source instead of the PyPI distribution, install the GitHub release directly:
 
 ```bash
-python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.3.0"
+python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.3.1"
 ```
 
 ### Check a LeRobot dataset or MCAP recording
@@ -221,7 +221,7 @@ The CLI has stable exit codes and writes reports atomically, so a basic GitHub A
 
 ```yaml
 - name: Install Physlint
-  run: python -m pip install "physlint[video]==0.3.0"
+  run: python -m pip install "physlint[video]==0.3.1"
 
 - name: Validate robot dataset
   run: |
@@ -269,6 +269,8 @@ Everything needed to audit or rerun those claims is versioned:
 - [Reproduction instructions](validation/README.md)
 
 Runtime measurements are observations from the documented machine and run—not universal performance guarantees.
+
+A larger [compatibility survey](docs/validation/compatibility-survey.md) adds ten revision-pinned public LeRobot v3 snapshots (1,678 episodes, 182,128 frames) plus five fail-closed v2 screens. Five of the ten v3 snapshots passed the default contract; the rest are classified in that report. Those rows are Observatory survey evidence. They do not expand the four-snapshot release claim and they are not a Hugging Face quality score.
 
 The MCAP/ROS 2 release gate additionally verifies an exact Foxglove conformance fixture, a public robot-captured RobotisAI episode, and two deterministic ROS 2 recordings:
 

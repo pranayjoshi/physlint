@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 — 2026-08-30
+
+- Add a stratified LeRobot compatibility survey, kept separate from the four-snapshot release gate.
+- Accept Hub feature `names` stored as a single string instead of crashing discovery.
+
 ## 0.3.0 — 2026-08-30
 
 - Add `physlint compare` for dataset and report regression diffs, including coverage drift without a quality score.

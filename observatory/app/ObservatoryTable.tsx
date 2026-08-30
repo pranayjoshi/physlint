@@ -8,7 +8,7 @@ export type Observation = {
   source: string;
   robot: string;
   profile: "LeRobot" | "MCAP" | "ROS 2";
-  provenance: "Public" | "Controlled";
+  provenance: "Public" | "Controlled" | "Survey";
   scale: string;
   checks: number;
   findings: number;
@@ -18,13 +18,13 @@ export type Observation = {
   revision?: string;
 };
 
-const filters = ["All", "LeRobot", "MCAP", "ROS 2"] as const;
+const filters = ["All", "LeRobot", "MCAP", "ROS 2", "Survey"] as const;
 
 export function ObservatoryTable({ observations }: { observations: Observation[] }) {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
   const [query, setQuery] = useState("");
   const filtered = useMemo(() => observations.filter((item) => {
-    const inProfile = filter === "All" || item.profile === filter;
+    const inProfile = filter === "All" || item.profile === filter || (filter === "Survey" && item.provenance === "Survey");
     const text = `${item.name} ${item.source} ${item.robot}`.toLowerCase();
     return inProfile && text.includes(query.trim().toLowerCase());
   }), [filter, observations, query]);

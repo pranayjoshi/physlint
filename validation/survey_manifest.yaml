@@ -1,0 +1,181 @@
+schema_version: 1
+run_id: lerobot-survey-2026-08-30
+physlint_version: 0.3.1
+tier: compatibility-survey
+claim: >
+  This corpus is not the public release gate. Outcomes are compatibility
+  observations on revision-pinned public snapshots. Do not treat pass rates
+  as a production quality claim or a Hugging Face robotics score.
+
+datasets:
+  - id: pusht
+    title: PushT
+    repo_id: lerobot/pusht
+    revision: 7628202a2180972f291ba1bc6723834921e72c19
+    robot: unknown
+    fps: 10
+    size_bytes: 185759258
+    cells: [producer-official, cadence-10, embodiment-2d]
+  - id: xarm-lift
+    title: xArm Lift Medium
+    repo_id: lerobot/xarm_lift_medium
+    revision: 79efb0e3cef0e530ddec4b8569b190966ab45808
+    robot: unknown
+    fps: 15
+    size_bytes: 346146688
+    cells: [producer-official, cadence-15, embodiment-xarm]
+  - id: unitree-h1-greet
+    title: Unitree H1 Two-Robot Greeting
+    repo_id: lerobot/unitreeh1_two_robot_greeting
+    revision: 51d65cfa10380beff74570b599b49347abf5fbfa
+    robot: unknown
+    fps: 50
+    size_bytes: 252975175
+    cells: [producer-official, cadence-50, embodiment-humanoid]
+  - id: so100-pickplace
+    title: SVLA SO-100 Pick & Place
+    repo_id: lerobot/svla_so100_pickplace
+    revision: 728583b5eaf9e739a7f119e2def466fa1d552402
+    robot: so100
+    fps: 30
+    size_bytes: 941394987
+    cells: [producer-official, cadence-30, embodiment-so100]
+  - id: aloha-battery
+    title: Aloha Static Battery (episodes 0-4)
+    repo_id: macrodata/aloha_static_battery_ep000_004
+    revision: 019b0779f5edfc2e35a48c38372a317dbb298af3
+    robot: unknown
+    fps: 50
+    size_bytes: 60643561
+    cells: [producer-community, cadence-50, embodiment-bimanual]
+  - id: ur10e-robotiq
+    title: UR10e Robotiq 2F-85
+    repo_id: wenyixu101/ur10e-robotiq-2f85
+    revision: a69b597014027d8830f569af6554951d4f0a0cc0
+    robot: ur10e_robotiq_2f85
+    fps: 6
+    size_bytes: 412891965
+    cells: [producer-community, cadence-6, embodiment-industrial]
+  - id: so101-teleop
+    title: SO-101 Teleop Pick-and-Place
+    repo_id: wenyixu101/so101-pick-and-place
+    revision: 1dec6e13f0273e1ad9729215771fffafa16b710e
+    robot: so_follower
+    fps: 25
+    size_bytes: 513066089
+    cells: [producer-community, cadence-25, embodiment-so101]
+  - id: reachy-head
+    title: Reachy 2 Head Sample
+    repo_id: tavis-benchmark/tavis-head-sample-reachy2
+    revision: 2f490bd5d290fb59966f86c82d78ab4d6c97ec13
+    robot: none
+    fps: 60
+    size_bytes: 58182411
+    cells: [producer-lab, cadence-60, embodiment-reachy]
+  - id: lekiwi-go2
+    title: LeKiwi Go2
+    repo_id: vietnguyen28/lekiwi_go2
+    revision: c324f64a8c595939725f1030e087e0a502f673db
+    robot: lekiwi_client
+    fps: 30
+    size_bytes: 62510444
+    cells: [producer-community, cadence-30, embodiment-mobile]
+  - id: libero-spatial
+    title: LIBERO Spatial
+    repo_id: nvidia/LIBERO_LeRobot_v3
+    revision: e5907374380b8f96511957e6ba5582be52a1e179
+    robot: franka
+    fps: 20
+    size_bytes: 4457628040
+    include: libero_spatial/**
+    source_subdir: libero_spatial
+    cells: [producer-lab, cadence-20, embodiment-franka, nested-suite]
+
+screens:
+  - id: koch-v21
+    title: Koch arm gripper (v2.1)
+    repo_id: Dongkkka/koch_arm_gripper_embodiment_dataset
+    revision: ced99aaaa3e3fe9e007239f032d3d2957b032bf8
+    expected_error: "unsupported LeRobot version v2.1"
+    reason: Koch embodiment is published as v2.1; keep as fail-closed evidence.
+    cells: [embodiment-koch, version-v2.1]
+  - id: koch-v20
+    title: Koch pick-and-place Lego (v2.0)
+    repo_id: rgarreta/koch_pick_place_lego_v8
+    revision: bdaa738541e52caa64508283b7a8eef7bfcfd9e8
+    expected_error: "unsupported LeRobot version v2.0"
+    reason: Official-style Koch teleop remains v2.0 on the Hub.
+    cells: [embodiment-koch, version-v2.0]
+  - id: so101-v21-large
+    title: SO-101 pi0.5 base (v2.1)
+    repo_id: dongyoonkim/so101-pi05-base-dataset
+    revision: 4b6a3e2415b85686ff2b33650c3215f8011eb45c
+    expected_error: "unsupported LeRobot version v2.1"
+    reason: Large community SO-101 corpus still on v2.1; metadata-only screen.
+    cells: [embodiment-so101, version-v2.1]
+  - id: reachy-kitchen-v20
+    title: Reachy 2 kitchen multimodal (v2.0)
+    repo_id: CompeteSAI/reachy2-kitchen-multimodal
+    revision: d03c0c86681a4b4fcfcb341d1e6f2853dec87a94
+    expected_error: "unsupported LeRobot version v2.0"
+    reason: Full Reachy kitchen set is v2.0; the v3 head sample is in the check list.
+    cells: [embodiment-reachy, version-v2.0]
+  - id: robotwin-v21
+    title: RoboTwin 3D (v2.1)
+    repo_id: flex-pi/robotwin_3d
+    revision: bee164afe94041d8c3d7dd1203725c41163fc3f4
+    expected_error: "unsupported LeRobot version v2.1"
+    reason: Bimanual Aloha conversion at 50 FPS remains v2.1.
+    cells: [embodiment-bimanual, version-v2.1]
+
+deferred:
+  - id: aloha-mobile-cabinet
+    repo_id: lerobot/aloha_mobile_cabinet
+    revision: 7a752b39f7e69de7e38aee485a6bab07528a061a
+    size_bytes: 8592773406
+    reason: Official mobile Aloha with observation.effort; defer until a 10 GB memory benchmark exists.
+    cells: [producer-official, force-effort, embodiment-mobile-aloha, size-10gb]
+  - id: lekiwi-1080p
+    repo_id: williamdgomez/lekiwi-dataset
+    revision: 1a35dcf00159926bbaf740a9965311f4f3b0b3a7
+    size_bytes: 3919396065
+    reason: 5 FPS 1080p mobile capture; the smaller LeKiwi snapshot already fills the mobile cell.
+    cells: [cadence-5, embodiment-mobile, size-4gb]
+  - id: so101-sim-10gb
+    repo_id: wenyixu101/so101-sim-pick-and-place
+    revision: a57fe540f4517a9107b1fd129e3c0bd503a84d1a
+    size_bytes: 9955716806
+    reason: 10 GB simulated SO-101; embodiment already covered by the real teleop snapshot.
+    cells: [embodiment-so101, simulation, size-10gb]
+  - id: bridgedata2
+    repo_id: nvidia/BridgeData2_LeRobot_v3
+    revision: b96f7216e3cff58007884656a81584c857c185ae
+    size_bytes: 60360000000
+    reason: 60 GB BridgeData V2 conversion; metadata census only until streaming inspect exists.
+    cells: [producer-lab, size-60gb]
+
+skipped:
+  - repo_id: behavior-1k/2026-challenge-demos
+    reason: 3.4 TB / 20,000 episodes; Hub hygiene, not a reviewable survey row.
+  - repo_id: HuggingFaceVLA/community_dataset_v1
+    reason: 124 GB multi-dataset dump with no root meta/info.json.
+  - repo_id: HuggingFaceVLA/community_dataset_v2
+    reason: 129 GB multi-dataset dump with no root meta/info.json.
+  - repo_id: simple-world-lab/HiFi-UMI-2K
+    reason: 16 TB; no root LeRobot v3 metadata.
+  - repo_id: OpenGalaxea/Galaxea-Open-World-Dataset
+    reason: 13 TB and gated.
+  - repo_id: LightwheelAI/EgoStandard
+    reason: 9.4 TB and gated.
+  - repo_id: NeoteAIEmbodied/OpenNeoData
+    reason: 9.4 TB and gated.
+  - repo_id: airoa-org/airoa-moma-5k
+    reason: 4.3 TB and gated.
+  - repo_id: challenge-2026/challenge_data
+    reason: 3.2 TB; no root meta/info.json.
+  - repo_id: Traly/AgiBotWorld-Alpha-lerobot
+    reason: 1.8 TB multi-dataset conversion.
+  - repo_id: BeingBeyond/UniHand_Preview
+    reason: 606 GB; no root meta/info.json.
+  - repo_id: armnet/armnetbench_v01_lerobot_so101
+    reason: 61 GB SO-101; embodiment already covered.

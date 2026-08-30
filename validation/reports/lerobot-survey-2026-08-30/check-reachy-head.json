@@ -1,0 +1,308 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.3.0",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "tavis-benchmark/tavis-head-sample-reachy2",
+  "source_revision": "2f490bd5d290fb59966f86c82d78ab4d6c97ec13",
+  "dataset_path": "hf://datasets/tavis-benchmark/tavis-head-sample-reachy2@2f490bd5d290fb59966f86c82d78ab4d6c97ec13",
+  "source_fingerprint": "2bdfe74cb545b1b28782b25b841738ddaff5bdf45dd40357c71955ba057e4fd2",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "d86314979c43113f64db2855f1ee56529435874e5cf287ec04a44e2bc76ef224",
+  "started_at": "2026-08-30T18:20:47.942113Z",
+  "finished_at": "2026-08-30T18:20:54.068709Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 0.8113329531624913,
+      "findings": [
+        {
+          "rule_id": "manifest.required_files",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "Required files exist",
+          "message": "Required source is missing: data/chunk-000/file-001.parquet",
+          "impact": "Missing metadata, Parquet, or referenced video files make validation incomplete.",
+          "remediation": "Restore or regenerate the missing files; ensure the recorder was finalized.",
+          "observed": "missing",
+          "expected": "file or directory exists",
+          "location": {
+            "episode": null,
+            "stream": null,
+            "sample_index": null,
+            "timestamp": null,
+            "source": "data/chunk-000/file-001.parquet"
+          },
+          "evidence": {},
+          "fingerprint": "86fe12a460c4ad070ca1cae9bc0ea35f08547e3129769e748406255b5161c89c"
+        },
+        {
+          "rule_id": "manifest.required_files",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "Required files exist",
+          "message": "Required source is missing: data/chunk-000/file-002.parquet",
+          "impact": "Missing metadata, Parquet, or referenced video files make validation incomplete.",
+          "remediation": "Restore or regenerate the missing files; ensure the recorder was finalized.",
+          "observed": "missing",
+          "expected": "file or directory exists",
+          "location": {
+            "episode": null,
+            "stream": null,
+            "sample_index": null,
+            "timestamp": null,
+            "source": "data/chunk-000/file-002.parquet"
+          },
+          "evidence": {},
+          "fingerprint": "86fe12a460c4ad070ca1cae9bc0ea35f08547e3129769e748406255b5161c89c"
+        },
+        {
+          "rule_id": "manifest.required_files",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "Required files exist",
+          "message": "Required source is missing: data/chunk-000/file-004.parquet",
+          "impact": "Missing metadata, Parquet, or referenced video files make validation incomplete.",
+          "remediation": "Restore or regenerate the missing files; ensure the recorder was finalized.",
+          "observed": "missing",
+          "expected": "file or directory exists",
+          "location": {
+            "episode": null,
+            "stream": null,
+            "sample_index": null,
+            "timestamp": null,
+            "source": "data/chunk-000/file-004.parquet"
+          },
+          "evidence": {},
+          "fingerprint": "86fe12a460c4ad070ca1cae9bc0ea35f08547e3129769e748406255b5161c89c"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "errored",
+      "duration_ms": 0.021124957129359245,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0037500285543501377,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0034589902497828007,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "errored",
+      "duration_ms": 0.016916950698941946,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "errored",
+      "duration_ms": 0.012082979083061218,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "errored",
+      "duration_ms": 0.013458018656820059,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "errored",
+      "duration_ms": 0.011415977496653795,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "errored",
+      "duration_ms": 0.009749957825988531,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "errored",
+      "duration_ms": 0.009459035936743021,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "errored",
+      "duration_ms": 0.015040975995361805,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.001541979145258665,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0008329516276717186,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 6116.671124997083,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "errored",
+      "duration_ms": 0.04816701402887702,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 0.6748330197297037,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "duplication.exact_episodes",
+      "rule_version": "1.0.0",
+      "status": "errored",
+      "duration_ms": 0.05491694901138544,
+      "findings": [],
+      "reason": "AdapterError: episode data file is missing: /Users/pranayjoshi/Desktop/projects/physlint/validation/.work/survey/datasets/reachy-head/data/chunk-000/file-004.parquet",
+      "error_kind": "adapter",
+      "cached": false
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "not_run": 3,
+    "errored": 10,
+    "findings": 3
+  },
+  "coverage": {
+    "episodes": 10,
+    "frames": 3067,
+    "messages": null,
+    "streams": [
+      "action",
+      "observation.images.OBS_HEAD",
+      "observation.images.OBS_WRIST_LEFT",
+      "observation.images.OBS_WRIST_RIGHT",
+      "observation.images.OBS_FIXED",
+      "observation.state",
+      "observation.left_eef_pos",
+      "observation.left_eef_quat",
+      "observation.right_eef_pos",
+      "observation.right_eef_quat",
+      "language_instruction",
+      "timestamp",
+      "frame_index",
+      "episode_index",
+      "index",
+      "task_index"
+    ],
+    "tasks": {
+      "ClutterPickCubeTask": 2,
+      "ClutterPickLiftTask": 2,
+      "ConditionalPickTask": 2,
+      "MultiShelfScanTask": 2,
+      "WaitThenActTask": 2
+    },
+    "length_min": 169,
+    "length_max": 505,
+    "robot_type": null,
+    "fps": 60.0
+  },
+  "cache": {
+    "used": true,
+    "hits": 0,
+    "misses": 3,
+    "directory": "/Users/pranayjoshi/Desktop/projects/physlint/.physlint/cache"
+  },
+  "suppressed": [],
+  "plugins": []
+}

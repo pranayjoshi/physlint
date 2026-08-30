@@ -26,6 +26,8 @@ const comparisons: Comparison[] = comparisonsCatalog.comparisons.map((item) => (
   baselineReportUrl: `${reportRoot}/${item.baselineReportPath}`,
   candidateReportUrl: `${reportRoot}/${item.candidateReportPath}`,
 }));
+const ruleRuns = observations.reduce((total, item) => total + item.checks, 0);
+const surveyRows = observations.filter((item) => item.provenance === "Survey").length;
 
 export default function Home() {
   return (
@@ -37,22 +39,22 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <div className="hero-copy">
-          <p className="eyebrow">Open validation evidence · v0.3.0</p>
+          <p className="eyebrow">Open validation evidence · v0.3.1</p>
           <h1>Know your robot data<br />before it trains your model.</h1>
           <p className="lede">A transparent health index for robotics datasets and recordings. Every outcome links back to deterministic Physlint rules—never a mystery score.</p>
           <div className="hero-actions"><a className="button primary" href="#index">Explore evidence ↓</a><a className="button secondary" href={`${repo}#quickstart`}>Run it locally ↗</a></div>
         </div>
         <div className="hero-orbit" aria-hidden="true"><span className="orbit orbit-one"/><span className="orbit orbit-two"/><span className="core">P/</span><span className="signal signal-a"/><span className="signal signal-b"/><span className="signal signal-c"/></div>
         <div className="summary" aria-label="Validation summary">
-          <div><strong>8</strong><span>observations</span></div><div><strong>4</strong><span>regression cases</span></div>
-          <div><strong>97</strong><span>rule runs</span></div><div><strong>7,047</strong><span>real ROS messages</span></div>
+          <div><strong>{observations.length}</strong><span>observations</span></div><div><strong>{comparisons.length}</strong><span>regression cases</span></div>
+          <div><strong>{ruleRuns}</strong><span>rule runs</span></div><div><strong>{surveyRows || "7,047"}</strong><span>{surveyRows ? "survey rows" : "real ROS messages"}</span></div>
         </div>
       </section>
 
       <section className="index shell" id="index" aria-labelledby="index-title">
         <div className="section-heading">
           <div><p className="eyebrow">Evidence index · 30 Aug 2026</p><h2 id="index-title">Robot data health, in public.</h2></div>
-          <p>Filter verified datasets and diagnostic cases by contract. “Passed” means the applicable checks found no configured blocking issues.</p>
+          <p>Release-gate rows are Public or Controlled. Survey rows are stratified compatibility observations and are not a Hub quality score. “Passed” means the applicable checks found no configured blocking issues.</p>
         </div>
         <ObservatoryTable observations={observations} />
       </section>

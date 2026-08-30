@@ -1,0 +1,236 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.3.0",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "vietnguyen28/lekiwi_go2",
+  "source_revision": "c324f64a8c595939725f1030e087e0a502f673db",
+  "dataset_path": "hf://datasets/vietnguyen28/lekiwi_go2@c324f64a8c595939725f1030e087e0a502f673db",
+  "source_fingerprint": "44d1925501a234db29b3ed89396e520f32fcf17b4ac0c2a5ccf2247f3df6fca7",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "d86314979c43113f64db2855f1ee56529435874e5cf287ec04a44e2bc76ef224",
+  "started_at": "2026-08-30T18:12:35.759924Z",
+  "finished_at": "2026-08-30T18:12:51.332281Z",
+  "status": "passed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.8075409568846226,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.5808330024592578,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0021249870769679546,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.006457965355366468,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 80.8114999672398,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1250.758667010814,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 71.3781249942258,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 64.39275003504008,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 65.05270901834592,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 841.5779999922961,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 944.5826250012033,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.012625008821487427,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0011249794624745846,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 10885.788790998049,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 460.3398340404965,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 0.4903330118395388,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "duplication.exact_episodes",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 894.8684170027263,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    }
+  ],
+  "summary": {
+    "passed": 15,
+    "failed": 0,
+    "not_run": 3,
+    "errored": 0,
+    "findings": 0
+  },
+  "coverage": {
+    "episodes": 40,
+    "frames": 14391,
+    "messages": null,
+    "streams": [
+      "action",
+      "observation.state",
+      "observation.images.front",
+      "observation.images.wrist",
+      "timestamp",
+      "frame_index",
+      "episode_index",
+      "index",
+      "task_index"
+    ],
+    "tasks": {
+      "Go to object": 40
+    },
+    "length_min": 328,
+    "length_max": 403,
+    "robot_type": "lekiwi_client",
+    "fps": 30.0
+  },
+  "cache": {
+    "used": true,
+    "hits": 0,
+    "misses": 3,
+    "directory": "/Users/pranayjoshi/Desktop/projects/physlint/.physlint/cache"
+  },
+  "suppressed": [],
+  "plugins": []
+}

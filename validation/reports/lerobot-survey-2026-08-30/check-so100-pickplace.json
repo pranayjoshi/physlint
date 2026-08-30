@@ -1,0 +1,236 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.3.0",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "lerobot/svla_so100_pickplace",
+  "source_revision": "728583b5eaf9e739a7f119e2def466fa1d552402",
+  "dataset_path": "hf://datasets/lerobot/svla_so100_pickplace@728583b5eaf9e739a7f119e2def466fa1d552402",
+  "source_fingerprint": "026ee52414863c76bec231aa585cad4a5d58282cb7e23bcba2c51f9c503e8793",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "d86314979c43113f64db2855f1ee56529435874e5cf287ec04a44e2bc76ef224",
+  "started_at": "2026-08-30T18:10:06.505431Z",
+  "finished_at": "2026-08-30T18:10:39.757878Z",
+  "status": "passed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.0182499536313117,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.7306250045076013,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0025840126909315586,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.008000002708286047,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 53.68491599801928,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1402.4993749917485,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 67.36920803086832,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 67.90887500392273,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 67.01225001597777,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1029.5197080122307,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1069.7102920385078,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.02945901360362768,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.001625041477382183,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 27823.289624997415,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 578.6276659928262,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 0.6626659887842834,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "duplication.exact_episodes",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1077.7613340178505,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    }
+  ],
+  "summary": {
+    "passed": 15,
+    "failed": 0,
+    "not_run": 3,
+    "errored": 0,
+    "findings": 0
+  },
+  "coverage": {
+    "episodes": 50,
+    "frames": 19631,
+    "messages": null,
+    "streams": [
+      "action",
+      "observation.state",
+      "observation.images.top",
+      "observation.images.wrist",
+      "timestamp",
+      "frame_index",
+      "episode_index",
+      "index",
+      "task_index"
+    ],
+    "tasks": {
+      "Pick up the cube and place it in the box.": 50
+    },
+    "length_min": 326,
+    "length_max": 575,
+    "robot_type": "so100",
+    "fps": 30.0
+  },
+  "cache": {
+    "used": true,
+    "hits": 0,
+    "misses": 3,
+    "directory": "/Users/pranayjoshi/Desktop/projects/physlint/.physlint/cache"
+  },
+  "suppressed": [],
+  "plugins": []
+}

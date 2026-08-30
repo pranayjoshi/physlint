@@ -30,6 +30,16 @@ Committed reports replace machine-local paths with `hf://` or `generated://` ide
 
 The human classification and before/after analysis are in [`docs/validation/real-data-2026-08-23.md`](../docs/validation/real-data-2026-08-23.md). Publication-ready metrics are in [`reports/real-data-2026-08-24/summary.csv`](reports/real-data-2026-08-24/summary.csv).
 
+## Compatibility survey
+
+The survey is a separate, larger LeRobot corpus. It does not assert that every snapshot passes and it does not change the four-dataset release claim. Selection, skip reasons, and claim language live in [`docs/validation/compatibility-survey.md`](../docs/validation/compatibility-survey.md).
+
+```bash
+python -m validation.survey_harness
+```
+
+Pinned inputs are in [`survey_manifest.yaml`](survey_manifest.yaml). Sanitized evidence is written under [`reports/lerobot-survey-2026-08-30/`](reports/lerobot-survey-2026-08-30/).
+
 ## MCAP and ROS 2 gate
 
 The second harness combines an exact upstream Foxglove conformance fixture, a revision-pinned real RobotisAI robot episode, and deterministic ROS 2 positive and negative recordings:

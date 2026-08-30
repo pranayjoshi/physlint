@@ -13,6 +13,7 @@ from physlint.models.finding import Severity
 ROOT = Path(__file__).resolve().parents[1]
 LEROBOT_SUMMARY = ROOT / "validation" / "reports" / "real-data-2026-08-24" / "summary.json"
 MCAP_SUMMARY = ROOT / "validation" / "reports" / "mcap-ros2-2026-08-26" / "summary.json"
+SURVEY_SUMMARY = ROOT / "validation" / "reports" / "lerobot-survey-2026-08-30" / "summary.json"
 REPORT_ROOT = ROOT / "validation" / "reports"
 DEFAULT_OUTPUT = ROOT / "observatory" / "data" / "observations.json"
 DEFAULT_COMPARISONS = ROOT / "observatory" / "data" / "comparisons.json"
@@ -59,6 +60,14 @@ def load(path: Path) -> dict[str, Any]:
     return payload
 
 
+def _scale(episodes: int | None, frames: int | None) -> str:
+    if not episodes and not frames:
+        return "unparsed"
+    if frames and frames >= 1000:
+        return f"{episodes or 0} eps · {frames / 1000:.1f}k frames"
+    return f"{episodes or 0} eps · {frames or 0} frames"
+
+
 def build(output: Path = DEFAULT_OUTPUT, comparisons_output: Path = DEFAULT_COMPARISONS) -> None:
     lerobot = load(LEROBOT_SUMMARY)
     mcap = load(MCAP_SUMMARY)
@@ -74,7 +83,7 @@ def build(output: Path = DEFAULT_OUTPUT, comparisons_output: Path = DEFAULT_COMP
                 "robot": row["robot"],
                 "profile": "LeRobot",
                 "provenance": "Public",
-                "scale": f"{row['episodes']} eps · {row['frames'] / 1000:.1f}k frames",
+                "scale": _scale(row["episodes"], row["frames"]),
                 "checks": row["applicable_rules"],
                 "findings": row["findings"],
                 "status": "Passed" if row["status"] == "passed" else "Issues found",
@@ -102,12 +111,36 @@ def build(output: Path = DEFAULT_OUTPUT, comparisons_output: Path = DEFAULT_COMP
                 "revision": row["source_revision"],
             }
         )
+    generated_from = [
+        str(LEROBOT_SUMMARY.relative_to(ROOT)),
+        str(MCAP_SUMMARY.relative_to(ROOT)),
+    ]
+    if SURVEY_SUMMARY.is_file():
+        survey = load(SURVEY_SUMMARY)
+        generated_from.append(str(SURVEY_SUMMARY.relative_to(ROOT)))
+        for row in survey["results"]:
+            if row.get("kind") != "check" or not row.get("artifact"):
+                continue
+            observations.append(
+                {
+                    "id": row["id"],
+                    "name": row.get("title") or row["id"],
+                    "source": row["repo_id"],
+                    "robot": row.get("robot") or "unspecified",
+                    "profile": "LeRobot",
+                    "provenance": "Survey",
+                    "scale": _scale(row.get("episodes"), row.get("frames")),
+                    "checks": row.get("applicable_rules") or 0,
+                    "findings": row.get("findings") or 0,
+                    "status": "Passed" if row["status"] == "passed" else "Issues found",
+                    "sourceUrl": f"https://huggingface.co/datasets/{row['repo_id']}",
+                    "reportPath": f"lerobot-survey-2026-08-30/{row['artifact']}",
+                    "revision": row["revision"],
+                }
+            )
     payload = {
         "schema_version": 1,
-        "generated_from": [
-            str(LEROBOT_SUMMARY.relative_to(ROOT)),
-            str(MCAP_SUMMARY.relative_to(ROOT)),
-        ],
+        "generated_from": generated_from,
         "observations": observations,
     }
     output.parent.mkdir(parents=True, exist_ok=True)

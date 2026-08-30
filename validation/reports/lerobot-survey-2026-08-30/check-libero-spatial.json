@@ -1,0 +1,273 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.3.0",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "nvidia/LIBERO_LeRobot_v3",
+  "source_revision": "e5907374380b8f96511957e6ba5582be52a1e179",
+  "dataset_path": "hf://datasets/nvidia/LIBERO_LeRobot_v3@e5907374380b8f96511957e6ba5582be52a1e179",
+  "source_fingerprint": "530acb89c4c858541f3b76fe54f38abfadf63a20d3531f733b45e77e8e083a15",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "d86314979c43113f64db2855f1ee56529435874e5cf287ec04a44e2bc76ef224",
+  "started_at": "2026-08-30T18:13:10.612001Z",
+  "finished_at": "2026-08-30T18:16:09.297544Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 7.765916991047561,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.7633750210516155,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.002500019036233425,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.05524995503947139,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1145.930957980454,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 36659.369457978755,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1340.8835420268588,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1339.4762089592405,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 1359.9295419990085,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 29423.816708032973,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 30424.369834014215,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.005041016265749931,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.00100000761449337,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 31728.313708968926,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "failed",
+      "duration_ms": 14303.709124971647,
+      "findings": [
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.images.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 5,
+            "consecutive_frames": 6,
+            "motion_fraction": 0.4
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000248",
+            "stream": "observation.images.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.images.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "8c8323927681b0dfde75ffcc3b5191fe17b18cc953bdc31ca49a93d974fda1ac"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 4.214208980556577,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "duplication.exact_episodes",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 30933.3512079902,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    }
+  ],
+  "summary": {
+    "passed": 14,
+    "failed": 1,
+    "not_run": 3,
+    "errored": 0,
+    "findings": 1
+  },
+  "coverage": {
+    "episodes": 432,
+    "frames": 52970,
+    "messages": null,
+    "streams": [
+      "observation.images.wrist_image",
+      "observation.images.image",
+      "observation.state",
+      "action",
+      "timestamp",
+      "frame_index",
+      "episode_index",
+      "index",
+      "task_index"
+    ],
+    "tasks": {
+      "pick up the black bowl between the plate and the ramekin and place it on the plate": 45,
+      "pick up the black bowl from table center and place it on the plate": 46,
+      "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate": 42,
+      "pick up the black bowl next to the cookie box and place it on the plate": 46,
+      "pick up the black bowl next to the plate and place it on the plate": 47,
+      "pick up the black bowl next to the ramekin and place it on the plate": 45,
+      "pick up the black bowl on the cookie box and place it on the plate": 43,
+      "pick up the black bowl on the ramekin and place it on the plate": 39,
+      "pick up the black bowl on the stove and place it on the plate": 35,
+      "pick up the black bowl on the wooden cabinet and place it on the plate": 44
+    },
+    "length_min": 75,
+    "length_max": 193,
+    "robot_type": "franka",
+    "fps": 20.0
+  },
+  "cache": {
+    "used": true,
+    "hits": 0,
+    "misses": 3,
+    "directory": "/Users/pranayjoshi/Desktop/projects/physlint/.physlint/cache"
+  },
+  "suppressed": [],
+  "plugins": []
+}

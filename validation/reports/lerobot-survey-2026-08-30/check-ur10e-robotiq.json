@@ -1,0 +1,345 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.3.0",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "wenyixu101/ur10e-robotiq-2f85",
+  "source_revision": "a69b597014027d8830f569af6554951d4f0a0cc0",
+  "dataset_path": "hf://datasets/wenyixu101/ur10e-robotiq-2f85@a69b597014027d8830f569af6554951d4f0a0cc0",
+  "source_fingerprint": "90a0df7f5025f8b917fb97cb9a20030adc7e61ae1c839fb98bb1de364cca5d3c",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "d86314979c43113f64db2855f1ee56529435874e5cf287ec04a44e2bc76ef224",
+  "started_at": "2026-08-30T18:11:01.361161Z",
+  "finished_at": "2026-08-30T18:11:23.122679Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.6989999674260616,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.8917910163290799,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0019999570213258266,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.007959024515002966,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 136.75975002115592,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2632.237499987241,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 179.97187498258427,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 175.30091700609773,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 183.18870902294293,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1415.659875026904,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1797.278083045967,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0031249946914613247,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0009170034900307655,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 12589.884584012907,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "failed",
+      "duration_ms": 829.6739580109715,
+      "findings": [
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.images.front froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 390,
+            "end_frame": 395,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000023",
+            "stream": "observation.images.front",
+            "sample_index": 390,
+            "timestamp": 65.0,
+            "source": "videos/observation.images.front/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "06fdd48ad0e31f83dd192e7343cc971670525279cb64cbf2c39e8dd683f159d0"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.images.front froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 344,
+            "end_frame": 349,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000029",
+            "stream": "observation.images.front",
+            "sample_index": 344,
+            "timestamp": 57.333333333333336,
+            "source": "videos/observation.images.front/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "9a6c837dca2b4526ede3026bdf0dd26ae94f22dfc522df25d8a3f60e97c56b27"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.images.front froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 336,
+            "end_frame": 341,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000040",
+            "stream": "observation.images.front",
+            "sample_index": 336,
+            "timestamp": 56.0,
+            "source": "videos/observation.images.front/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "4489e8e84537c9a8e23708c879823bea48e8e4fd2141eb624d33c4e4d2f11dd4"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.images.front froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 156,
+            "end_frame": 163,
+            "consecutive_frames": 8,
+            "motion_fraction": 0.8571428571428571
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000044",
+            "stream": "observation.images.front",
+            "sample_index": 156,
+            "timestamp": 26.0,
+            "source": "videos/observation.images.front/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "6473757ec1d6788deef54ca9b00a21febff03940e361e8fd7d258593bd2ca5c7"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 0.41504198452457786,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "duplication.exact_episodes",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1809.7468750202097,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    }
+  ],
+  "summary": {
+    "passed": 14,
+    "failed": 1,
+    "not_run": 3,
+    "errored": 0,
+    "findings": 4
+  },
+  "coverage": {
+    "episodes": 55,
+    "frames": 21419,
+    "messages": null,
+    "streams": [
+      "action",
+      "episode_index",
+      "frame_index",
+      "index",
+      "next.done",
+      "observation.images.front",
+      "observation.state",
+      "task_index",
+      "timestamp"
+    ],
+    "tasks": {
+      "Use calibrated RGB-D observations to locate the cube and target, grasp the cube through Robotiq finger contact and friction only, and place it inside the target zone.": 55
+    },
+    "length_min": 350,
+    "length_max": 499,
+    "robot_type": "ur10e_robotiq_2f85",
+    "fps": 6.0
+  },
+  "cache": {
+    "used": true,
+    "hits": 0,
+    "misses": 3,
+    "directory": "/Users/pranayjoshi/Desktop/projects/physlint/.physlint/cache"
+  },
+  "suppressed": [],
+  "plugins": []
+}

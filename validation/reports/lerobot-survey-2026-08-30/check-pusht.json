@@ -1,0 +1,1589 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.3.0",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "lerobot/pusht",
+  "source_revision": "7628202a2180972f291ba1bc6723834921e72c19",
+  "dataset_path": "hf://datasets/lerobot/pusht@7628202a2180972f291ba1bc6723834921e72c19",
+  "source_fingerprint": "e4f28ae2952ed3b94184869a26398495f356c1c7c65c97bd62ba52ac4ce1c58b",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "d86314979c43113f64db2855f1ee56529435874e5cf287ec04a44e2bc76ef224",
+  "started_at": "2026-08-30T18:07:28.384649Z",
+  "finished_at": "2026-08-30T18:07:59.518301Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2.487833029590547,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.7252079667523503,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0029170187190175056,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.031083007343113422,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 396.4604590437375,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 7481.866666988935,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 526.236500008963,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 525.8450420224108,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 531.4066660357639,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 3256.547208002303,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 5159.498208027799,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.003583962097764015,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0017909915186464787,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 8015.40475001093,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "failed",
+      "duration_ms": 108.15020796144381,
+      "findings": [
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 38,
+            "end_frame": 45,
+            "consecutive_frames": 8,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "observation.image",
+            "sample_index": 38,
+            "timestamp": 3.8,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "131efdafb6db63074cb5504de83390d6539f2f39d09f33581fb700fdeb83d17d"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 90,
+            "end_frame": 95,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "observation.image",
+            "sample_index": 90,
+            "timestamp": 9.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "c949e933a446025890e742a5acc4894b87f7d40988691efb01e913563006e0c6"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 126,
+            "end_frame": 131,
+            "consecutive_frames": 6,
+            "motion_fraction": 0.6
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "observation.image",
+            "sample_index": 126,
+            "timestamp": 12.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "d2f2cc5854b9055d8f83936b627d8f368f9cb3550a67dc8d88e387b2e80ff943"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 10 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 136,
+            "end_frame": 145,
+            "consecutive_frames": 10,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "observation.image",
+            "sample_index": 136,
+            "timestamp": 13.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "f148a617f5395993f36de1b773f15ab893c0469e3503d33fc8ffb1758a669bd5"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 22 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 12,
+            "end_frame": 33,
+            "consecutive_frames": 22,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000001",
+            "stream": "observation.image",
+            "sample_index": 12,
+            "timestamp": 1.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "20c029d893b74e27439afc61f853ec51874f36ece30713076f99799f62a7461b"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 16 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 62,
+            "end_frame": 77,
+            "consecutive_frames": 16,
+            "motion_fraction": 0.6666666666666666
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000001",
+            "stream": "observation.image",
+            "sample_index": 62,
+            "timestamp": 6.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "8d1de6f2058cd632c721571830da62e415bcfe28599a172e804d743ccf36c091"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 9 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 104,
+            "end_frame": 112,
+            "consecutive_frames": 9,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000001",
+            "stream": "observation.image",
+            "sample_index": 104,
+            "timestamp": 10.4,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "3a89f62eb299d9d43ef666f669b67d939c9b3ac4f4b5838b277271c0d200ac98"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 7,
+            "consecutive_frames": 8,
+            "motion_fraction": 0.8571428571428571
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000002",
+            "stream": "observation.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "389f03ed4a48ee8c642cf05c6140689271868e37e7c8556ea3f06dd8f0962763"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 94,
+            "end_frame": 99,
+            "consecutive_frames": 6,
+            "motion_fraction": 0.6
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000002",
+            "stream": "observation.image",
+            "sample_index": 94,
+            "timestamp": 9.4,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "90e80be321420b6d4ff60623628a36d69cfb5865ffa26869cb8858f92494bfef"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 102,
+            "end_frame": 107,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000002",
+            "stream": "observation.image",
+            "sample_index": 102,
+            "timestamp": 10.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "05c3d52288cd97683ecb828cf5dafef2c24fa7227e731fe2794a67cc9f06b87d"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 108,
+            "end_frame": 115,
+            "consecutive_frames": 8,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000002",
+            "stream": "observation.image",
+            "sample_index": 108,
+            "timestamp": 10.8,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "f69aa64fffd9d955019636fde5e189cca66f970e976c192f47a991538dda97a7"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 11 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 130,
+            "end_frame": 140,
+            "consecutive_frames": 11,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000002",
+            "stream": "observation.image",
+            "sample_index": 130,
+            "timestamp": 13.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "81f25df348a33e7c05bbd1a8612fa17ab07c484e728d371d53e5589d0cc9d27f"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 20 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 19,
+            "consecutive_frames": 20,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000003",
+            "stream": "observation.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "433d5f2380c02ad4eebe4e4a4705cb874517639df550efd6854a13137867148d"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 66,
+            "end_frame": 71,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000003",
+            "stream": "observation.image",
+            "sample_index": 66,
+            "timestamp": 6.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "ccf31441fe8bba81f0f6eb6d4af67ed146e7e292dbf2c75ac62fa9154968cd82"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 94,
+            "end_frame": 101,
+            "consecutive_frames": 8,
+            "motion_fraction": 0.8571428571428571
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000003",
+            "stream": "observation.image",
+            "sample_index": 94,
+            "timestamp": 9.4,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "a1aad2fcfd0f74d2024869d3ae9baaecc6bfc2cc733ac6e1a0ed85c9ea528e0c"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 122,
+            "end_frame": 127,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000003",
+            "stream": "observation.image",
+            "sample_index": 122,
+            "timestamp": 12.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "dcbc773790807d1142a813e25840868bde8bcf46199bb4086129c68637712c32"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 2,
+            "end_frame": 7,
+            "consecutive_frames": 6,
+            "motion_fraction": 0.8
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000004",
+            "stream": "observation.image",
+            "sample_index": 2,
+            "timestamp": 0.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "5ff04cadbb87e99c0e5b914b0da96eaac769e4eab89b718b2f013c1bfd5afb6c"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 16 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 22,
+            "end_frame": 37,
+            "consecutive_frames": 16,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000004",
+            "stream": "observation.image",
+            "sample_index": 22,
+            "timestamp": 2.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "40e8b194df09cb518b989e2959fa55ccfd9f147133542cc86b5d74b0d89a6d9c"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 7 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 110,
+            "end_frame": 116,
+            "consecutive_frames": 7,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000004",
+            "stream": "observation.image",
+            "sample_index": 110,
+            "timestamp": 11.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "4526827a1a3c8e818914dc663441bb9112619447f4ff0f74a88dccc3af2ece6c"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 18 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 118,
+            "end_frame": 135,
+            "consecutive_frames": 18,
+            "motion_fraction": 0.8823529411764706
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000004",
+            "stream": "observation.image",
+            "sample_index": 118,
+            "timestamp": 11.8,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "d8a18998d964b3e58be58ead4be5f4d2393cc4f8c1e78d8b05fd7cbc82e7d3f6"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 10 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 140,
+            "end_frame": 149,
+            "consecutive_frames": 10,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000004",
+            "stream": "observation.image",
+            "sample_index": 140,
+            "timestamp": 14.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "21588e567090ec09ad4a9eb289f352c8cd9db895d57a750bb915d9ee4b47d40b"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 5,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000005",
+            "stream": "observation.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "b04a44d4bed4bc0acaace4da2cb426fd264e531d6abc6fe707546c073ac99a93"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 10 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 8,
+            "end_frame": 17,
+            "consecutive_frames": 10,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000005",
+            "stream": "observation.image",
+            "sample_index": 8,
+            "timestamp": 0.8,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "a42ddb2c6e3d56c404f31aaa6e817481daeaf738e0178b1e9bf17ba20cdf28f2"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 76,
+            "end_frame": 81,
+            "consecutive_frames": 6,
+            "motion_fraction": 0.8
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000005",
+            "stream": "observation.image",
+            "sample_index": 76,
+            "timestamp": 7.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "fedf87a2d3dda51316afa51b867af97ba320731ede07749ece9f334b69a1edbd"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 21 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 86,
+            "end_frame": 106,
+            "consecutive_frames": 21,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000005",
+            "stream": "observation.image",
+            "sample_index": 86,
+            "timestamp": 8.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "d77eb4e192de185d2ba4d786a07bd4e717d46e1fb12a02852c62717792f5ec06"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 10 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 124,
+            "end_frame": 133,
+            "consecutive_frames": 10,
+            "motion_fraction": 0.6666666666666666
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000005",
+            "stream": "observation.image",
+            "sample_index": 124,
+            "timestamp": 12.4,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "3f21c5f2f8f9135515c8752b6720340dfdbe3915102ca3652d1114863bb7e250"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 7,
+            "consecutive_frames": 8,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000006",
+            "stream": "observation.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "060719f77028554b24e691ea15624a519c8ea422a59d2e48eb6f9a3b1a7dab2b"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 46,
+            "end_frame": 53,
+            "consecutive_frames": 8,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000006",
+            "stream": "observation.image",
+            "sample_index": 46,
+            "timestamp": 4.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "68a8700cb45ae13b80108359d10658f04de5ef3b6985df8fbc34ab38bcd6dad5"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 11 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 58,
+            "end_frame": 68,
+            "consecutive_frames": 11,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000006",
+            "stream": "observation.image",
+            "sample_index": 58,
+            "timestamp": 5.8,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "18794bca86bb5f3c01bbf0b6f527b960efd9dda361dbafccb4d69245836ed6d8"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 5,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000007",
+            "stream": "observation.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "b6692c9f9782b03af77c5bcf26a6f64272bf8e3fcfeeb6838c3097b30875eaf6"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 14 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 16,
+            "end_frame": 29,
+            "consecutive_frames": 14,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000007",
+            "stream": "observation.image",
+            "sample_index": 16,
+            "timestamp": 1.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "31ad782219a040aee9dbb5e33ca092ceb46ab4a1337e6cf907280b9b70d681ea"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 74,
+            "end_frame": 79,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000007",
+            "stream": "observation.image",
+            "sample_index": 74,
+            "timestamp": 7.4,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "44007b5f113e868fa8b9123d163dea0f407690c38b82d4ef941d78bff40d11cc"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 11 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 118,
+            "end_frame": 128,
+            "consecutive_frames": 11,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000007",
+            "stream": "observation.image",
+            "sample_index": 118,
+            "timestamp": 11.8,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "218f820d917fefb3a391511f784b956b3ebfc656a5aa77155ffc3a5ea547ff28"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 10 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 150,
+            "end_frame": 159,
+            "consecutive_frames": 10,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000007",
+            "stream": "observation.image",
+            "sample_index": 150,
+            "timestamp": 15.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "a9f157758d4d9b6bfc9825c6bccf0f24979d887db0dc1dd719e080bb9af3a0fa"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 5,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000008",
+            "stream": "observation.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "eaa641660551dbf7717d2d26492c887401b13885cb427befc7d6c452fc21f8c7"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 7 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 15,
+            "end_frame": 21,
+            "consecutive_frames": 7,
+            "motion_fraction": 0.8333333333333334
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000008",
+            "stream": "observation.image",
+            "sample_index": 15,
+            "timestamp": 1.5,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "3327c9f9cdac16f6f852567f0be8c16196681084a03805bbb96ec24a7c94d535"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 18 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 48,
+            "end_frame": 65,
+            "consecutive_frames": 18,
+            "motion_fraction": 0.8823529411764706
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000008",
+            "stream": "observation.image",
+            "sample_index": 48,
+            "timestamp": 4.8,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "b27a1933b5e5b011311e353e085388daba8dc730cb5743130524370d661977d4"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 14 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 66,
+            "end_frame": 79,
+            "consecutive_frames": 14,
+            "motion_fraction": 0.9230769230769231
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000008",
+            "stream": "observation.image",
+            "sample_index": 66,
+            "timestamp": 6.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "735049e5436e8a1d577b8764d5af9938b3aeefc8ec71918b681a2d416483cbdf"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 5,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000009",
+            "stream": "observation.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "d585462672ca2a63b4fdb8ada8498e2b50219dd1b92d73b8c2cea8dda5face90"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 14 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 30,
+            "end_frame": 43,
+            "consecutive_frames": 14,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000009",
+            "stream": "observation.image",
+            "sample_index": 30,
+            "timestamp": 3.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "0aef79374ea55e6b760d3e9ea17039c0fd3a9b906870b3b8204acab994c1567e"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 74,
+            "end_frame": 79,
+            "consecutive_frames": 6,
+            "motion_fraction": 0.8
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000009",
+            "stream": "observation.image",
+            "sample_index": 74,
+            "timestamp": 7.4,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "52375ebd91ec1c55af65b952142eb0036a1643e82c7e50f57fecea97f02425d6"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 9 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 94,
+            "end_frame": 102,
+            "consecutive_frames": 9,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000009",
+            "stream": "observation.image",
+            "sample_index": 94,
+            "timestamp": 9.4,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "633f456e997c7d68894987ef4dde42bfb6646695bda26a56dd756f0cf21d395f"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 7 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 104,
+            "end_frame": 110,
+            "consecutive_frames": 7,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000009",
+            "stream": "observation.image",
+            "sample_index": 104,
+            "timestamp": 10.4,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "a256c4942d3508adb4d466bcaa3492d70aea36bc7342512819c765b01e46f5ca"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 0,
+            "end_frame": 7,
+            "consecutive_frames": 8,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000010",
+            "stream": "observation.image",
+            "sample_index": 0,
+            "timestamp": 0.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "f33978fb4fcdcd581221ff0c9996ec7e12c78ea994cb2dde5ddb6ea94f9e54d3"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 10 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 22,
+            "end_frame": 31,
+            "consecutive_frames": 10,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000010",
+            "stream": "observation.image",
+            "sample_index": 22,
+            "timestamp": 2.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "a98bc22084929744fbb1afc255153e837e32f621161dbb18a1a2faec265f2726"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 18 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 96,
+            "end_frame": 113,
+            "consecutive_frames": 18,
+            "motion_fraction": 0.9411764705882353
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000010",
+            "stream": "observation.image",
+            "sample_index": 96,
+            "timestamp": 9.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "d3c0cfb814bd0a9cc5188a8530abbf7d3ce9f34b4a325d3a77da06465f92c9d1"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 8 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 116,
+            "end_frame": 123,
+            "consecutive_frames": 8,
+            "motion_fraction": 0.7142857142857143
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000010",
+            "stream": "observation.image",
+            "sample_index": 116,
+            "timestamp": 11.6,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "18d60f2d5f59a24c73f6f5fc9cbb40fddd640ebcf891bf2b66a2a1c54ddc1501"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 130,
+            "end_frame": 135,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000010",
+            "stream": "observation.image",
+            "sample_index": 130,
+            "timestamp": 13.0,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "18da96c5782c541a6daf0dc54b4f2e908872bb25f0805ce330fc5264a2242037"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 6 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 2,
+            "end_frame": 7,
+            "consecutive_frames": 6,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000011",
+            "stream": "observation.image",
+            "sample_index": 2,
+            "timestamp": 0.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "6434c2db3883338c2bc3bca0999d0d1c790ed1ab3ea97582ccc14a460855fcc3"
+        },
+        {
+          "rule_id": "video.frozen_frames",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Camera streams do not freeze during robot motion",
+          "message": "observation.image froze for 18 consecutive frames during robot motion",
+          "impact": "Repeated frames during robot motion indicate lost or misaligned visual supervision.",
+          "remediation": "Inspect the camera/encoder at the cited moving range and recollect if motion was lost.",
+          "observed": {
+            "start_frame": 22,
+            "end_frame": 39,
+            "consecutive_frames": 18,
+            "motion_fraction": 1.0
+          },
+          "expected": {
+            "mean_absolute_difference_above": 0.5
+          },
+          "location": {
+            "episode": "episode_000011",
+            "stream": "observation.image",
+            "sample_index": 22,
+            "timestamp": 2.2,
+            "source": "videos/observation.image/chunk-000/file-000.mp4"
+          },
+          "evidence": {},
+          "fingerprint": "2c944fbb24b8f3cea18ae2bb1ab5be5351c2c13466849814168273afccc8962c"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 0.996124988887459,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "duplication.exact_episodes",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 5121.356250019744,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    }
+  ],
+  "summary": {
+    "passed": 14,
+    "failed": 1,
+    "not_run": 3,
+    "errored": 0,
+    "findings": 50
+  },
+  "coverage": {
+    "episodes": 206,
+    "frames": 25650,
+    "messages": null,
+    "streams": [
+      "observation.image",
+      "observation.state",
+      "action",
+      "episode_index",
+      "frame_index",
+      "timestamp",
+      "next.reward",
+      "next.done",
+      "next.success",
+      "index",
+      "task_index"
+    ],
+    "tasks": {
+      "Push the T-shaped block onto the T-shaped target.": 206
+    },
+    "length_min": 49,
+    "length_max": 246,
+    "robot_type": "unknown",
+    "fps": 10.0
+  },
+  "cache": {
+    "used": true,
+    "hits": 0,
+    "misses": 3,
+    "directory": "/Users/pranayjoshi/Desktop/projects/physlint/.physlint/cache"
+  },
+  "suppressed": [],
+  "plugins": []
+}

@@ -72,7 +72,7 @@ def test_init_refuses_overwrite(tmp_path):
 def test_version_command():
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
-    assert result.stdout.strip() == "0.3.0"
+    assert result.stdout.strip() == "0.3.1"
 
 
 def test_cli_checks_and_inspects_mcap(mcap_factory, tmp_path):

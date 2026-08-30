@@ -15,4 +15,6 @@ New adapter proposals should start with the format-request issue template and in
 
 The pinned public release gate is intentionally separate from normal CI because it downloads hundreds of MiB. Maintainers can run it locally with `python -m validation.harness` or trigger the manual real-data workflow.
 
+The compatibility survey is also separate from CI and from the release gate. It downloads a stratified public corpus and records outcomes without requiring a pass. Run `python -m validation.survey_harness` and read `docs/validation/compatibility-survey.md` before adding Hub datasets. Do not promote a survey row into the release gate until every finding has been classified by hand.
+
 Do not add network access, telemetry, source-data mutation, large fixtures, or a new default dependency without an issue describing the measured requirement.

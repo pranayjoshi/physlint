@@ -30,6 +30,16 @@ def test_iterates_each_episode_lazily(dataset_factory):
     assert batches[0].columns["action"].shape[1:] == (2,)
 
 
+def test_accepts_string_feature_names(dataset_factory):
+    root = dataset_factory()
+    info_path = root / "meta" / "info.json"
+    info = json.loads(info_path.read_text(encoding="utf-8"))
+    info["features"]["action"]["names"] = "env actions"
+    info_path.write_text(json.dumps(info), encoding="utf-8")
+    action = next(stream for stream in discover(root).inventory.streams if stream.key == "action")
+    assert action.names == ["env actions"]
+
+
 def test_rejects_legacy_or_malformed_metadata(dataset_factory):
     root = dataset_factory()
     info_path = root / "meta" / "info.json"

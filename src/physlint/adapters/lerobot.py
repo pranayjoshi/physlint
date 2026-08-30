@@ -10,6 +10,7 @@ from typing import Any
 import numpy as np
 import pyarrow as pa
 import pyarrow.parquet as pq
+from pydantic import ValidationError
 
 from physlint.adapters.base import AdapterError
 from physlint.models.dataset import (
@@ -83,16 +84,19 @@ class LeRobotAdapter:
             dtype = str(raw.get("dtype", "unknown"))
             shape = tuple(int(value) for value in raw.get("shape", ()))
             kind = "video" if dtype == "video" else "image" if dtype == "image" else "numeric"
-            streams.append(
-                Stream(
-                    key=key,
-                    dtype=dtype,
-                    shape=shape,
-                    kind=kind,
-                    names=raw.get("names"),
-                    units=raw.get("unit") or raw.get("units"),
+            try:
+                streams.append(
+                    Stream(
+                        key=key,
+                        dtype=dtype,
+                        shape=shape,
+                        kind=kind,
+                        names=_normalize_feature_names(raw.get("names")),
+                        units=raw.get("unit") or raw.get("units"),
+                    )
                 )
-            )
+            except ValidationError as exc:
+                raise AdapterError(f"invalid LeRobot feature declaration for {key!r}") from exc
         return streams
 
     def _read_episodes(self) -> list[Episode]:
@@ -284,6 +288,17 @@ class LeRobotAdapter:
         )
         self._video_analysis_cache[key] = analysis
         return analysis
+
+
+def _normalize_feature_names(value: Any) -> list[str] | dict[str, list[str]] | None:
+    """Accept Hub layouts that store a single name as a string."""
+    if value is None or isinstance(value, dict):
+        return value
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list):
+        return [str(item) for item in value]
+    raise AdapterError(f"feature names must be a string, list, or object, not {type(value).__name__}")
 
 
 def _optional_int(value: Any) -> int | None:

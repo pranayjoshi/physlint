@@ -2,6 +2,8 @@
 
 The public evidence index for Physlint. It presents revision-pinned LeRobot, MCAP, and ROS 2 validation results, plus fingerprint-level regression diffs, without collapsing unlike quality contracts into a universal score.
 
+Release-gate rows stay Public or Controlled. Compatibility-survey rows are tagged Survey and are not a Hugging Face quality score. See `docs/validation/compatibility-survey.md`.
+
 ## Local development
 
 Requires Node.js 22.13 or newer.

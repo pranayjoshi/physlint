@@ -1,0 +1,360 @@
+{
+  "schema_version": 1,
+  "run_id": "lerobot-survey-2026-08-30",
+  "physlint_version": "0.3.0",
+  "tier": "compatibility-survey",
+  "claim": "This corpus is not the public release gate. Outcomes are compatibility observations on revision-pinned public snapshots. Do not treat pass rates as a production quality claim or a Hugging Face robotics score.",
+  "checked": 10,
+  "checked_passed": 5,
+  "checked_failed": 5,
+  "checked_errored": 0,
+  "screens": 5,
+  "screens_rejected": 5,
+  "deferred": 4,
+  "skipped": 12,
+  "episodes": 1678,
+  "frames": 182128,
+  "results": [
+    {
+      "id": "pusht",
+      "kind": "check",
+      "title": "PushT",
+      "repo_id": "lerobot/pusht",
+      "revision": "7628202a2180972f291ba1bc6723834921e72c19",
+      "robot": "unknown",
+      "fps": 10,
+      "cells": [
+        "producer-official",
+        "cadence-10",
+        "embodiment-2d"
+      ],
+      "status": "failed",
+      "episodes": 206,
+      "frames": 25650,
+      "applicable_rules": 15,
+      "findings": 50,
+      "errored": 0,
+      "finding_rules": {
+        "video.frozen_frames": 50
+      },
+      "rule_time_seconds": 31.127,
+      "error": null,
+      "artifact": "check-pusht.json",
+      "artifact_sha256": "a6512696dcbe1f8f947c982d4c192bc676451dae0fe95187292f6846eac1b1c1"
+    },
+    {
+      "id": "xarm-lift",
+      "kind": "check",
+      "title": "xArm Lift Medium",
+      "repo_id": "lerobot/xarm_lift_medium",
+      "revision": "79efb0e3cef0e530ddec4b8569b190966ab45808",
+      "robot": "unknown",
+      "fps": 15,
+      "cells": [
+        "producer-official",
+        "cadence-15",
+        "embodiment-xarm"
+      ],
+      "status": "passed",
+      "episodes": 800,
+      "frames": 20000,
+      "applicable_rules": 15,
+      "findings": 0,
+      "errored": 0,
+      "finding_rules": {},
+      "rule_time_seconds": 86.812,
+      "error": null,
+      "artifact": "check-xarm-lift.json",
+      "artifact_sha256": "6a9abe0d32d0e0e69fc569911b09b1f242f94cd655cfbf8a8b44d3ea4ec48692"
+    },
+    {
+      "id": "unitree-h1-greet",
+      "kind": "check",
+      "title": "Unitree H1 Two-Robot Greeting",
+      "repo_id": "lerobot/unitreeh1_two_robot_greeting",
+      "revision": "51d65cfa10380beff74570b599b49347abf5fbfa",
+      "robot": "unknown",
+      "fps": 50,
+      "cells": [
+        "producer-official",
+        "cadence-50",
+        "embodiment-humanoid"
+      ],
+      "status": "passed",
+      "episodes": 30,
+      "frames": 3750,
+      "applicable_rules": 15,
+      "findings": 0,
+      "errored": 0,
+      "finding_rules": {},
+      "rule_time_seconds": 7.807,
+      "error": null,
+      "artifact": "check-unitree-h1-greet.json",
+      "artifact_sha256": "14c864d61ea4cafedeac3ff1ed0355fcb9f2c556800c93c20788116a42f22947"
+    },
+    {
+      "id": "so100-pickplace",
+      "kind": "check",
+      "title": "SVLA SO-100 Pick & Place",
+      "repo_id": "lerobot/svla_so100_pickplace",
+      "revision": "728583b5eaf9e739a7f119e2def466fa1d552402",
+      "robot": "so100",
+      "fps": 30,
+      "cells": [
+        "producer-official",
+        "cadence-30",
+        "embodiment-so100"
+      ],
+      "status": "passed",
+      "episodes": 50,
+      "frames": 19631,
+      "applicable_rules": 15,
+      "findings": 0,
+      "errored": 0,
+      "finding_rules": {},
+      "rule_time_seconds": 33.24,
+      "error": null,
+      "artifact": "check-so100-pickplace.json",
+      "artifact_sha256": "c066b9182e6138cfaaae08fec812d7afd47ed21571a900ea1581e416c1514f97"
+    },
+    {
+      "id": "aloha-battery",
+      "kind": "check",
+      "title": "Aloha Static Battery (episodes 0-4)",
+      "repo_id": "macrodata/aloha_static_battery_ep000_004",
+      "revision": "019b0779f5edfc2e35a48c38372a317dbb298af3",
+      "robot": "unknown",
+      "fps": 50,
+      "cells": [
+        "producer-community",
+        "cadence-50",
+        "embodiment-bimanual"
+      ],
+      "status": "passed",
+      "episodes": 5,
+      "frames": 3000,
+      "applicable_rules": 15,
+      "findings": 0,
+      "errored": 0,
+      "finding_rules": {},
+      "rule_time_seconds": 5.396,
+      "error": null,
+      "artifact": "check-aloha-battery.json",
+      "artifact_sha256": "145831f9aa5dd9a21d0fbf1e29b33bc273d81e05a78d792e10159fd1f37865fc"
+    },
+    {
+      "id": "ur10e-robotiq",
+      "kind": "check",
+      "title": "UR10e Robotiq 2F-85",
+      "repo_id": "wenyixu101/ur10e-robotiq-2f85",
+      "revision": "a69b597014027d8830f569af6554951d4f0a0cc0",
+      "robot": "ur10e_robotiq_2f85",
+      "fps": 6,
+      "cells": [
+        "producer-community",
+        "cadence-6",
+        "embodiment-industrial"
+      ],
+      "status": "failed",
+      "episodes": 55,
+      "frames": 21419,
+      "applicable_rules": 15,
+      "findings": 4,
+      "errored": 0,
+      "finding_rules": {
+        "video.frozen_frames": 4
+      },
+      "rule_time_seconds": 21.752,
+      "error": null,
+      "artifact": "check-ur10e-robotiq.json",
+      "artifact_sha256": "cc9ff70a0a05fdc3dc5fc9ae0ca7aa469a2a7f676debd2eed3f99cb257b8b2e6"
+    },
+    {
+      "id": "so101-teleop",
+      "kind": "check",
+      "title": "SO-101 Teleop Pick-and-Place",
+      "repo_id": "wenyixu101/so101-pick-and-place",
+      "revision": "1dec6e13f0273e1ad9729215771fffafa16b710e",
+      "robot": "so_follower",
+      "fps": 25,
+      "cells": [
+        "producer-community",
+        "cadence-25",
+        "embodiment-so101"
+      ],
+      "status": "failed",
+      "episodes": 50,
+      "frames": 18250,
+      "applicable_rules": 15,
+      "findings": 50,
+      "errored": 0,
+      "finding_rules": {
+        "video.frozen_frames": 50
+      },
+      "rule_time_seconds": 31.335,
+      "error": null,
+      "artifact": "check-so101-teleop.json",
+      "artifact_sha256": "3a06a144da5c4b2b5352b695e3b128499ba1a50c37105a5ba63226bad15aa163"
+    },
+    {
+      "id": "reachy-head",
+      "kind": "check",
+      "title": "Reachy 2 Head Sample",
+      "repo_id": "tavis-benchmark/tavis-head-sample-reachy2",
+      "revision": "2f490bd5d290fb59966f86c82d78ab4d6c97ec13",
+      "robot": "none",
+      "fps": 60,
+      "cells": [
+        "producer-lab",
+        "cadence-60",
+        "embodiment-reachy"
+      ],
+      "status": "failed",
+      "episodes": 10,
+      "frames": 3067,
+      "applicable_rules": 5,
+      "findings": 3,
+      "errored": 10,
+      "finding_rules": {
+        "manifest.required_files": 3
+      },
+      "rule_time_seconds": 6.118,
+      "error": null,
+      "artifact": "check-reachy-head.json",
+      "artifact_sha256": "43548d323c1a417f120d88931cbace674e4ed3c894772e78f0fab2589f8cf85d"
+    },
+    {
+      "id": "lekiwi-go2",
+      "kind": "check",
+      "title": "LeKiwi Go2",
+      "repo_id": "vietnguyen28/lekiwi_go2",
+      "revision": "c324f64a8c595939725f1030e087e0a502f673db",
+      "robot": "lekiwi_client",
+      "fps": 30,
+      "cells": [
+        "producer-community",
+        "cadence-30",
+        "embodiment-mobile"
+      ],
+      "status": "passed",
+      "episodes": 40,
+      "frames": 14391,
+      "applicable_rules": 15,
+      "findings": 0,
+      "errored": 0,
+      "finding_rules": {},
+      "rule_time_seconds": 15.561,
+      "error": null,
+      "artifact": "check-lekiwi-go2.json",
+      "artifact_sha256": "fa8a442c9627650df22015e9e8bebc59aa62fcf2eceaac716f60ce227b0028f2"
+    },
+    {
+      "id": "libero-spatial",
+      "kind": "check",
+      "title": "LIBERO Spatial",
+      "repo_id": "nvidia/LIBERO_LeRobot_v3",
+      "revision": "e5907374380b8f96511957e6ba5582be52a1e179",
+      "robot": "franka",
+      "fps": 20,
+      "cells": [
+        "producer-lab",
+        "cadence-20",
+        "embodiment-franka",
+        "nested-suite"
+      ],
+      "status": "failed",
+      "episodes": 432,
+      "frames": 52970,
+      "applicable_rules": 15,
+      "findings": 1,
+      "errored": 0,
+      "finding_rules": {
+        "video.frozen_frames": 1
+      },
+      "rule_time_seconds": 178.672,
+      "error": null,
+      "artifact": "check-libero-spatial.json",
+      "artifact_sha256": "061e32368c9aa5f832ec0063a64d6727ab66e0dacc32040bd08aec175d691f01"
+    },
+    {
+      "id": "koch-v21",
+      "kind": "version-edge",
+      "title": "Koch arm gripper (v2.1)",
+      "repo_id": "Dongkkka/koch_arm_gripper_embodiment_dataset",
+      "revision": "ced99aaaa3e3fe9e007239f032d3d2957b032bf8",
+      "cells": [
+        "embodiment-koch",
+        "version-v2.1"
+      ],
+      "status": "rejected",
+      "expected_error": "unsupported LeRobot version v2.1",
+      "observed_error": "unsupported LeRobot version v2.1; Physlint supports v3.x",
+      "error": null,
+      "reason": "Koch embodiment is published as v2.1; keep as fail-closed evidence."
+    },
+    {
+      "id": "koch-v20",
+      "kind": "version-edge",
+      "title": "Koch pick-and-place Lego (v2.0)",
+      "repo_id": "rgarreta/koch_pick_place_lego_v8",
+      "revision": "bdaa738541e52caa64508283b7a8eef7bfcfd9e8",
+      "cells": [
+        "embodiment-koch",
+        "version-v2.0"
+      ],
+      "status": "rejected",
+      "expected_error": "unsupported LeRobot version v2.0",
+      "observed_error": "unsupported LeRobot version v2.0; Physlint supports v3.x",
+      "error": null,
+      "reason": "Official-style Koch teleop remains v2.0 on the Hub."
+    },
+    {
+      "id": "so101-v21-large",
+      "kind": "version-edge",
+      "title": "SO-101 pi0.5 base (v2.1)",
+      "repo_id": "dongyoonkim/so101-pi05-base-dataset",
+      "revision": "4b6a3e2415b85686ff2b33650c3215f8011eb45c",
+      "cells": [
+        "embodiment-so101",
+        "version-v2.1"
+      ],
+      "status": "rejected",
+      "expected_error": "unsupported LeRobot version v2.1",
+      "observed_error": "unsupported LeRobot version v2.1; Physlint supports v3.x",
+      "error": null,
+      "reason": "Large community SO-101 corpus still on v2.1; metadata-only screen."
+    },
+    {
+      "id": "reachy-kitchen-v20",
+      "kind": "version-edge",
+      "title": "Reachy 2 kitchen multimodal (v2.0)",
+      "repo_id": "CompeteSAI/reachy2-kitchen-multimodal",
+      "revision": "d03c0c86681a4b4fcfcb341d1e6f2853dec87a94",
+      "cells": [
+        "embodiment-reachy",
+        "version-v2.0"
+      ],
+      "status": "rejected",
+      "expected_error": "unsupported LeRobot version v2.0",
+      "observed_error": "unsupported LeRobot version v2.0; Physlint supports v3.x",
+      "error": null,
+      "reason": "Full Reachy kitchen set is v2.0; the v3 head sample is in the check list."
+    },
+    {
+      "id": "robotwin-v21",
+      "kind": "version-edge",
+      "title": "RoboTwin 3D (v2.1)",
+      "repo_id": "flex-pi/robotwin_3d",
+      "revision": "bee164afe94041d8c3d7dd1203725c41163fc3f4",
+      "cells": [
+        "embodiment-bimanual",
+        "version-v2.1"
+      ],
+      "status": "rejected",
+      "expected_error": "unsupported LeRobot version v2.1",
+      "observed_error": "unsupported LeRobot version v2.1; Physlint supports v3.x",
+      "error": null,
+      "reason": "Bimanual Aloha conversion at 50 FPS remains v2.1."
+    }
+  ]
+}
