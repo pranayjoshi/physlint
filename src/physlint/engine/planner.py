@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Any
 
@@ -20,12 +21,17 @@ class PlannedRule:
     not_run_reason: str | None = None
 
 
-def plan_rules(dataset: DatasetView, config: Config) -> list[PlannedRule]:
+def plan_rules(dataset: DatasetView, config: Config, extra: Sequence[Rule] = ()) -> list[PlannedRule]:
+    extra_rules = list(extra)
     registry = {rule.metadata.id: rule for rule in BUILTIN_RULES}
+    for rule in extra_rules:
+        if rule.metadata.id in registry:
+            raise ConfigurationError(f"plugin rule ID collides with a built-in rule: {rule.metadata.id}")
+        registry[rule.metadata.id] = rule
     unknown_rules = set(config.rules) - set(registry)
     if unknown_rules:
         raise ConfigurationError(f"unknown rule IDs: {', '.join(sorted(unknown_rules))}")
-    active_rules = rules_for(dataset.inventory.adapter, dataset.inventory.profile)
+    active_rules = rules_for(dataset.inventory.adapter, dataset.inventory.profile, extra=extra_rules)
     available_streams = {stream.key for stream in dataset.inventory.streams}
     planned: list[PlannedRule] = []
     for rule in active_rules:
@@ -53,7 +59,7 @@ def plan_rules(dataset: DatasetView, config: Config) -> list[PlannedRule]:
 
 
 def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
-    for key in ("max_findings", "stride", "min_messages"):
+    for key in ("max_findings", "stride", "min_messages", "max_idle_samples"):
         if key in options and (not isinstance(options[key], int) or options[key] <= 0):
             raise ConfigurationError(f"{rule_id}.{key} must be a positive integer")
     for key in ("max_consecutive_frames", "frame_count_tolerance"):
@@ -69,6 +75,7 @@ def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
         "motion_delta_threshold",
         "min_motion_fraction",
         "max_header_skew_ms",
+        "idle_abs_tolerance",
     ):
         if (
             key in options
@@ -94,3 +101,5 @@ def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
         not isinstance(value, (int, float)) or float(value) <= 0 for value in options["topic_rates_hz"].values()
     ):
         raise ConfigurationError(f"{rule_id}.topic_rates_hz values must be positive numbers")
+    if "motion_stream" in options and not isinstance(options["motion_stream"], str):
+        raise ConfigurationError(f"{rule_id}.motion_stream must be a stream name")

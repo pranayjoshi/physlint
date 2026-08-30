@@ -26,7 +26,7 @@ def test_core_cli_workflow(dataset_factory, tmp_path):
 
     rules = runner.invoke(app, ["rules", "--json"])
     assert rules.exit_code == 0
-    assert len(json.loads(rules.stdout)) == 31
+    assert len(json.loads(rules.stdout)) == 32
 
     explain = runner.invoke(app, ["explain", "temporal.max_gap"])
     assert explain.exit_code == 0
@@ -72,7 +72,7 @@ def test_init_refuses_overwrite(tmp_path):
 def test_version_command():
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
-    assert result.stdout.strip() == "0.2.0a2"
+    assert result.stdout.strip() == "0.3.0"
 
 
 def test_cli_checks_and_inspects_mcap(mcap_factory, tmp_path):
@@ -107,3 +107,48 @@ def test_generated_cross_format_config_does_not_block_mcap(mcap_factory, tmp_pat
     assert runner.invoke(app, ["init", "--path", str(config)]).exit_code == 0
     result = runner.invoke(app, ["check", str(mcap_factory()), "--config", str(config)])
     assert result.exit_code == 0, result.output
+
+
+def test_cli_compare_baseline_and_ci_reports(dataset_factory, tmp_path):
+    clean = dataset_factory()
+    dirty = dataset_factory(timestamps=[0, 0, 2 / 30, 3 / 30, 4 / 30, 5 / 30] * 2)
+    compared = runner.invoke(app, ["compare", str(clean), str(dirty), "--output", "json"])
+    assert compared.exit_code == 1, compared.output
+    assert json.loads(compared.stdout)["status"] == "regressed"
+
+    baseline_path = tmp_path / "baseline.yaml"
+    created = runner.invoke(
+        app,
+        [
+            "baseline",
+            str(dirty),
+            "--author",
+            "ada",
+            "--reason",
+            "known recorder glitch",
+            "--output",
+            str(baseline_path),
+        ],
+    )
+    assert created.exit_code == 0, created.output
+    suppressed = runner.invoke(app, ["check", str(dirty), "--baseline", str(baseline_path)])
+    assert suppressed.exit_code == 0, suppressed.output
+    assert "Suppressed" in suppressed.stdout
+
+    reports = runner.invoke(
+        app,
+        [
+            "check",
+            str(clean),
+            "--junit-output",
+            str(tmp_path / "report.xml"),
+            "--sarif-output",
+            str(tmp_path / "report.sarif"),
+            "--html-output",
+            str(tmp_path / "report.html"),
+        ],
+    )
+    assert reports.exit_code == 0, reports.output
+    assert (tmp_path / "report.xml").is_file()
+    assert (tmp_path / "report.sarif").is_file()
+    assert (tmp_path / "report.html").is_file()

@@ -21,6 +21,7 @@ class RuleMetadata:
     required_capabilities: frozenset[str] = frozenset()
     required_streams: frozenset[str] = frozenset()
     option_defaults: dict[str, Any] = field(default_factory=dict)
+    adapters: frozenset[str] = field(default_factory=frozenset)
     limitations: str = ""
     remediation: str = "Inspect and recollect affected source data."
 

@@ -1,21 +1,31 @@
-"""Deterministic rule execution with timing and exception isolation."""
+"""Deterministic rule execution with timing, caching, and exception isolation."""
 
 from __future__ import annotations
 
 import hashlib
 import json
 import time
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 
 from physlint._version import __version__
 from physlint.adapters.base import AdapterError
 from physlint.config import Config
-from physlint.engine.planner import plan_rules
+from physlint.engine.cache import RuleCache
+from physlint.engine.planner import PlannedRule, plan_rules
 from physlint.models.dataset import DatasetView
-from physlint.models.finding import Report, RuleResult, RuleStatus, RunSummary, Severity
-from physlint.models.rule import RuleNotApplicable
+from physlint.models.finding import (
+    CacheSummary,
+    CoverageSnapshot,
+    Report,
+    RuleResult,
+    RuleStatus,
+    RunSummary,
+    Severity,
+)
+from physlint.models.rule import Rule, RuleNotApplicable
+from physlint.plugins import load_plugin_rules
 
 SEVERITY_RANK = {
     Severity.NOTICE: 0,
@@ -30,79 +40,22 @@ def run_validation(
     config: Config,
     *,
     clock: Callable[[], datetime] | None = None,
+    extra_rules: Sequence[Rule] | None = None,
 ) -> Report:
     clock = clock or (lambda: datetime.now(UTC))
     started = clock()
-    results: list[RuleResult] = []
-    for planned in plan_rules(dataset, config):
-        metadata = planned.rule.metadata
-        if planned.not_run_reason:
-            results.append(
-                RuleResult(
-                    rule_id=metadata.id,
-                    rule_version=metadata.version,
-                    status=RuleStatus.NOT_RUN,
-                    duration_ms=0,
-                    reason=planned.not_run_reason,
-                )
-            )
-            continue
-        before = time.perf_counter()
-        try:
-            findings = planned.rule.run(dataset, planned.options, planned.severity)
-            status = RuleStatus.FAILED if findings else RuleStatus.PASSED
-            results.append(
-                RuleResult(
-                    rule_id=metadata.id,
-                    rule_version=metadata.version,
-                    status=status,
-                    duration_ms=(time.perf_counter() - before) * 1000,
-                    findings=findings,
-                )
-            )
-        except RuleNotApplicable as exc:
-            results.append(
-                RuleResult(
-                    rule_id=metadata.id,
-                    rule_version=metadata.version,
-                    status=RuleStatus.NOT_RUN,
-                    duration_ms=(time.perf_counter() - before) * 1000,
-                    reason=str(exc),
-                )
-            )
-        except AdapterError as exc:
-            results.append(
-                RuleResult(
-                    rule_id=metadata.id,
-                    rule_version=metadata.version,
-                    status=RuleStatus.ERRORED,
-                    duration_ms=(time.perf_counter() - before) * 1000,
-                    reason=f"AdapterError: {exc}",
-                    error_kind="adapter",
-                )
-            )
-        except Exception as exc:  # noqa: BLE001 - isolation is an engine responsibility
-            results.append(
-                RuleResult(
-                    rule_id=metadata.id,
-                    rule_version=metadata.version,
-                    status=RuleStatus.ERRORED,
-                    duration_ms=(time.perf_counter() - before) * 1000,
-                    reason=f"{type(exc).__name__}: {exc}",
-                    error_kind="rule",
-                )
-            )
-    threshold = SEVERITY_RANK[Severity(config.fail_on)]
-    all_findings = [finding for result in results for finding in result.findings]
-    fails_contract = any(SEVERITY_RANK[finding.severity] >= threshold for finding in all_findings)
-    fails_contract |= any(result.status == RuleStatus.ERRORED for result in results)
-    summary = RunSummary(
-        passed=sum(result.status == RuleStatus.PASSED for result in results),
-        failed=sum(result.status == RuleStatus.FAILED for result in results),
-        not_run=sum(result.status == RuleStatus.NOT_RUN for result in results),
-        errored=sum(result.status == RuleStatus.ERRORED for result in results),
-        findings=len(all_findings),
+    plugins = list(extra_rules) if extra_rules is not None else load_plugin_rules(config.plugins)
+    fingerprint = source_fingerprint(dataset.root)
+    cache = RuleCache(
+        config.cache,
+        source_fingerprint=fingerprint,
+        dataset_path=str(dataset.root),
+        physlint_version=__version__,
     )
+    results: list[RuleResult] = []
+    for planned in plan_rules(dataset, config, extra=plugins):
+        results.append(_run_planned(dataset, planned, cache))
+    fails_contract = contract_failed(results, Severity(config.fail_on))
     return Report(
         physlint_version=__version__,
         adapter=dataset.inventory.adapter,
@@ -110,7 +63,7 @@ def run_validation(
         dataset=dataset.inventory.name,
         source_revision=dataset.inventory.source_revision,
         dataset_path=str(dataset.root),
-        source_fingerprint=source_fingerprint(dataset.root),
+        source_fingerprint=fingerprint,
         source_fingerprint_method=(
             "file-content-sha256-v1" if dataset.root.is_file() else "metadata-and-file-stat-sha256-v1"
         ),
@@ -119,7 +72,109 @@ def run_validation(
         finished_at=clock(),
         status="failed" if fails_contract else "passed",
         results=results,
-        summary=summary,
+        summary=summarize(results),
+        coverage=coverage_snapshot(dataset),
+        cache=CacheSummary(
+            used=cache.enabled,
+            hits=cache.hits,
+            misses=cache.misses,
+            directory=str(cache.directory) if cache.directory is not None else None,
+        ),
+        plugins=[rule.metadata.id for rule in plugins],
+    )
+
+
+def _run_planned(dataset: DatasetView, planned: PlannedRule, cache: RuleCache) -> RuleResult:
+    metadata = planned.rule.metadata
+    if planned.not_run_reason:
+        return RuleResult(
+            rule_id=metadata.id,
+            rule_version=metadata.version,
+            status=RuleStatus.NOT_RUN,
+            duration_ms=0,
+            reason=planned.not_run_reason,
+        )
+    cached = cache.get(planned)
+    if cached is not None:
+        return cached
+    before = time.perf_counter()
+    try:
+        findings = planned.rule.run(dataset, planned.options, planned.severity)
+        result = RuleResult(
+            rule_id=metadata.id,
+            rule_version=metadata.version,
+            status=RuleStatus.FAILED if findings else RuleStatus.PASSED,
+            duration_ms=(time.perf_counter() - before) * 1000,
+            findings=findings,
+        )
+        cache.put(planned, result)
+        return result
+    except RuleNotApplicable as exc:
+        return RuleResult(
+            rule_id=metadata.id,
+            rule_version=metadata.version,
+            status=RuleStatus.NOT_RUN,
+            duration_ms=(time.perf_counter() - before) * 1000,
+            reason=str(exc),
+        )
+    except AdapterError as exc:
+        return RuleResult(
+            rule_id=metadata.id,
+            rule_version=metadata.version,
+            status=RuleStatus.ERRORED,
+            duration_ms=(time.perf_counter() - before) * 1000,
+            reason=f"AdapterError: {exc}",
+            error_kind="adapter",
+        )
+    except Exception as exc:  # noqa: BLE001 - isolation is an engine responsibility
+        return RuleResult(
+            rule_id=metadata.id,
+            rule_version=metadata.version,
+            status=RuleStatus.ERRORED,
+            duration_ms=(time.perf_counter() - before) * 1000,
+            reason=f"{type(exc).__name__}: {exc}",
+            error_kind="rule",
+        )
+
+
+def summarize(results: list[RuleResult]) -> RunSummary:
+    findings = sum(len(result.findings) for result in results)
+    return RunSummary(
+        passed=sum(result.status == RuleStatus.PASSED for result in results),
+        failed=sum(result.status == RuleStatus.FAILED for result in results),
+        not_run=sum(result.status == RuleStatus.NOT_RUN for result in results),
+        errored=sum(result.status == RuleStatus.ERRORED for result in results),
+        findings=findings,
+    )
+
+
+def contract_failed(results: list[RuleResult], fail_on: Severity) -> bool:
+    threshold = SEVERITY_RANK[fail_on]
+    findings = [finding for result in results for finding in result.findings]
+    if any(SEVERITY_RANK[finding.severity] >= threshold for finding in findings):
+        return True
+    return any(result.status == RuleStatus.ERRORED for result in results)
+
+
+def coverage_snapshot(dataset: DatasetView) -> CoverageSnapshot:
+    inventory = dataset.inventory
+    tasks: dict[str, int] = {}
+    lengths: list[int] = []
+    for episode in inventory.episodes:
+        lengths.append(episode.length)
+        labels = episode.tasks or ["(unlabeled)"]
+        for task in labels:
+            tasks[task] = tasks.get(task, 0) + 1
+    return CoverageSnapshot(
+        episodes=len(inventory.episodes),
+        frames=inventory.total_frames,
+        messages=inventory.total_messages,
+        streams=[stream.key for stream in inventory.streams],
+        tasks=dict(sorted(tasks.items())),
+        length_min=min(lengths) if lengths else None,
+        length_max=max(lengths) if lengths else None,
+        robot_type=inventory.robot_type,
+        fps=inventory.fps,
     )
 
 

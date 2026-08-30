@@ -21,7 +21,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
 
-The released `0.1.0a1` public alpha supports **LeRobot Dataset v3.x**. The current `0.2.0a1` development line adds generic **MCAP** container validation and a **ROS 2-over-MCAP** semantic profile, backed by pinned conformance data, a real robot-captured ROS 2 episode, and controlled evidence. Native rosbag2 SQLite remains a conversion workflow for now.
+The released `0.3.0` supports **LeRobot Dataset v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
 
 > [!IMPORTANT]
 > Physlint validates configured data-integrity contracts. A pass does not certify policy quality, task success, or robot safety.
@@ -41,13 +41,13 @@ Physlint requires Python 3.11 or newer.
 ### Install from PyPI
 
 ```bash
-python -m pip install "physlint[video]==0.1.0a1"
+python -m pip install "physlint[video]==0.3.0"
 ```
 
 To test the exact tagged source instead of the PyPI distribution, install the GitHub release directly:
 
 ```bash
-python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.1.0a1"
+python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.3.0"
 ```
 
 ### Check a LeRobot dataset or MCAP recording
@@ -63,12 +63,29 @@ physlint check /path/to/recording.mcap
 physlint inspect /path/to/recording.mcap --profile ros2
 ```
 
-Write JSON to an exact destination:
+Write JSON, JUnit, SARIF, or HTML to exact destinations:
 
 ```bash
 physlint check /path/to/lerobot-dataset \
   --output json \
-  --json-output artifacts/physlint-report.json
+  --json-output artifacts/physlint-report.json \
+  --junit-output artifacts/physlint.junit.xml \
+  --sarif-output artifacts/physlint.sarif \
+  --html-output artifacts/physlint.html
+```
+
+Compare two dataset versions or previously written reports:
+
+```bash
+physlint compare /path/to/previous /path/to/current
+physlint compare artifacts/previous.json artifacts/current.json --output json
+```
+
+Accept known findings into a reviewed baseline. New fingerprints of the same rule still fail:
+
+```bash
+physlint baseline /path/to/dataset --author ada --reason "station clock offset" --output .physlint/baseline.yaml
+physlint check /path/to/dataset --baseline .physlint/baseline.yaml
 ```
 
 The source remains untouched. Exit code `0` means the configured contract passed; `1` means validation completed with a blocking finding.
@@ -92,7 +109,7 @@ Physlint owns NaN and infinity semantics in `numeric.finite_values`; the same sa
 
 ## What Physlint checks
 
-Thirty-one deterministic rules are installed. Physlint plans only the rules for the detected adapter and profile:
+Thirty-two deterministic rules are installed. Physlint plans only the rules for the detected adapter and profile:
 
 | Area | Checks |
 |---|---|
@@ -101,6 +118,7 @@ Thirty-one deterministic rules are installed. Physlint plans only the rules for 
 | **Temporal** | Strictly monotonic timestamps, FPS cadence, FPS-aware maximum gaps, complete stream overlap, and observation/action delay when independently timestamped |
 | **Numeric** | NaN/Inf, configured physical bounds, and configured discontinuity limits |
 | **Video** | Complete decode, motion-aware frozen-frame runs, and grouped black/near-empty frames |
+| **Duplication** | Exact numeric episode copies |
 | **MCAP** | Record/CRC readability, summary consistency, index coverage, channel/schema coherence, timestamp order, duplicate timestamps, and sequence continuity |
 | **ROS 2** | Portable CDR schemas, full decode, required topics, cadence gaps, configured header/log skew, known message invariants, and TF parent consistency |
 
@@ -115,7 +133,7 @@ physlint explain video.frozen_frames
 
 Rules whose required inputs are unavailable return `not_run` with a reason; they are never misreported as passed. Robot-specific bounds and discontinuity checks stay `not_run` until the user supplies meaningful thresholds.
 
-Read the complete [LeRobot MVP rules](docs/rules/mvp-rules.md) and [MCAP/ROS 2 rules](docs/rules/mcap-ros2-rules.md).
+Read the complete [LeRobot MVP rules](docs/rules/mvp-rules.md), [MCAP/ROS 2 rules](docs/rules/mcap-ros2-rules.md), and [plugin SDK](docs/plugins.md). Task-specific checks stay out of the default contract; load them with `plugins:` or a `physlint.rules` entry point.
 
 For ROS 2 contracts, configure the topics and timing assumptions that Physlint cannot infer honestly:
 
@@ -177,7 +195,16 @@ rules:
 
 reports:
   json: true
+  junit: false
+  sarif: false
+  html: false
   output_dir: .physlint/reports
+cache:
+  enabled: true
+  directory: .physlint/cache
+# baseline: .physlint/baseline.yaml
+# plugins:
+#   - ./rules/idle_prefix.py:IdlePrefixRule
 ```
 
 Use it explicitly when needed:
@@ -194,12 +221,14 @@ The CLI has stable exit codes and writes reports atomically, so a basic GitHub A
 
 ```yaml
 - name: Install Physlint
-  run: python -m pip install "physlint[video]==0.1.0a1"
+  run: python -m pip install "physlint[video]==0.3.0"
 
 - name: Validate robot dataset
   run: |
     physlint check "$DATASET_PATH" \
-      --json-output artifacts/physlint-report.json
+      --json-output artifacts/physlint-report.json \
+      --junit-output artifacts/physlint.junit.xml \
+      --sarif-output artifacts/physlint.sarif
 
 - uses: actions/upload-artifact@v4
   if: always()
@@ -211,7 +240,7 @@ The CLI has stable exit codes and writes reports atomically, so a basic GitHub A
 | Exit code | Meaning |
 |---:|---|
 | `0` | Validation completed and the configured contract passed |
-| `1` | Validation completed and the contract failed |
+| `1` | Validation completed and the contract failed, or `compare` found a regression |
 | `2` | Invalid command or configuration |
 | `3` | Dataset or adapter failure |
 | `4` | Internal Physlint error |
@@ -254,7 +283,7 @@ See the [MCAP/ROS 2 manifest](validation/mcap_manifest.yaml), [reproduction harn
 
 ## Physlint Observatory
 
-The repository now includes the first [Physlint Observatory](observatory/): a profile-aware public evidence index spanning LeRobot, MCAP, and ROS 2. It deliberately does not collapse unlike contracts into one universal quality score. Every row exposes provenance, applicable checks, findings, and a report link.
+The repository now includes the [Physlint Observatory](observatory/): a profile-aware public evidence index spanning LeRobot, MCAP, and ROS 2, plus fingerprint-level regression diffs from committed clean-versus-corruption reports. It deliberately does not collapse unlike contracts into one universal quality score. Every row exposes provenance, applicable checks, findings, and a report link.
 
 ## Format roadmap
 
@@ -346,6 +375,7 @@ Contributions are welcome, particularly:
 - False-positive reproductions
 - MCAP/ROS recording schemas and failure modes
 - New deterministic rules with controlled corruptions
+- Plugin rules that follow the [plugin SDK](docs/plugins.md)
 - Documentation, performance characterization, and privacy reviews
 
 Development setup:

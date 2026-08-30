@@ -1,6 +1,6 @@
 schema_version: 1
 run_id: mcap-ros2-2026-08-26
-physlint_version: 0.2.0a2
+physlint_version: 0.3.0
 public_recordings:
   - id: foxglove-ten-messages
     title: Foxglove MCAP TenMessages conformance case

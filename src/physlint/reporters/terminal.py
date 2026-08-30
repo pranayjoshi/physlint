@@ -9,6 +9,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 
+from physlint.models.comparison import Comparison
 from physlint.models.dataset import DatasetInventory
 from physlint.models.finding import Report, Severity
 from physlint.models.rule import RuleMetadata
@@ -52,6 +53,18 @@ def render_report(report: Report, report_path: Path | None = None, console: Cons
         console.print("\n[bold]Incomplete rules[/bold]")
         for result in incomplete:
             console.print(f"  {result.rule_id}: {result.reason}", style="dim")
+    if report.suppressed:
+        console.print(f"\nSuppressed: {len(report.suppressed)} reviewed finding(s)")
+    coverage = report.coverage
+    if coverage is not None:
+        bits = [f"{coverage.episodes} episodes"]
+        if coverage.frames is not None:
+            bits.append(f"{coverage.frames} frames")
+        if coverage.tasks:
+            bits.append(f"{len(coverage.tasks)} task label(s)")
+        console.print("Coverage: " + ", ".join(bits), style="dim")
+    if report.cache.hits:
+        console.print(f"Cache: {report.cache.hits} hit(s)", style="dim")
     if report_path:
         console.print(f"\nReport: {report_path}")
 
@@ -95,3 +108,45 @@ def render_explanation(metadata: RuleMetadata, console: Console | None = None) -
         console.print("\nOptions:")
         for key, value in metadata.option_defaults.items():
             console.print(f"  {key}: {value!r}")
+
+
+def render_comparison(comparison: Comparison, report_path: Path | None = None, console: Console | None = None) -> None:
+    console = console or Console()
+    style = {"unchanged": "green", "improved": "green", "regressed": "bold red", "changed": "yellow"}[comparison.status]
+    console.print(f"Baseline: [bold]{comparison.baseline_dataset}[/bold] ({comparison.baseline_status})")
+    console.print(f"Candidate: [bold]{comparison.candidate_dataset}[/bold] ({comparison.candidate_status})")
+    console.print(f"Result: [{style}]{comparison.status.upper()}[/{style}]")
+    console.print(
+        f"Findings: {len(comparison.new_findings)} new, "
+        f"{len(comparison.resolved_findings)} resolved, "
+        f"{len(comparison.persistent_findings)} persistent"
+    )
+    if comparison.new_findings:
+        console.print("\n[bold red]New findings[/bold red]")
+        for finding in comparison.new_findings:
+            console.print(f"  [bold]{finding.rule_id}[/bold] {finding.message}")
+    if comparison.resolved_findings:
+        console.print("\n[green]Resolved findings[/green]")
+        for finding in comparison.resolved_findings:
+            console.print(f"  [bold]{finding.rule_id}[/bold] {finding.message}")
+    if comparison.rule_changes:
+        console.print("\n[bold]Rule status changes[/bold]")
+        for change in comparison.rule_changes:
+            console.print(f"  {change.rule_id}: {change.before} → {change.after}")
+    delta = comparison.coverage
+    if delta is not None:
+        console.print("\n[bold]Coverage[/bold]")
+        console.print(f"  Episodes: {delta.episodes_before} → {delta.episodes_after}")
+        if delta.frames_before is not None or delta.frames_after is not None:
+            console.print(f"  Frames: {delta.frames_before} → {delta.frames_after}")
+        if delta.added_streams:
+            console.print(f"  Added streams: {', '.join(delta.added_streams)}")
+        if delta.removed_streams:
+            console.print(f"  Removed streams: {', '.join(delta.removed_streams)}")
+        if delta.added_tasks:
+            console.print(f"  Added tasks: {', '.join(delta.added_tasks)}")
+        if delta.removed_tasks:
+            console.print(f"  Removed tasks: {', '.join(delta.removed_tasks)}")
+        console.print("  Coverage lists what is present; it is not a quality score.", style="dim")
+    if report_path:
+        console.print(f"\nReport: {report_path}")

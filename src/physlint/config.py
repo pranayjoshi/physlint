@@ -23,7 +23,17 @@ class ReportSettings(BaseModel):
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
     json_enabled: bool = Field(default=True, alias="json")
+    junit: bool = False
+    sarif: bool = False
+    html: bool = False
     output_dir: str = ".physlint/reports"
+
+
+class CacheSettings(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    enabled: bool = True
+    directory: str = ".physlint/cache"
 
 
 class Config(BaseModel):
@@ -36,12 +46,22 @@ class Config(BaseModel):
     fail_on: Literal["critical", "error", "warning", "notice"] = "error"
     rules: dict[str, RuleSettings] = Field(default_factory=dict)
     reports: ReportSettings = Field(default_factory=ReportSettings)
+    cache: CacheSettings = Field(default_factory=CacheSettings)
+    baseline: str | None = None
+    plugins: list[str] = Field(default_factory=list)
 
     @field_validator("required_streams")
     @classmethod
     def unique_streams(cls, value: list[str]) -> list[str]:
         if len(value) != len(set(value)):
             raise ValueError("required_streams must not contain duplicates")
+        return value
+
+    @field_validator("plugins")
+    @classmethod
+    def unique_plugins(cls, value: list[str]) -> list[str]:
+        if len(value) != len(set(value)):
+            raise ValueError("plugins must not contain duplicates")
         return value
 
     def digest(self) -> str:
@@ -88,5 +108,14 @@ rules:
       max_consecutive_frames: 5
 reports:
   json: true
+  junit: false
+  sarif: false
+  html: false
   output_dir: .physlint/reports
+cache:
+  enabled: true
+  directory: .physlint/cache
+# baseline: .physlint/baseline.yaml
+# plugins:
+#   - ./rules/idle_prefix.py:IdlePrefixRule
 """

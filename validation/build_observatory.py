@@ -6,10 +6,16 @@ import json
 from pathlib import Path
 from typing import Any
 
+from physlint.api import load_report
+from physlint.engine.compare import compare_reports
+from physlint.models.finding import Severity
+
 ROOT = Path(__file__).resolve().parents[1]
 LEROBOT_SUMMARY = ROOT / "validation" / "reports" / "real-data-2026-08-24" / "summary.json"
 MCAP_SUMMARY = ROOT / "validation" / "reports" / "mcap-ros2-2026-08-26" / "summary.json"
+REPORT_ROOT = ROOT / "validation" / "reports"
 DEFAULT_OUTPUT = ROOT / "observatory" / "data" / "observations.json"
+DEFAULT_COMPARISONS = ROOT / "observatory" / "data" / "comparisons.json"
 
 NAMES = {
     "panda": "Robomimic CAN PH",
@@ -17,6 +23,33 @@ NAMES = {
     "so101": "SVLA SO-101 Pick & Place",
     "sentinel": "Sentinel Demo 09",
 }
+
+COMPARISON_CASES = [
+    {
+        "id": "panda-nan",
+        "title": "Controlled NaN injection",
+        "baseline": "real-data-2026-08-24/clean-panda.json",
+        "candidate": "real-data-2026-08-24/corruption-nan.json",
+    },
+    {
+        "id": "panda-reordered",
+        "title": "Controlled timestamp reorder",
+        "baseline": "real-data-2026-08-24/clean-panda.json",
+        "candidate": "real-data-2026-08-24/corruption-reordered.json",
+    },
+    {
+        "id": "panda-truncated",
+        "title": "Controlled source-row deletion",
+        "baseline": "real-data-2026-08-24/clean-panda.json",
+        "candidate": "real-data-2026-08-24/corruption-truncated.json",
+    },
+    {
+        "id": "ros2-joint-state-corruption",
+        "title": "Controlled ROS 2 cadence and dimension drift",
+        "baseline": "mcap-ros2-2026-08-26/ros2-joint-state-clean.json",
+        "candidate": "mcap-ros2-2026-08-26/ros2-joint-state-corrupt.json",
+    },
+]
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -26,7 +59,7 @@ def load(path: Path) -> dict[str, Any]:
     return payload
 
 
-def build(output: Path = DEFAULT_OUTPUT) -> None:
+def build(output: Path = DEFAULT_OUTPUT, comparisons_output: Path = DEFAULT_COMPARISONS) -> None:
     lerobot = load(LEROBOT_SUMMARY)
     mcap = load(MCAP_SUMMARY)
     observations: list[dict[str, Any]] = []
@@ -79,6 +112,35 @@ def build(output: Path = DEFAULT_OUTPUT) -> None:
     }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    comparisons_output.write_text(json.dumps(_comparisons(), indent=2) + "\n", encoding="utf-8")
+
+
+def _comparisons() -> dict[str, Any]:
+    rows = []
+    for case in COMPARISON_CASES:
+        comparison = compare_reports(
+            load_report(REPORT_ROOT / case["baseline"]),
+            load_report(REPORT_ROOT / case["candidate"]),
+            fail_on=Severity.ERROR,
+        )
+        rows.append(
+            {
+                "id": case["id"],
+                "title": case["title"],
+                "status": comparison.status,
+                "newFindings": len(comparison.new_findings),
+                "resolvedFindings": len(comparison.resolved_findings),
+                "persistentFindings": len(comparison.persistent_findings),
+                "newRules": sorted({item.rule_id for item in comparison.new_findings}),
+                "baselineReportPath": case["baseline"],
+                "candidateReportPath": case["candidate"],
+            }
+        )
+    return {
+        "schema_version": 1,
+        "generated_from": [str(REPORT_ROOT.relative_to(ROOT))],
+        "comparisons": rows,
+    }
 
 
 if __name__ == "__main__":

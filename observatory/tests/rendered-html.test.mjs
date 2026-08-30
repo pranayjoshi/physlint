@@ -21,6 +21,6 @@ test("server-renders the Physlint Observatory", async () => {
   assert.match(html, /Physlint Observatory/);
   assert.match(html, /Know your robot data/);
   assert.match(html, /Robot data health/);
-  assert.match(html, /Evidence over/);
+  assert.match(html, /Regressions, not a leaderboard/);
   assert.match(html, /physlint-observatory-social\.png/);
 });

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { ComparisonTable, type Comparison } from "./ComparisonTable";
 import { ObservatoryTable, type Observation } from "./ObservatoryTable";
 import catalog from "../data/observations.json";
+import comparisonsCatalog from "../data/comparisons.json";
 
 export const metadata: Metadata = {
   title: "Physlint Observatory — robot data health",
@@ -18,35 +20,61 @@ const observations: Observation[] = catalog.observations.map((item) => ({
   sourceUrl: item.sourceUrl ?? undefined,
   reportUrl: `${reportRoot}/${item.reportPath}`,
 }));
+const comparisons: Comparison[] = comparisonsCatalog.comparisons.map((item) => ({
+  ...item,
+  status: item.status as Comparison["status"],
+  baselineReportUrl: `${reportRoot}/${item.baselineReportPath}`,
+  candidateReportUrl: `${reportRoot}/${item.candidateReportPath}`,
+}));
 
 export default function Home() {
   return (
     <main>
       <nav className="nav shell">
         <a className="brand" href="#top" aria-label="Physlint Observatory home"><span className="brand-mark">P/</span><span>Observatory <small>by Physlint</small></span></a>
-        <div className="nav-links"><a href="#method">Method</a><a href="https://pypi.org/project/physlint/">PyPI</a><a className="github" href={repo}>GitHub ↗</a></div>
+        <div className="nav-links"><a href="#method">Method</a><a href="#regressions">Regressions</a><a href="https://pypi.org/project/physlint/">PyPI</a><a className="github" href={repo}>GitHub ↗</a></div>
       </nav>
 
       <section className="hero shell" id="top">
         <div className="hero-copy">
-          <p className="eyebrow">Open validation evidence · v0.2 preview</p>
+          <p className="eyebrow">Open validation evidence · v0.3.0</p>
           <h1>Know your robot data<br />before it trains your model.</h1>
           <p className="lede">A transparent health index for robotics datasets and recordings. Every outcome links back to deterministic Physlint rules—never a mystery score.</p>
           <div className="hero-actions"><a className="button primary" href="#index">Explore evidence ↓</a><a className="button secondary" href={`${repo}#quickstart`}>Run it locally ↗</a></div>
         </div>
         <div className="hero-orbit" aria-hidden="true"><span className="orbit orbit-one"/><span className="orbit orbit-two"/><span className="core">P/</span><span className="signal signal-a"/><span className="signal signal-b"/><span className="signal signal-c"/></div>
         <div className="summary" aria-label="Validation summary">
-          <div><strong>8</strong><span>observations</span></div><div><strong>3</strong><span>quality profiles</span></div>
+          <div><strong>8</strong><span>observations</span></div><div><strong>4</strong><span>regression cases</span></div>
           <div><strong>97</strong><span>rule runs</span></div><div><strong>7,047</strong><span>real ROS messages</span></div>
         </div>
       </section>
 
       <section className="index shell" id="index" aria-labelledby="index-title">
         <div className="section-heading">
-          <div><p className="eyebrow">Evidence index · 27 Aug 2026</p><h2 id="index-title">Robot data health, in public.</h2></div>
+          <div><p className="eyebrow">Evidence index · 30 Aug 2026</p><h2 id="index-title">Robot data health, in public.</h2></div>
           <p>Filter verified datasets and diagnostic cases by contract. “Passed” means the applicable checks found no configured blocking issues.</p>
         </div>
         <ObservatoryTable observations={observations} />
+      </section>
+
+      <section className="index shell" id="regressions" aria-labelledby="regression-title">
+        <div className="section-heading">
+          <div><p className="eyebrow">Dataset intelligence</p><h2 id="regression-title">Regressions, not a leaderboard.</h2></div>
+          <p>physlint compare diffs fingerprints between a clean snapshot and a later candidate. New blocking findings are regressions; coverage lists what changed without inventing a score.</p>
+        </div>
+        <ComparisonTable comparisons={comparisons} />
+      </section>
+
+      <section className="workflows shell" id="workflows" aria-labelledby="workflow-title">
+        <div className="section-heading">
+          <div><p className="eyebrow">Data-engineer workflow</p><h2 id="workflow-title">A quality contract that can live in CI.</h2></div>
+        </div>
+        <div className="workflow-grid">
+          <article><h3>compare</h3><p>Diff two dataset versions or JSON reports. Exit 1 only on new blocking findings.</p><code>physlint compare before/ after/</code></article>
+          <article><h3>baseline</h3><p>Accept a known fingerprint with author, reason, and optional expiry. New instances of the same rule still fail.</p><code>physlint baseline . --author ada --reason known</code></article>
+          <article><h3>CI reports</h3><p>JSON plus JUnit, SARIF, and a local HTML file. No images or raw samples are embedded.</p><code>--junit-output --sarif-output --html-output</code></article>
+          <article><h3>plugins</h3><p>Load a file or entry-point rule. Task-specific idle detection stays out of the default contract.</p><code>plugins: [idle_prefix.py:IdlePrefixRule]</code></article>
+        </div>
       </section>
 
       <section className="method" id="method">

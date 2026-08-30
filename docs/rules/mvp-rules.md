@@ -36,3 +36,4 @@ Fails for non-positive episode lengths, reversed ranges, a mismatch between decl
 - `numeric.discontinuity`: adjacent values respect configured maximum absolute deltas.
 - `video.decode`: decoded frame count matches episode length within tolerance.
 - `video.black_frames`: frame mean and standard deviation are not both near zero; adjacent bad frames are grouped.
+- `duplication.exact_episodes`: numeric observation/action trajectories are unique across episodes.

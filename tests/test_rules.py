@@ -168,3 +168,12 @@ def test_video_statistics_are_decoded_once_per_episode_and_stream(dataset_factor
     report = run_validation(dataset, Config())
     assert report.summary.errored == 0
     assert calls == 2
+
+
+def test_exact_duplicate_episodes_are_detected(dataset_factory):
+    states = [[1.0, 2.0] for _ in range(12)]
+    actions = [[0.1, 0.2] for _ in range(12)]
+    result = result_for(dataset_factory(states=states, actions=actions), "duplication.exact_episodes")
+    assert result.status == RuleStatus.FAILED
+    assert result.findings[0].location.episode == "episode_000001"
+    assert result.findings[0].observed["duplicate_of"] == "episode_000000"

@@ -9,7 +9,7 @@ mypy
 pytest
 ```
 
-Rules must include positive and negative fixtures, a controlled corruption test where applicable, stable evidence and remediation, documented limitations, and a characterized cost. Adapters must remain read-only, metadata-first, lazy over samples, and explicit about capabilities.
+Rules must include positive and negative fixtures, a controlled corruption test where applicable, stable evidence and remediation, documented limitations, and a characterized cost. Adapters must remain read-only, metadata-first, lazy over samples, and explicit about capabilities. External rules should follow [docs/plugins.md](docs/plugins.md).
 
 New adapter proposals should start with the format-request issue template and include immutable public healthy examples, controlled defects, stream/episode semantics, and the real failure modes the adapter should catch. See `docs/roadmap.md` for the acceptance gate.
 

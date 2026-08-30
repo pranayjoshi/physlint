@@ -62,6 +62,43 @@ class RuleResult(BaseModel):
     findings: list[Finding] = Field(default_factory=list)
     reason: str | None = None
     error_kind: Literal["adapter", "rule"] | None = None
+    cached: bool = False
+
+
+class CoverageSnapshot(BaseModel):
+    """Distributions present in a source. This is not a quality score."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    episodes: int = 0
+    frames: int | None = None
+    messages: int | None = None
+    streams: list[str] = Field(default_factory=list)
+    tasks: dict[str, int] = Field(default_factory=dict)
+    length_min: int | None = None
+    length_max: int | None = None
+    robot_type: str | None = None
+    fps: float | None = None
+
+
+class CacheSummary(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    used: bool = False
+    hits: int = 0
+    misses: int = 0
+    directory: str | None = None
+
+
+class AppliedSuppression(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    fingerprint: str
+    rule_id: str
+    reason: str
+    author: str
+    accepted_at: str
+    expires_at: str | None = None
 
 
 class RunSummary(BaseModel):
@@ -93,3 +130,7 @@ class Report(BaseModel):
     sampled: bool = False
     results: list[RuleResult]
     summary: RunSummary
+    coverage: CoverageSnapshot | None = None
+    cache: CacheSummary = Field(default_factory=CacheSummary)
+    suppressed: list[AppliedSuppression] = Field(default_factory=list)
+    plugins: list[str] = Field(default_factory=list)
