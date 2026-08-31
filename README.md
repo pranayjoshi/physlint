@@ -11,11 +11,11 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 [![Downloads per month](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fpranayjoshi%2Fphyslint%2Fmaster%2Fdocs%2Fmetrics%2Fdownloads.json&style=flat-square)](https://pypistats.org/packages/physlint)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)
 [![MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
-![Status](https://img.shields.io/badge/Status-Public%20Alpha-f59e0b?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Released-0f766e?style=flat-square)
 
 [Quickstart](#quickstart) · [Demo](#see-it-catch-a-real-defect) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Observatory](#physlint-observatory) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
 
-<img src="docs/assets/launch/exports/validation-summary.png" alt="Physlint public-alpha validation: four of four clean snapshots passed and three of three controlled corruptions were detected across 74 episodes and 31,258 frames." width="100%">
+<img src="docs/assets/launch/exports/evidence-index.png" alt="Physlint evidence index showing robot dataset and recording health checks across LeRobot, MCAP, and ROS 2 data." width="100%">
 
 </div>
 
@@ -399,7 +399,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md), open a format request, or join [GitHub 
 
 ## Project status
 
-Physlint is an alpha. Its claims are deliberately limited to the documented LeRobot, generic MCAP, and ROS 2-over-MCAP boundaries and their committed evidence. The project does not train policies, repair data, host datasets, infer task success, produce an opaque quality score, or certify that a robot or policy is safe.
+Physlint is released. Its claims are deliberately limited to the documented LeRobot, generic MCAP, and ROS 2-over-MCAP boundaries and their committed evidence. The project does not train policies, repair data, host datasets, infer task success, produce an opaque quality score, or certify that a robot or policy is safe.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
