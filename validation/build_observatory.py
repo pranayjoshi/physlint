@@ -25,6 +25,32 @@ NAMES = {
     "sentinel": "Sentinel Demo 09",
 }
 
+SURVEY_ROBOTS = {
+    "pusht": "2D pusher",
+    "xarm-lift": "xArm",
+    "unitree-h1-greet": "Unitree H1",
+    "so100-pickplace": "SO-100",
+    "aloha-battery": "ALOHA",
+    "ur10e-robotiq": "UR10e + Robotiq",
+    "so101-teleop": "SO-101",
+    "reachy-head": "Reachy 2",
+    "lekiwi-go2": "LeKiwi",
+    "libero-spatial": "Franka",
+    "koch-v21": "Koch",
+    "koch-v20": "Koch",
+    "so101-v21-large": "SO-101",
+    "reachy-kitchen-v20": "Reachy 2",
+    "robotwin-v21": "ALOHA / RoboTwin",
+}
+
+SURVEY_NOTES = {
+    "pusht": "Likely frozen-frame false positive on a low-texture 2D sim.",
+    "ur10e-robotiq": "Four 1-second holds during motion; review, not a gate claim.",
+    "so101-teleop": "Wrist-camera freezes at the 50-finding cap; likely static close-ups.",
+    "reachy-head": "Confirmed defect: episode metadata names parquet shards the Hub does not publish.",
+    "libero-spatial": "One 6-frame freeze at episode start; review, not a gate claim.",
+}
+
 COMPARISON_CASES = [
     {
         "id": "panda-nan",
@@ -119,25 +145,51 @@ def build(output: Path = DEFAULT_OUTPUT, comparisons_output: Path = DEFAULT_COMP
         survey = load(SURVEY_SUMMARY)
         generated_from.append(str(SURVEY_SUMMARY.relative_to(ROOT)))
         for row in survey["results"]:
-            if row.get("kind") != "check" or not row.get("artifact"):
-                continue
-            observations.append(
-                {
-                    "id": row["id"],
-                    "name": row.get("title") or row["id"],
-                    "source": row["repo_id"],
-                    "robot": row.get("robot") or "unspecified",
-                    "profile": "LeRobot",
-                    "provenance": "Survey",
-                    "scale": _scale(row.get("episodes"), row.get("frames")),
-                    "checks": row.get("applicable_rules") or 0,
-                    "findings": row.get("findings") or 0,
-                    "status": "Passed" if row["status"] == "passed" else "Issues found",
-                    "sourceUrl": f"https://huggingface.co/datasets/{row['repo_id']}",
-                    "reportPath": f"lerobot-survey-2026-08-30/{row['artifact']}",
-                    "revision": row["revision"],
-                }
-            )
+            kind = row.get("kind")
+            if kind == "check" and row.get("artifact"):
+                observations.append(
+                    {
+                        "id": row["id"],
+                        "name": row.get("title") or row["id"],
+                        "source": row["repo_id"],
+                        "robot": SURVEY_ROBOTS.get(row["id"]) or row.get("robot") or "unspecified",
+                        "profile": "LeRobot",
+                        "provenance": "Survey",
+                        "scale": _scale(row.get("episodes"), row.get("frames")),
+                        "checks": row.get("applicable_rules") or 0,
+                        "findings": row.get("findings") or 0,
+                        "status": "Passed" if row["status"] == "passed" else "Issues found",
+                        "sourceUrl": f"https://huggingface.co/datasets/{row['repo_id']}",
+                        "reportPath": f"lerobot-survey-2026-08-30/{row['artifact']}",
+                        "revision": row["revision"],
+                        **({"note": SURVEY_NOTES[row["id"]]} if row["id"] in SURVEY_NOTES else {}),
+                    }
+                )
+            elif kind == "version-edge":
+                version = "v2"
+                expected = str(row.get("expected_error") or "")
+                if "v2.1" in expected:
+                    version = "v2.1"
+                elif "v2.0" in expected:
+                    version = "v2.0"
+                observations.append(
+                    {
+                        "id": row["id"],
+                        "name": row.get("title") or row["id"],
+                        "source": row["repo_id"],
+                        "robot": SURVEY_ROBOTS.get(row["id"]) or "unspecified",
+                        "profile": "LeRobot",
+                        "provenance": "Survey",
+                        "scale": f"{version} metadata",
+                        "checks": 0,
+                        "findings": 0,
+                        "status": "Rejected",
+                        "note": row.get("reason") or "Fail-closed on an unsupported LeRobot version.",
+                        "sourceUrl": f"https://huggingface.co/datasets/{row['repo_id']}",
+                        "reportPath": "lerobot-survey-2026-08-30/summary.json",
+                        "revision": row["revision"],
+                    }
+                )
     payload = {
         "schema_version": 1,
         "generated_from": generated_from,

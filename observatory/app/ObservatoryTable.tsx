@@ -12,7 +12,8 @@ export type Observation = {
   scale: string;
   checks: number;
   findings: number;
-  status: "Passed" | "Issues found";
+  status: "Passed" | "Issues found" | "Rejected";
+  note?: string;
   reportUrl: string;
   sourceUrl?: string;
   revision?: string;
@@ -53,18 +54,18 @@ export function ObservatoryTable({ observations }: { observations: Observation[]
               <td className="rank">{String(index + 1).padStart(2, "0")}</td>
               <td>
                 {item.sourceUrl ? <a className="recording-name" href={item.sourceUrl}>{item.name} ↗</a> : <span className="recording-name">{item.name}</span>}
-                <span className="recording-meta">{item.robot} · {item.provenance} evidence</span>
+                <span className="recording-meta">{item.robot} · {item.provenance} evidence{item.note ? ` · ${item.note}` : ""}</span>
               </td>
               <td><span className={`profile profile-${item.profile.toLowerCase().replace(" ", "-")}`}>{item.profile}</span></td>
               <td>{item.scale}</td><td>{item.checks}</td><td>{item.findings}</td>
-              <td><span className={item.status === "Passed" ? "status pass" : "status issue"}>{item.status}</span></td>
+              <td><span className={item.status === "Passed" ? "status pass" : item.status === "Rejected" ? "status reject" : "status issue"}>{item.status}</span></td>
               <td><a className="evidence" href={item.reportUrl} aria-label={`Open evidence for ${item.name}`}>Report ↗</a></td>
             </tr>
           ))}</tbody>
         </table>
         {filtered.length === 0 && <p className="empty">No observations match this filter.</p>}
       </div>
-      <p className="index-note">Order shows the current evidence catalog—not a universal quality ranking. Different profiles run different contracts.</p>
+      <p className="index-note">Order is the catalog, not a ranking. Release-gate rows are the public claim. Survey rows are compatibility observations and may include classified false positives.</p>
     </>
   );
 }

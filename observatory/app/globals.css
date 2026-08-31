@@ -62,7 +62,7 @@ tbody tr:hover { background:rgba(255,255,255,.45); }
 .profile-mcap { background:#dbe9e5; color:#075f53; }.profile-ros-2 { background:#e6edcb; color:#465a12; }
 .status { display:inline-flex; align-items:center; gap:7px; white-space:nowrap; font-weight:700; }
 .status::before { content:""; width:8px; height:8px; border-radius:50%; background:currentColor; }
-.pass { color:var(--teal); }.issue { color:var(--red); }
+.pass { color:var(--teal); }.issue { color:var(--red); }.reject { color:#8a6a12; }
 .evidence { font:650 11px/1 var(--font-geist-mono); text-underline-offset:4px; }
 .empty { margin:0; padding:40px 10px; color:var(--muted); }
 .index-note { margin:14px 0 0; color:var(--muted); font-size:11px; }

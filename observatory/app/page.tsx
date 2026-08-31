@@ -17,6 +17,7 @@ const observations: Observation[] = catalog.observations.map((item) => ({
   profile: item.profile as Observation["profile"],
   provenance: item.provenance as Observation["provenance"],
   status: item.status as Observation["status"],
+  note: typeof item.note === "string" ? item.note : undefined,
   sourceUrl: item.sourceUrl ?? undefined,
   reportUrl: `${reportRoot}/${item.reportPath}`,
 }));
@@ -27,7 +28,7 @@ const comparisons: Comparison[] = comparisonsCatalog.comparisons.map((item) => (
   candidateReportUrl: `${reportRoot}/${item.candidateReportPath}`,
 }));
 const ruleRuns = observations.reduce((total, item) => total + item.checks, 0);
-const surveyRows = observations.filter((item) => item.provenance === "Survey").length;
+const rosMessages = observations.find((item) => item.id === "robotis-arx5-button")?.scale.split(" ")[0] ?? "7,047";
 
 export default function Home() {
   return (
@@ -47,14 +48,14 @@ export default function Home() {
         <div className="hero-orbit" aria-hidden="true"><span className="orbit orbit-one"/><span className="orbit orbit-two"/><span className="core">P/</span><span className="signal signal-a"/><span className="signal signal-b"/><span className="signal signal-c"/></div>
         <div className="summary" aria-label="Validation summary">
           <div><strong>{observations.length}</strong><span>observations</span></div><div><strong>{comparisons.length}</strong><span>regression cases</span></div>
-          <div><strong>{ruleRuns}</strong><span>rule runs</span></div><div><strong>{surveyRows || "7,047"}</strong><span>{surveyRows ? "survey rows" : "real ROS messages"}</span></div>
+          <div><strong>{ruleRuns.toLocaleString("en-US")}</strong><span>rule runs</span></div><div><strong>{Number(rosMessages).toLocaleString("en-US")}</strong><span>real ROS messages</span></div>
         </div>
       </section>
 
       <section className="index shell" id="index" aria-labelledby="index-title">
         <div className="section-heading">
-          <div><p className="eyebrow">Evidence index · 30 Aug 2026</p><h2 id="index-title">Robot data health, in public.</h2></div>
-          <p>Release-gate rows are Public or Controlled. Survey rows are stratified compatibility observations and are not a Hub quality score. “Passed” means the applicable checks found no configured blocking issues.</p>
+          <div><p className="eyebrow">Evidence index · 31 Aug 2026</p><h2 id="index-title">Robot data health, in public.</h2></div>
+          <p>Release-gate rows (Public or Controlled) are the scoped claim. Survey rows are a stratified Hub sample, including classified false positives and fail-closed v2 screens. “Passed” means the applicable checks found no configured blocking issues.</p>
         </div>
         <ObservatoryTable observations={observations} />
       </section>
@@ -83,7 +84,7 @@ export default function Home() {
         <div className="shell">
           <div className="method-title"><p className="eyebrow light">How to read the index</p><h2>Evidence over<br />leaderboard theater.</h2></div>
           <div className="principles">
-            <article><span>01</span><h3>Profile-aware</h3><p>LeRobot datasets, generic MCAP recordings, and ROS 2 topics are judged by separate, explicit contracts.</p></article>
+            <article><span>01</span><h3>Profile-aware</h3><p>LeRobot, generic MCAP, and ROS 2 use separate contracts. Survey rows never collapse into the release-gate claim or a Hub quality score.</p></article>
             <article><span>02</span><h3>Reproducible</h3><p>Sources are revision-pinned. Reports preserve configuration digests, rule versions, and SHA-256 fingerprints.</p></article>
             <article><span>03</span><h3>Privacy-safe</h3><p>Only sanitized evidence is published. Raw robot recordings, images, and full samples stay with their owners.</p></article>
             <article><span>04</span><h3>Open to challenge</h3><p>Every finding identifies its rule and evidence. Disagree? Re-run it, inspect the report, or improve the rule.</p></article>
