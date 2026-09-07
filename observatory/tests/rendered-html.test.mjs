@@ -19,8 +19,10 @@ test("server-renders the Physlint Observatory", async () => {
   const html = await response.text();
   assert.match(html, developmentPreviewMeta);
   assert.match(html, /Physlint Observatory/);
-  assert.match(html, /Know your robot data/);
-  assert.match(html, /Robot data health/);
-  assert.match(html, /Regressions, not a leaderboard/);
+  assert.match(html, /The public map of/);
+  assert.match(html, /Community evidence atlas/i);
+  assert.match(html, /What a real defect looks like/);
+  assert.match(html, /Put your robot data/);
+  assert.doesNotMatch(html, /Regressions, not a leaderboard/);
   assert.match(html, /physlint-observatory-social\.png/);
 });

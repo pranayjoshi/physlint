@@ -1,6 +1,6 @@
-# Physlint Observatory
+# Physlint Community Evidence Atlas
 
-The public evidence index for Physlint. It presents revision-pinned LeRobot, MCAP, and ROS 2 validation results, plus fingerprint-level regression diffs, without collapsing unlike quality contracts into a universal score.
+The public community evidence atlas for Physlint. It presents revision-pinned LeRobot, MCAP, and ROS 2 validation results, real defect stories, and a path for maintainers to contribute public datasets without collapsing unlike quality contracts into a universal score.
 
 Release-gate rows stay Public or Controlled. Compatibility-survey rows are tagged Survey and are not a Hugging Face quality score. See `docs/validation/compatibility-survey.md`.
 

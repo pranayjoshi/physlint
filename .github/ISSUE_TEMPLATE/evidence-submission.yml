@@ -1,0 +1,59 @@
+name: Community evidence submission
+description: Put a public robot dataset or recording on the Physlint Community Evidence Atlas.
+title: "[evidence]: "
+labels: ["evidence", "community"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing to the public map of robot data health. Submit only public, non-sensitive sources that can be revision-pinned. Do not attach private datasets, credentials, or reports containing private paths.
+  - type: input
+    id: source
+    attributes:
+      label: Public dataset or recording
+      description: Link the public repository, dataset, or recording.
+      placeholder: https://huggingface.co/datasets/owner/dataset
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Immutable revision
+      description: Provide a commit, tag, release, checksum, or other stable revision when available.
+      placeholder: Commit SHA, tag, or release identifier
+    validations:
+      required: true
+  - type: dropdown
+    id: profile
+    attributes:
+      label: Data profile
+      options:
+        - LeRobot
+        - Generic MCAP
+        - ROS 2 over MCAP
+        - Another format
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Robot and collection context
+      description: Tell the community what robot, task, sensors, and collection setup this evidence represents.
+    validations:
+      required: true
+  - type: textarea
+    id: expectation
+    attributes:
+      label: What should we learn from it?
+      description: Describe whether you expect a healthy result, a known defect, or a finding that needs review.
+    validations:
+      required: true
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Publication agreement
+      options:
+        - label: I confirm this source is public and may be referenced by name in the Community Evidence Atlas.
+          required: true
+        - label: I understand Physlint will publish scoped validation evidence, not a safety certification or universal quality score.
+          required: true

@@ -285,7 +285,7 @@ See the [MCAP/ROS 2 manifest](validation/mcap_manifest.yaml), [reproduction harn
 
 ## Physlint Observatory
 
-The repository now includes the [Physlint Observatory](observatory/): a profile-aware public evidence index spanning LeRobot, MCAP, and ROS 2, plus fingerprint-level regression diffs from committed clean-versus-corruption reports. It deliberately does not collapse unlike contracts into one universal quality score. Every row exposes provenance, applicable checks, findings, and a report link.
+The repository now includes the [Physlint Community Evidence Atlas](observatory/): a profile-aware public map spanning LeRobot, MCAP, and ROS 2, with real defect stories and a contribution path for dataset maintainers. It deliberately does not collapse unlike contracts into one universal quality score. Every row exposes provenance, applicable checks, findings, a stable share link, and a sanitized report.
 
 ## Format roadmap
 

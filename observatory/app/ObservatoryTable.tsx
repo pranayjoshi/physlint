@@ -50,7 +50,7 @@ export function ObservatoryTable({ observations }: { observations: Observation[]
         <table>
           <thead><tr><th>#</th><th>Dataset / recording</th><th>Profile</th><th>Scale</th><th>Checks</th><th>Findings</th><th>Outcome</th><th>Evidence</th></tr></thead>
           <tbody>{filtered.map((item, index) => (
-            <tr key={item.id}>
+            <tr id={`record-${item.id}`} key={item.id}>
               <td className="rank">{String(index + 1).padStart(2, "0")}</td>
               <td>
                 {item.sourceUrl ? <a className="recording-name" href={item.sourceUrl}>{item.name} ↗</a> : <span className="recording-name">{item.name}</span>}
@@ -59,7 +59,7 @@ export function ObservatoryTable({ observations }: { observations: Observation[]
               <td><span className={`profile profile-${item.profile.toLowerCase().replace(" ", "-")}`}>{item.profile}</span></td>
               <td>{item.scale}</td><td>{item.checks}</td><td>{item.findings}</td>
               <td><span className={item.status === "Passed" ? "status pass" : item.status === "Rejected" ? "status reject" : "status issue"}>{item.status}</span></td>
-              <td><a className="evidence" href={item.reportUrl} aria-label={`Open evidence for ${item.name}`}>Report ↗</a></td>
+              <td><a className="evidence" href={item.reportUrl} aria-label={`Open evidence for ${item.name}`}>Report ↗</a><span className="evidence-separator"> · </span><a className="evidence" href={`#record-${item.id}`} aria-label={`Copyable link for ${item.name}`}>Link</a></td>
             </tr>
           ))}</tbody>
         </table>
