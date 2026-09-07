@@ -21,7 +21,9 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
 
-The released `0.3.1` supports **LeRobot Dataset v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
+The released `0.3.2` supports **LeRobot Dataset v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. It also launches the [Community Evidence Atlas](https://physlint.com), where maintainers can explore reproducible findings and submit public robot data for inclusion. Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
+
+At the `0.3.2` release snapshot, PyPI Stats reported **289 downloads in the preceding month**.
 
 > [!IMPORTANT]
 > Physlint validates configured data-integrity contracts. A pass does not certify policy quality, task success, or robot safety.
@@ -41,13 +43,13 @@ Physlint requires Python 3.11 or newer.
 ### Install from PyPI
 
 ```bash
-python -m pip install "physlint[video]==0.3.1"
+python -m pip install "physlint[video]==0.3.2"
 ```
 
 To test the exact tagged source instead of the PyPI distribution, install the GitHub release directly:
 
 ```bash
-python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.3.1"
+python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.3.2"
 ```
 
 ### Check a LeRobot dataset or MCAP recording
@@ -221,7 +223,7 @@ The CLI has stable exit codes and writes reports atomically, so a basic GitHub A
 
 ```yaml
 - name: Install Physlint
-  run: python -m pip install "physlint[video]==0.3.1"
+  run: python -m pip install "physlint[video]==0.3.2"
 
 - name: Validate robot dataset
   run: |

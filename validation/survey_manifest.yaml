@@ -1,6 +1,6 @@
 schema_version: 1
 run_id: lerobot-survey-2026-08-30
-physlint_version: 0.3.1
+physlint_version: 0.3.2
 tier: compatibility-survey
 claim: >
   This corpus is not the public release gate. Outcomes are compatibility

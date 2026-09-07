@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.2 — 2026-09-06
+
+- Launch the Physlint Community Evidence Atlas with 23 published observations, community survey context, real defect stories, and stable evidence links.
+- Add a public evidence-submission workflow for dataset and recording maintainers.
+- Replace the public regressions section with a clearer community narrative while retaining the generated comparison catalog for reproducibility.
+- Refresh the PyPI monthly download snapshot to 289 downloads.
+
 ## 0.3.1 — 2026-08-30
 
 - Add a stratified LeRobot compatibility survey, kept separate from the four-snapshot release gate.

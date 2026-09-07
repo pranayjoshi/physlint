@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "generated_from": [
+    "validation/reports"
+  ],
+  "comparisons": [
+    {
+      "id": "panda-nan",
+      "title": "Controlled NaN injection",
+      "status": "regressed",
+      "newFindings": 1,
+      "resolvedFindings": 0,
+      "persistentFindings": 0,
+      "newRules": [
+        "numeric.finite_values"
+      ],
+      "baselineReportPath": "real-data-2026-08-24/clean-panda.json",
+      "candidateReportPath": "real-data-2026-08-24/corruption-nan.json"
+    },
+    {
+      "id": "panda-reordered",
+      "title": "Controlled timestamp reorder",
+      "status": "regressed",
+      "newFindings": 5,
+      "resolvedFindings": 0,
+      "persistentFindings": 0,
+      "newRules": [
+        "temporal.max_gap",
+        "temporal.monotonic",
+        "temporal.sampling_interval"
+      ],
+      "baselineReportPath": "real-data-2026-08-24/clean-panda.json",
+      "candidateReportPath": "real-data-2026-08-24/corruption-reordered.json"
+    },
+    {
+      "id": "panda-truncated",
+      "title": "Controlled source-row deletion",
+      "status": "regressed",
+      "newFindings": 2,
+      "resolvedFindings": 0,
+      "persistentFindings": 0,
+      "newRules": [
+        "episode.valid_boundaries",
+        "temporal.sampling_interval"
+      ],
+      "baselineReportPath": "real-data-2026-08-24/clean-panda.json",
+      "candidateReportPath": "real-data-2026-08-24/corruption-truncated.json"
+    },
+    {
+      "id": "ros2-joint-state-corruption",
+      "title": "Controlled ROS 2 cadence and dimension drift",
+      "status": "regressed",
+      "newFindings": 2,
+      "resolvedFindings": 0,
+      "persistentFindings": 0,
+      "newRules": [
+        "ros2.semantic_consistency",
+        "ros2.topic_gaps"
+      ],
+      "baselineReportPath": "mcap-ros2-2026-08-26/ros2-joint-state-clean.json",
+      "candidateReportPath": "mcap-ros2-2026-08-26/ros2-joint-state-corrupt.json"
+    }
+  ]
+}
