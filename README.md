@@ -23,7 +23,7 @@ Physlint finds concrete integrity defects before robot data reaches training. It
 
 The released `0.3.2` supports **LeRobot Dataset v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. It also launches the [Community Evidence Atlas](https://physlint.com), where maintainers can explore reproducible findings and submit public robot data for inclusion. Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
 
-At the `0.3.2` release snapshot, PyPI Stats reported **289 downloads in the preceding month**.
+The download badge above is refreshed daily from PyPI Stats and reports downloads from the preceding month.
 
 > [!IMPORTANT]
 > Physlint validates configured data-integrity contracts. A pass does not certify policy quality, task success, or robot safety.
