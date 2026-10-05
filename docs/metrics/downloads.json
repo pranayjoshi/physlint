@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "label": "downloads/month",
-  "message": "187",
+  "message": "171",
   "color": "brightgreen",
   "cacheSeconds": 86400,
-  "updated_at": "2026-10-04T12:17:43.205186+00:00",
+  "updated_at": "2026-10-05T14:31:29.709858+00:00",
   "source": "https://pypistats.org/api/packages/physlint/recent?period=month"
 }
