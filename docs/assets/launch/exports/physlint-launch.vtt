@@ -1,0 +1,19 @@
+WEBVTT
+
+00:00.000 --> 00:04.000
+Bad robot data is expensive. Catch broken schemas, clocks, numeric streams, and video before they consume training time.
+
+00:04.000 --> 00:11.000
+Run “physlint demo.” The healthy LeRobot v3 dataset passes twelve applicable rules with no failures or errors. Safe mode is on by default.
+
+00:11.000 --> 00:22.000
+The corrupted dataset fails numeric.finite_values. Physlint identifies episode zero, the action stream, sample four, dimension zero, and recommends recollecting the sample and repairing the producing transform.
+
+00:22.000 --> 00:30.000
+The public release evidence covers four pinned snapshots, 31,258 frames, and three out of three detected controlled corruptions.
+
+00:30.000 --> 00:38.000
+LeRobot v3, generic MCAP, and ROS 2 over MCAP are implemented. Robomimic, RLDS, and ROS bag formats remain explicit roadmap items.
+
+00:38.000 --> 00:45.000
+Validate before you train. Install Physlint, try your dataset, add it to CI, or contribute an adapter at github.com/pranayjoshi/physlint.

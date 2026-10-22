@@ -127,9 +127,15 @@ Safe mode is the default. Installed plugin packages remain available, but Python
 
 Read the [agent operating guide](docs/agents.md), use the reusable [agent skill](integrations/agents/physlint/SKILL.md), or integrate the typed [Python API](docs/python-api.md). Committed contracts are under [`schemas/`](schemas/).
 
+## Watch the 45-second demo
+
+[![Play the 45-second Physlint launch video](docs/assets/launch/exports/physlint-launch-poster.png)](docs/assets/launch/exports/physlint-launch.mp4)
+
+[Download or play the captioned launch video](docs/assets/launch/exports/physlint-launch.mp4), or read its [accessible transcript](docs/assets/launch/exports/physlint-launch.vtt). It is silent by design, readable without audio, and generated entirely from publication-safe assets.
+
 ## See it catch a real defect
 
-These captures use the pinned Panda source from the release gate. The second dataset is a fully dereferenced copy with one deterministic NaN injected at episode 0, sample 5, state dimension 0.
+These publication-safe captures summarize the built-in demo. It creates one healthy LeRobot v3 dataset and a copy with one deterministic NaN injected into the action stream at episode 0, sample 4, dimension 0.
 
 <table>
   <tr>
@@ -137,8 +143,8 @@ These captures use the pinned Panda source from the release gate. The second dat
     <th width="50%">Controlled NaN corruption</th>
   </tr>
   <tr>
-    <td><img src="docs/assets/launch/exports/clean-validation.png" alt="Physlint terminal output showing the clean pinned Panda LeRobot dataset passing 11 applicable rules with zero failures and zero errors."></td>
-    <td><img src="docs/assets/launch/exports/controlled-nan-failure.png" alt="Physlint terminal output showing a controlled NaN corruption failing numeric.finite_values with remediation guidance."></td>
+    <td><img src="docs/assets/launch/exports/clean-validation.png" alt="Physlint demo output showing the healthy LeRobot dataset passing 12 applicable rules with zero failures and zero errors."></td>
+    <td><img src="docs/assets/launch/exports/controlled-nan-failure.png" alt="Physlint demo output showing a controlled NaN corruption failing numeric.finite_values with exact location and remediation guidance."></td>
   </tr>
 </table>
 
@@ -366,7 +372,6 @@ Supported:
 Not currently supported:
 
 - LeRobot v2.0/v2.1
-- Remote Hub identifiers passed directly to `physlint check`
 - Image-directory features in the video rule set
 - Arbitrary codecs unavailable to the installed OpenCV build
 - Inferred safety, calibration, task-success, or coordinate-frame conclusions

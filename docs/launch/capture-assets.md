@@ -1,6 +1,6 @@
 # Manual video, screenshot, and publication-data capture
 
-Use this runbook after `0.1.0a1` is committed and before publishing launch posts.
+Use this runbook after the intended release commit is finalized and before publishing launch posts.
 
 ## 1. Regenerate the evidence
 
@@ -89,9 +89,15 @@ Render the README on GitHub and capture the format compatibility table. The visi
 
 Store selected source captures in `docs/assets/launch/source/` and final crops in `docs/assets/launch/export/`. Do not commit redundant takes or video source files unless repository size has been considered.
 
-## 4. Record the 35–45 second launch video
+## 4. Render the 45-second launch video
 
-QuickTime screen recording is sufficient on macOS; OBS is useful when you need precise 1080p/30 fps output. Record locally with microphone disabled unless you are intentionally narrating.
+The repository includes a deterministic renderer. It uses sanitized terminal cards instead of recording a desktop, so notifications, usernames, hostnames, shell history, and private paths cannot leak into the result:
+
+```bash
+uv run --extra launch python scripts/render_launch_video.py
+```
+
+The command regenerates the two README terminal images and writes `docs/assets/launch/exports/physlint-launch.mp4` as a silent, captioned 1920×1080 H.264 MP4 at 30 fps.
 
 Storyboard:
 
@@ -101,10 +107,10 @@ Storyboard:
 | 4–11 s | Run clean check | “Validate locally before training.” |
 | 11–22 s | Run NaN corruption check | “Exact rule, episode, stream, and sample evidence.” |
 | 22–30 s | Show validation SVG | “4 public snapshots · 31,258 frames · 3/3 corruptions.” |
-| 30–38 s | Show compatibility matrix | “LeRobot v3 alpha. MCAP/ROS and Robomimic next.” |
-| 38–45 s | Repository and CTA | “Try a dataset or become an MCAP design partner.” |
+| 30–38 s | Show compatibility matrix | “LeRobot v3, generic MCAP, and ROS 2 over MCAP implemented.” |
+| 38–45 s | Repository and CTA | “Try your dataset, add it to CI, or contribute an adapter.” |
 
-Record each segment as a separate take. Trim pauses and loading time; do not artificially alter command output. Use simple cuts, no rapid zooms, and captions that remain readable on a phone. Export one 1920×1080 H.264 MP4 at 30 fps, then create platform crops only from that master.
+The generated terminal cards summarize the exact built-in demo contract; they do not imitate a live shell session. The renderer uses simple dissolves, a restrained push-in, and captions sized for phones. Create platform crops only from the 1080p master.
 
 Listen once with audio, watch once muted, and watch once on a phone. Verify every technical claim against `summary.json` immediately before upload.
 
