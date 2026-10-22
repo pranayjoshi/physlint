@@ -6,6 +6,8 @@ Physlint is a deterministic, read-only preflight and regression gate for robot d
 
 Run configuration-declared Python plugins only when a person has explicitly trusted the configuration. The CLI is safe by default: installed entry-point plugins remain available, while plugins named by `physlint.yaml` are recorded in `ignored_config_plugins` and are not imported.
 
+Safe mode controls plugin loading; configuration can still change rule selection and report/cache destinations. For untrusted datasets in CI, supply a reviewed configuration explicitly with `--config PATH`.
+
 ```bash
 physlint inspect DATASET_OR_RECORDING --format json
 physlint check DATASET_OR_RECORDING --format json --safe
@@ -31,7 +33,11 @@ Use `--offline` when network access is prohibited. The source must already exist
 - Exit `4`: internal or isolated rule error.
 - Exit `130`: interrupted.
 
-With `--format json`, successful validation and validation findings are `Report` documents on stdout. Operational errors are `CliError` documents on stderr. Retrieve the exact contracts with:
+With `--format json`, successful validation and validation findings are `Report` documents on stdout. Handled runtime errors are `CliError` documents on stderr.
+
+Command-parser errors, such as a missing argument or unknown option, use the standard CLI diagnostic rather than `CliError`. On exit `2`, agents must also handle non-JSON stderr.
+
+Retrieve the exact contracts with:
 
 ```bash
 physlint schema report

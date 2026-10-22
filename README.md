@@ -13,7 +13,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 [![MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
 ![Status](https://img.shields.io/badge/Status-Released-0f766e?style=flat-square)
 
-[Quickstart](#quickstart) · [Agents](#coding-agents) · [Demo](#see-it-catch-a-real-defect) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Observatory](#physlint-observatory) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
+[Quickstart](#quickstart) · [Agents](#coding-agents) · [Demo](#watch-the-18-second-demo) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Observatory](#physlint-observatory) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
 
 <img src="docs/assets/launch/exports/evidence-index.png" alt="Physlint evidence index showing robot dataset and recording health checks across LeRobot, MCAP, and ROS 2 data." width="100%">
 
@@ -65,7 +65,14 @@ physlint check /path/to/recording.mcap
 physlint inspect /path/to/recording.mcap --profile ros2
 ```
 
-To try the current source checkout without finding a dataset first:
+The demo, Hub sources, and agent additions below are in the source checkout and staged for 0.4.0; the PyPI 0.3.2 release does not include them. To try the demo without finding a dataset first:
+
+```bash
+python -m pip install "physlint[all] @ git+https://github.com/pranayjoshi/physlint.git@1f5d5d16225056527af518a211dd76da648081a1"
+physlint demo
+```
+
+For development, install from an existing repository checkout:
 
 ```bash
 python -m pip install -e ".[all]"
@@ -127,19 +134,19 @@ Safe mode is the default. Installed plugin packages remain available, but Python
 
 Read the [agent operating guide](docs/agents.md), use the reusable [agent skill](integrations/agents/physlint/SKILL.md), or integrate the typed [Python API](docs/python-api.md). Committed contracts are under [`schemas/`](schemas/).
 
-## Watch the 45-second demo
+## Watch the 18-second demo
 
-[![Play the 45-second Physlint launch video](docs/assets/launch/exports/physlint-launch-poster.png)](docs/assets/launch/exports/physlint-launch.mp4)
+[![One bad sample: watch Physlint locate it in an 18-second demo](docs/assets/launch/exports/physlint-launch-poster.png)](docs/assets/launch/exports/physlint-launch.mp4)
 
-[Download or play the captioned launch video](docs/assets/launch/exports/physlint-launch.mp4), or read its [accessible transcript](docs/assets/launch/exports/physlint-launch.vtt). It is silent by design, readable without audio, and generated entirely from publication-safe assets.
+[Watch widescreen](docs/assets/launch/exports/physlint-launch.mp4), download the [4:5 social clip](docs/assets/launch/exports/physlint-launch-social.mp4), or read the [transcript](docs/assets/launch/exports/physlint-launch.vtt). The animation uses actual findings from the synthetic demo; its pacing is edited.
 
-## See it catch a real defect
+## See it locate a controlled defect
 
 These publication-safe captures summarize the built-in demo. It creates one healthy LeRobot v3 dataset and a copy with one deterministic NaN injected into the action stream at episode 0, sample 4, dimension 0.
 
 <table>
   <tr>
-    <th width="50%">Clean pinned snapshot</th>
+    <th width="50%">Healthy synthetic dataset</th>
     <th width="50%">Controlled NaN corruption</th>
   </tr>
   <tr>

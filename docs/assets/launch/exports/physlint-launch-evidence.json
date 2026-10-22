@@ -1,0 +1,30 @@
+{
+  "kind": "synthetic controlled demo; no robot or training run is depicted",
+  "command": "physlint demo",
+  "physlint_version": "0.3.2",
+  "samples": [
+    "0.0",
+    "0.1",
+    "0.2",
+    "0.3",
+    "NaN",
+    "0.5",
+    "0.6",
+    "0.7"
+  ],
+  "clean_passed_rules": 12,
+  "corrupted_status": "failed",
+  "rule_id": "numeric.finite_values",
+  "location": {
+    "episode": "episode_000000",
+    "stream": "action",
+    "sample_index": 4
+  },
+  "observed": {
+    "non_finite_dimensions": [
+      0
+    ]
+  },
+  "remediation": "Remove or recollect affected samples and fix the producing sensor or transform.",
+  "plugin_policy": "installed-only"
+}

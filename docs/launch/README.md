@@ -2,6 +2,8 @@
 
 Nothing in this directory publishes externally. Complete the account and community actions manually after the repository state and artifacts are reviewed.
 
+Use the [current marketing plan](marketing-plan.md) for target communities, posting sequence, launch copy, and adoption measures. The [October 22 review](review-2026-10-22.md) records corrected issues and remaining boundaries.
+
 ## Release gate
 
 - [ ] All intended changes are reviewed and committed on a release branch.

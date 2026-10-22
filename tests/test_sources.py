@@ -10,6 +10,28 @@ from physlint.api import check_dataset
 from physlint.sources import parse_hugging_face_source, resolve_source
 
 
+def test_snapshot_revision_ignores_cache_ancestors_named_snapshots(tmp_path, monkeypatch):
+    commit = "a" * 40
+    snapshot = tmp_path / "snapshots" / "cache" / "datasets--example--data" / "snapshots" / commit
+    module = ModuleType("huggingface_hub")
+    module.snapshot_download = lambda **kwargs: str(snapshot)  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "huggingface_hub", module)
+
+    source = resolve_source("hf://datasets/example/data@main")
+
+    assert source.revision == commit
+    assert source.display_path.endswith("@" + commit)
+
+
+def test_snapshot_without_commit_cannot_claim_reproducible_provenance(tmp_path, monkeypatch):
+    module = ModuleType("huggingface_hub")
+    module.snapshot_download = lambda **kwargs: str(tmp_path / "snapshots" / "main")  # type: ignore[attr-defined]
+    monkeypatch.setitem(sys.modules, "huggingface_hub", module)
+
+    with pytest.raises(AdapterError, match="immutable snapshot commit"):
+        resolve_source("hf://datasets/example/data@main")
+
+
 def test_hugging_face_source_requires_revision():
     with pytest.raises(AdapterError, match="must include a revision"):
         parse_hugging_face_source("hf://datasets/example/robot-data")
