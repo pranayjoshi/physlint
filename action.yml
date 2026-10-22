@@ -1,0 +1,124 @@
+name: Physlint robot data
+description: Validate LeRobot datasets and MCAP recordings with machine-readable evidence.
+author: Pranay Joshi
+
+branding:
+  icon: check-circle
+  color: green
+
+inputs:
+  source:
+    description: Local dataset/recording path or revision-pinned hf:// dataset reference.
+    required: true
+  config:
+    description: Optional Physlint quality-contract path.
+    required: false
+    default: ""
+  report-directory:
+    description: Directory receiving JSON, JUnit, SARIF, and HTML reports.
+    required: false
+    default: .physlint/ci
+  artifact-name:
+    description: Name of the uploaded report artifact.
+    required: false
+    default: physlint-report
+  offline:
+    description: Resolve Hub sources from the local cache without network access.
+    required: false
+    default: "false"
+  allow-config-plugins:
+    description: Allow executable plugins declared by physlint.yaml. Keep false for untrusted data.
+    required: false
+    default: "false"
+  upload-sarif:
+    description: Upload SARIF to GitHub code scanning. The caller must grant security-events write.
+    required: false
+    default: "false"
+
+outputs:
+  exit-code:
+    description: Physlint's documented exit code.
+    value: ${{ steps.validate.outputs.exit-code }}
+  json-report:
+    description: Path to the JSON report.
+    value: ${{ steps.paths.outputs.json-report }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install Physlint
+      shell: bash
+      env:
+        PHYLINT_ACTION_PATH: ${{ github.action_path }}
+      run: python -m pip install "$PHYLINT_ACTION_PATH[all]"
+
+    - name: Prepare report paths
+      id: paths
+      shell: bash
+      env:
+        REPORT_DIRECTORY: ${{ inputs.report-directory }}
+      run: |
+        mkdir -p "$REPORT_DIRECTORY"
+        echo "json-report=$REPORT_DIRECTORY/report.json" >> "$GITHUB_OUTPUT"
+
+    - name: Validate robot data
+      id: validate
+      continue-on-error: true
+      shell: bash
+      env:
+        INPUT_SOURCE: ${{ inputs.source }}
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_OFFLINE: ${{ inputs.offline }}
+        INPUT_ALLOW_CONFIG_PLUGINS: ${{ inputs.allow-config-plugins }}
+        REPORT_DIRECTORY: ${{ inputs.report-directory }}
+      run: |
+        args=(
+          check "$INPUT_SOURCE"
+          --format terminal
+          --json-output "$REPORT_DIRECTORY/report.json"
+          --junit-output "$REPORT_DIRECTORY/report.junit.xml"
+          --sarif-output "$REPORT_DIRECTORY/report.sarif"
+          --html-output "$REPORT_DIRECTORY/report.html"
+        )
+        if [[ -n "$INPUT_CONFIG" ]]; then
+          args+=(--config "$INPUT_CONFIG")
+        fi
+        if [[ "$INPUT_OFFLINE" == "true" ]]; then
+          args+=(--offline)
+        fi
+        if [[ "$INPUT_ALLOW_CONFIG_PLUGINS" == "true" ]]; then
+          args+=(--allow-config-plugins)
+        else
+          args+=(--safe)
+        fi
+        set +e
+        physlint "${args[@]}"
+        code=$?
+        set -e
+        echo "exit-code=$code" >> "$GITHUB_OUTPUT"
+
+    - name: Upload reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.report-directory }}
+        if-no-files-found: error
+
+    - name: Upload SARIF
+      if: inputs.upload-sarif == 'true' && always()
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ inputs.report-directory }}/report.sarif
+
+    - name: Enforce Physlint result
+      if: always()
+      shell: bash
+      env:
+        PHYSLINT_EXIT_CODE: ${{ steps.validate.outputs.exit-code }}
+      run: exit "${PHYSLINT_EXIT_CODE:-4}"

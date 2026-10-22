@@ -2,10 +2,15 @@ from __future__ import annotations
 
 import json
 from datetime import UTC, datetime
+from pathlib import Path
 
 from physlint.config import Config
 from physlint.engine.discovery import discover
 from physlint.engine.runner import run_validation
+from physlint.models.cli import CliError, DemoResult
+from physlint.models.comparison import Comparison
+from physlint.models.dataset import DatasetInventory
+from physlint.models.finding import Report
 from physlint.reporters.json import write_json_report
 
 
@@ -32,7 +37,19 @@ def test_fingerprints_are_deterministic(dataset_factory):
 
 
 def test_report_json_schema_is_versioned():
-    from physlint.models.finding import Report
-
     schema = Report.model_json_schema()
     assert schema["properties"]["schema_version"]["const"] == "1.0"
+
+
+def test_committed_json_schemas_are_current():
+    root = Path(__file__).resolve().parents[1] / "schemas"
+    expected = {
+        "report-1.0.json": Report,
+        "config-1.json": Config,
+        "inventory-1.0.json": DatasetInventory,
+        "comparison-1.0.json": Comparison,
+        "error-1.0.json": CliError,
+        "demo-1.0.json": DemoResult,
+    }
+    for filename, model in expected.items():
+        assert json.loads((root / filename).read_text(encoding="utf-8")) == model.model_json_schema(by_alias=True)

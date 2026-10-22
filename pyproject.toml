@@ -38,6 +38,8 @@ dependencies = [
 
 [project.optional-dependencies]
 video = ["opencv-python-headless>=4.9"]
+hub = ["huggingface-hub>=0.27,<2"]
+all = ["huggingface-hub>=0.27,<2", "opencv-python-headless>=4.9"]
 dev = [
   "mypy>=1.11",
   "pytest>=8.2",

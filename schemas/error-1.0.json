@@ -1,0 +1,42 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "const": "error",
+      "default": "error",
+      "title": "Status",
+      "type": "string"
+    },
+    "error_kind": {
+      "enum": [
+        "configuration",
+        "source",
+        "internal",
+        "interrupted"
+      ],
+      "title": "Error Kind",
+      "type": "string"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    },
+    "exit_code": {
+      "title": "Exit Code",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "error_kind",
+    "message",
+    "exit_code"
+  ],
+  "title": "CliError",
+  "type": "object"
+}

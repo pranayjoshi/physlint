@@ -15,11 +15,16 @@ from physlint.models.rule import Rule, RuleMetadata
 ENTRY_POINT_GROUP = "physlint.rules"
 
 
-def load_plugin_rules(specs: list[str] | None = None) -> list[Rule]:
+def load_plugin_rules(
+    specs: list[str] | None = None,
+    *,
+    include_entry_points: bool = True,
+) -> list[Rule]:
     rules: list[Rule] = []
     seen: set[str] = set()
-    for spec in _entry_point_specs():
-        _register(rules, seen, load_rule(spec), spec)
+    if include_entry_points:
+        for spec in _entry_point_specs():
+            _register(rules, seen, load_rule(spec), spec)
     for spec in specs or []:
         _register(rules, seen, load_rule(spec), spec)
     return rules

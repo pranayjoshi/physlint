@@ -1,0 +1,30 @@
+name: Usage question
+description: Ask for help applying or interpreting Physlint.
+title: "[question]: "
+labels: ["question"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Physlint version
+      description: Output from `physlint --version`.
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Relevant context
+      description: Include the format, sanitized command/output, and rule IDs when useful.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: I removed credentials, private paths, images, and sensitive sample values.
+          required: true

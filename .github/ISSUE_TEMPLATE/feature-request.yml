@@ -1,0 +1,24 @@
+name: Feature request
+description: Propose an improvement to an existing Physlint workflow.
+title: "[feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: Describe the concrete collection, validation, CI, or agent workflow that is difficult today.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What would success look like? A proposed command is welcome but not required.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Examples and evidence
+      description: Link public sources, real failure modes, or related tools when available.

@@ -13,7 +13,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 [![MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
 ![Status](https://img.shields.io/badge/Status-Released-0f766e?style=flat-square)
 
-[Quickstart](#quickstart) · [Demo](#see-it-catch-a-real-defect) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Observatory](#physlint-observatory) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
+[Quickstart](#quickstart) · [Agents](#coding-agents) · [Demo](#see-it-catch-a-real-defect) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Observatory](#physlint-observatory) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
 
 <img src="docs/assets/launch/exports/evidence-index.png" alt="Physlint evidence index showing robot dataset and recording health checks across LeRobot, MCAP, and ROS 2 data." width="100%">
 
@@ -65,6 +65,26 @@ physlint check /path/to/recording.mcap
 physlint inspect /path/to/recording.mcap --profile ros2
 ```
 
+To try the current source checkout without finding a dataset first:
+
+```bash
+python -m pip install -e ".[all]"
+physlint demo
+```
+
+The demo validates one healthy miniature dataset and proves that a deterministic NaN corruption is caught.
+
+### Check a revision-pinned Hugging Face dataset
+
+Install the optional Hub client, then use an explicit revision:
+
+```bash
+python -m pip install -e ".[hub,video]"
+physlint check hf://datasets/owner/dataset@REVISION
+```
+
+Downloads use the standard Hugging Face cache. Pass `--offline` to prohibit network access or `--hub-cache PATH` to select the cache. The resolved snapshot revision is preserved in the report.
+
 Write JSON, JUnit, SARIF, or HTML to exact destinations:
 
 ```bash
@@ -91,6 +111,21 @@ physlint check /path/to/dataset --baseline .physlint/baseline.yaml
 ```
 
 The source remains untouched. Exit code `0` means the configured contract passed; `1` means validation completed with a blocking finding.
+
+## Coding agents
+
+Physlint exposes versioned Pydantic models, stable exit codes, JSON on stdout for completed operations, and structured JSON errors on stderr:
+
+```bash
+physlint inspect /path/to/data --format json
+physlint check /path/to/data --format json --safe
+physlint schema report
+physlint schema error
+```
+
+Safe mode is the default. Installed plugin packages remain available, but Python plugins named by a discovered `physlint.yaml` are recorded and ignored unless a trusted caller passes `--allow-config-plugins`.
+
+Read the [agent operating guide](docs/agents.md), use the reusable [agent skill](integrations/agents/physlint/SKILL.md), or integrate the typed [Python API](docs/python-api.md). Committed contracts are under [`schemas/`](schemas/).
 
 ## See it catch a real defect
 
@@ -220,6 +255,17 @@ Unknown top-level keys, rule IDs, rule options, duplicate required streams, and 
 ## CI integration
 
 The CLI has stable exit codes and writes reports atomically, so a basic GitHub Actions gate is small:
+
+```yaml
+- uses: pranayjoshi/physlint@master # Pin a release tag or commit in production.
+  with:
+    source: data/
+    config: physlint.yaml
+```
+
+The action runs in safe mode, uploads JSON, JUnit, SARIF, and HTML as one artifact, then preserves Physlint's exit code. Set `upload-sarif: "true"` and grant `security-events: write` to publish code-scanning results. Config plugins remain disabled unless `allow-config-plugins: "true"` is set explicitly.
+
+The equivalent manual workflow is:
 
 ```yaml
 - name: Install Physlint
@@ -397,7 +443,7 @@ pytest
 
 Rules require positive and negative fixtures, stable remediation, a bounded finding count, and controlled corruption evidence where applicable. Adapters must remain read-only, metadata-first, lazy over samples, and explicit about capabilities.
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md), open a format request, or join [GitHub Discussions](https://github.com/pranayjoshi/physlint/discussions).
+Read [CONTRIBUTING.md](CONTRIBUTING.md), open a format request, file a bug or feature request through [GitHub Issues](https://github.com/pranayjoshi/physlint/issues/new/choose), or start a [GitHub Discussion](https://github.com/pranayjoshi/physlint/discussions).
 
 ## Project status
 

@@ -41,10 +41,17 @@ def run_validation(
     *,
     clock: Callable[[], datetime] | None = None,
     extra_rules: Sequence[Rule] | None = None,
+    allow_config_plugins: bool = True,
+    configuration_path: str | None = None,
+    reported_dataset_path: str | None = None,
 ) -> Report:
     clock = clock or (lambda: datetime.now(UTC))
     started = clock()
-    plugins = list(extra_rules) if extra_rules is not None else load_plugin_rules(config.plugins)
+    plugins = (
+        list(extra_rules)
+        if extra_rules is not None
+        else load_plugin_rules(config.plugins if allow_config_plugins else [])
+    )
     fingerprint = source_fingerprint(dataset.root)
     cache = RuleCache(
         config.cache,
@@ -62,12 +69,15 @@ def run_validation(
         adapter_version=getattr(dataset, "version", "unknown"),
         dataset=dataset.inventory.name,
         source_revision=dataset.inventory.source_revision,
-        dataset_path=str(dataset.root),
+        dataset_path=reported_dataset_path or str(dataset.root),
         source_fingerprint=fingerprint,
         source_fingerprint_method=(
             "file-content-sha256-v1" if dataset.root.is_file() else "metadata-and-file-stat-sha256-v1"
         ),
         configuration_digest=config.digest(),
+        configuration_path=configuration_path,
+        plugin_policy="config-enabled" if allow_config_plugins else "installed-only",
+        ignored_config_plugins=[] if allow_config_plugins else list(config.plugins),
         started_at=started,
         finished_at=clock(),
         status="failed" if fails_contract else "passed",
