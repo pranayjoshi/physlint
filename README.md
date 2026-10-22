@@ -13,7 +13,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 [![MIT](https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square)](LICENSE)
 ![Status](https://img.shields.io/badge/Status-Released-0f766e?style=flat-square)
 
-[Quickstart](#quickstart) · [Agents](#coding-agents) · [Demo](#see-it-catch-a-real-defect) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Observatory](#physlint-observatory) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
+[Quickstart](#quickstart) · [Agents](#coding-agents) · [Demo](#watch-the-18-second-demo) · [Rules](#what-physlint-checks) · [Evidence](#reproducible-public-data-evidence) · [Observatory](#physlint-observatory) · [Roadmap](#format-roadmap) · [Contributing](#contributing)
 
 <img src="docs/assets/launch/exports/evidence-index.png" alt="Physlint evidence index showing robot dataset and recording health checks across LeRobot, MCAP, and ROS 2 data." width="100%">
 
@@ -140,13 +140,13 @@ Read the [agent operating guide](docs/agents.md), use the reusable [agent skill]
 
 [Watch widescreen](docs/assets/launch/exports/physlint-launch.mp4), download the [4:5 social clip](docs/assets/launch/exports/physlint-launch-social.mp4), or read the [transcript](docs/assets/launch/exports/physlint-launch.vtt). The animation uses actual findings from the synthetic demo; its pacing is edited.
 
-## See it catch a real defect
+## See it locate a controlled defect
 
 These publication-safe captures summarize the built-in demo. It creates one healthy LeRobot v3 dataset and a copy with one deterministic NaN injected into the action stream at episode 0, sample 4, dimension 0.
 
 <table>
   <tr>
-    <th width="50%">Clean pinned snapshot</th>
+    <th width="50%">Healthy synthetic dataset</th>
     <th width="50%">Controlled NaN corruption</th>
   </tr>
   <tr>
