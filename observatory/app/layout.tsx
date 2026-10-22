@@ -14,20 +14,20 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Physlint Observatory",
-    template: "%s · Physlint Observatory",
+    default: "Physlint Evidence Atlas",
+    template: "%s · Physlint Evidence Atlas",
   },
-  description: "Transparent robot dataset and recording health evidence.",
+  description: "Reproducible evidence for robot dataset and recording health.",
   openGraph: {
-    title: "Physlint Observatory",
-    description: "Know your robot data before it trains your model.",
+    title: "Physlint Evidence Atlas",
+    description: "Know your robot data before training.",
     type: "website",
     images: [{ url: "/physlint-observatory-social.png", width: 1731, height: 909 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Physlint Observatory",
-    description: "Open validation evidence for LeRobot, MCAP, and ROS 2.",
+    title: "Physlint Evidence Atlas",
+    description: "Reproducible validation evidence for LeRobot, MCAP, and ROS 2.",
     images: ["/physlint-observatory-social.png"],
   },
   icons: {

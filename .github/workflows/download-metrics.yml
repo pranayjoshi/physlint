@@ -2,7 +2,8 @@ name: Update download metrics
 
 on:
   schedule:
-    - cron: "17 6 * * *"
+    # GitHub cron is UTC; 04:00 UTC is 10:00 PM CST.
+    - cron: "0 4 * * *"
   workflow_dispatch:
 
 permissions:

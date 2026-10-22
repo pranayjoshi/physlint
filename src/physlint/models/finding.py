@@ -124,6 +124,9 @@ class Report(BaseModel):
     source_fingerprint: str
     source_fingerprint_method: str = "metadata-and-file-stat-sha256-v1"
     configuration_digest: str
+    configuration_path: str | None = None
+    plugin_policy: Literal["installed-only", "config-enabled"] = "installed-only"
+    ignored_config_plugins: list[str] = Field(default_factory=list)
     started_at: datetime
     finished_at: datetime
     status: Literal["passed", "failed"]

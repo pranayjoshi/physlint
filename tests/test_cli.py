@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 from typer.testing import CliRunner
 
@@ -152,3 +153,60 @@ def test_cli_compare_baseline_and_ci_reports(dataset_factory, tmp_path):
     assert (tmp_path / "report.xml").is_file()
     assert (tmp_path / "report.sarif").is_file()
     assert (tmp_path / "report.html").is_file()
+
+
+def test_demo_exercises_clean_and_corrupted_data():
+    result = runner.invoke(app, ["demo", "--format", "json"])
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "passed"
+    assert payload["clean"]["status"] == "passed"
+    assert payload["corrupted"]["status"] == "failed"
+    findings = [finding for rule in payload["corrupted"]["results"] for finding in rule["findings"]]
+    assert any(finding["rule_id"] == "numeric.finite_values" for finding in findings)
+
+
+def test_schema_and_explain_are_machine_readable():
+    schema = runner.invoke(app, ["schema", "report"])
+    assert schema.exit_code == 0
+    assert json.loads(schema.stdout)["properties"]["schema_version"]["const"] == "1.0"
+
+    explanation = runner.invoke(app, ["explain", "temporal.max_gap", "--format", "json"])
+    assert explanation.exit_code == 0
+    assert json.loads(explanation.stdout)["id"] == "temporal.max_gap"
+
+
+def test_json_errors_follow_the_error_schema(tmp_path):
+    result = runner.invoke(app, ["check", str(tmp_path / "missing"), "--format", "json"])
+    assert result.exit_code == 3
+    payload = json.loads(result.stderr)
+    assert payload == {
+        "schema_version": "1.0",
+        "status": "error",
+        "error_kind": "source",
+        "message": f"source path does not exist: {(tmp_path / 'missing').resolve()}",
+        "exit_code": 3,
+    }
+
+
+def test_cli_ignores_config_plugins_by_default(dataset_factory, tmp_path):
+    root = dataset_factory()
+    plugin = Path(__file__).resolve().parents[1] / "examples" / "plugins" / "idle_prefix.py"
+    (root / "physlint.yaml").write_text(
+        f"config_version: 1\nplugins:\n  - {plugin}:IdlePrefixRule\n",
+        encoding="utf-8",
+    )
+
+    safe = runner.invoke(app, ["check", str(root), "--format", "json"])
+    assert safe.exit_code == 0, safe.output
+    safe_report = json.loads(safe.stdout)
+    assert safe_report["plugin_policy"] == "installed-only"
+    assert safe_report["plugins"] == []
+    assert safe_report["ignored_config_plugins"] == [f"{plugin}:IdlePrefixRule"]
+
+    trusted = runner.invoke(
+        app,
+        ["check", str(root), "--format", "json", "--allow-config-plugins"],
+    )
+    assert trusted.exit_code == 0, trusted.output
+    assert "example.idle_prefix" in json.loads(trusted.stdout)["plugins"]

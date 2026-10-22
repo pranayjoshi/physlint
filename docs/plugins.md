@@ -13,10 +13,12 @@ plugins:
 The spec is `module:Class` or `path.py:Class`. Unknown option keys are rejected. Plugin rule IDs must not collide with built-ins.
 
 ```bash
-physlint rules --config physlint.yaml
-physlint explain example.idle_prefix --config physlint.yaml
-physlint check /path/to/dataset --config physlint.yaml
+physlint rules --config physlint.yaml --allow-config-plugins
+physlint explain example.idle_prefix --config physlint.yaml --allow-config-plugins
+physlint check /path/to/dataset --config physlint.yaml --allow-config-plugins
 ```
+
+Config-declared plugins execute Python and are disabled by default. Review the configuration and code before opting in. Installed `physlint.rules` entry points remain enabled because they are part of the caller's trusted environment.
 
 ## Install via entry points
 

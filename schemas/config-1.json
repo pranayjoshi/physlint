@@ -1,0 +1,169 @@
+{
+  "$defs": {
+    "CacheSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "directory": {
+          "default": ".physlint/cache",
+          "title": "Directory",
+          "type": "string"
+        }
+      },
+      "title": "CacheSettings",
+      "type": "object"
+    },
+    "ReportSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "json": {
+          "default": true,
+          "title": "Json",
+          "type": "boolean"
+        },
+        "junit": {
+          "default": false,
+          "title": "Junit",
+          "type": "boolean"
+        },
+        "sarif": {
+          "default": false,
+          "title": "Sarif",
+          "type": "boolean"
+        },
+        "html": {
+          "default": false,
+          "title": "Html",
+          "type": "boolean"
+        },
+        "output_dir": {
+          "default": ".physlint/reports",
+          "title": "Output Dir",
+          "type": "string"
+        }
+      },
+      "title": "ReportSettings",
+      "type": "object"
+    },
+    "RuleSettings": {
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "default": true,
+          "title": "Enabled",
+          "type": "boolean"
+        },
+        "severity": {
+          "anyOf": [
+            {
+              "enum": [
+                "critical",
+                "error",
+                "warning",
+                "notice"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Severity"
+        },
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "title": "RuleSettings",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "config_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Config Version",
+      "type": "integer"
+    },
+    "adapter": {
+      "default": "auto",
+      "enum": [
+        "auto",
+        "lerobot",
+        "mcap"
+      ],
+      "title": "Adapter",
+      "type": "string"
+    },
+    "profile": {
+      "default": "auto",
+      "enum": [
+        "auto",
+        "generic",
+        "ros2"
+      ],
+      "title": "Profile",
+      "type": "string"
+    },
+    "required_streams": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Required Streams",
+      "type": "array"
+    },
+    "fail_on": {
+      "default": "error",
+      "enum": [
+        "critical",
+        "error",
+        "warning",
+        "notice"
+      ],
+      "title": "Fail On",
+      "type": "string"
+    },
+    "rules": {
+      "additionalProperties": {
+        "$ref": "#/$defs/RuleSettings"
+      },
+      "title": "Rules",
+      "type": "object"
+    },
+    "reports": {
+      "$ref": "#/$defs/ReportSettings"
+    },
+    "cache": {
+      "$ref": "#/$defs/CacheSettings"
+    },
+    "baseline": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Baseline"
+    },
+    "plugins": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Plugins",
+      "type": "array"
+    }
+  },
+  "title": "Config",
+  "type": "object"
+}

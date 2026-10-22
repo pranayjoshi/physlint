@@ -1,0 +1,489 @@
+{
+  "$defs": {
+    "CoverageDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "episodes_before": {
+          "title": "Episodes Before",
+          "type": "integer"
+        },
+        "episodes_after": {
+          "title": "Episodes After",
+          "type": "integer"
+        },
+        "frames_before": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frames Before"
+        },
+        "frames_after": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frames After"
+        },
+        "messages_before": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Messages Before"
+        },
+        "messages_after": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Messages After"
+        },
+        "added_streams": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Added Streams",
+          "type": "array"
+        },
+        "removed_streams": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Removed Streams",
+          "type": "array"
+        },
+        "added_tasks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Added Tasks",
+          "type": "array"
+        },
+        "removed_tasks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Removed Tasks",
+          "type": "array"
+        },
+        "task_count_changes": {
+          "additionalProperties": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object"
+          },
+          "title": "Task Count Changes",
+          "type": "object"
+        }
+      },
+      "required": [
+        "episodes_before",
+        "episodes_after"
+      ],
+      "title": "CoverageDelta",
+      "type": "object"
+    },
+    "CoverageSnapshot": {
+      "additionalProperties": false,
+      "description": "Distributions present in a source. This is not a quality score.",
+      "properties": {
+        "episodes": {
+          "default": 0,
+          "title": "Episodes",
+          "type": "integer"
+        },
+        "frames": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frames"
+        },
+        "messages": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Messages"
+        },
+        "streams": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Streams",
+          "type": "array"
+        },
+        "tasks": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Tasks",
+          "type": "object"
+        },
+        "length_min": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length Min"
+        },
+        "length_max": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length Max"
+        },
+        "robot_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Robot Type"
+        },
+        "fps": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fps"
+        }
+      },
+      "title": "CoverageSnapshot",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "description": "Actionable evidence produced by one rule.",
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "impact": {
+          "title": "Impact",
+          "type": "string"
+        },
+        "remediation": {
+          "title": "Remediation",
+          "type": "string"
+        },
+        "observed": {
+          "default": null,
+          "title": "Observed"
+        },
+        "expected": {
+          "default": null,
+          "title": "Expected"
+        },
+        "location": {
+          "$ref": "#/$defs/Location"
+        },
+        "evidence": {
+          "additionalProperties": true,
+          "title": "Evidence",
+          "type": "object"
+        },
+        "fingerprint": {
+          "title": "Fingerprint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_version",
+        "severity",
+        "title",
+        "message",
+        "impact",
+        "remediation",
+        "fingerprint"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "properties": {
+        "episode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode"
+        },
+        "stream": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stream"
+        },
+        "sample_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sample Index"
+        },
+        "timestamp": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timestamp"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        }
+      },
+      "title": "Location",
+      "type": "object"
+    },
+    "RuleChange": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "before": {
+          "title": "Before",
+          "type": "string"
+        },
+        "after": {
+          "title": "After",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "before",
+        "after"
+      ],
+      "title": "RuleChange",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "critical",
+        "error",
+        "warning",
+        "notice"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "unchanged",
+        "improved",
+        "regressed",
+        "changed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "baseline_dataset": {
+      "title": "Baseline Dataset",
+      "type": "string"
+    },
+    "candidate_dataset": {
+      "title": "Candidate Dataset",
+      "type": "string"
+    },
+    "baseline_fingerprint": {
+      "title": "Baseline Fingerprint",
+      "type": "string"
+    },
+    "candidate_fingerprint": {
+      "title": "Candidate Fingerprint",
+      "type": "string"
+    },
+    "baseline_status": {
+      "title": "Baseline Status",
+      "type": "string"
+    },
+    "candidate_status": {
+      "title": "Candidate Status",
+      "type": "string"
+    },
+    "new_findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "New Findings",
+      "type": "array"
+    },
+    "resolved_findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Resolved Findings",
+      "type": "array"
+    },
+    "persistent_findings": {
+      "items": {
+        "$ref": "#/$defs/Finding"
+      },
+      "title": "Persistent Findings",
+      "type": "array"
+    },
+    "rule_changes": {
+      "items": {
+        "$ref": "#/$defs/RuleChange"
+      },
+      "title": "Rule Changes",
+      "type": "array"
+    },
+    "coverage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CoverageDelta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "baseline_coverage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CoverageSnapshot"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "candidate_coverage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CoverageSnapshot"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "status",
+    "baseline_dataset",
+    "candidate_dataset",
+    "baseline_fingerprint",
+    "candidate_fingerprint",
+    "baseline_status",
+    "candidate_status"
+  ],
+  "title": "Comparison",
+  "type": "object"
+}

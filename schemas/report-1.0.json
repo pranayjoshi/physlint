@@ -1,0 +1,594 @@
+{
+  "$defs": {
+    "AppliedSuppression": {
+      "additionalProperties": false,
+      "properties": {
+        "fingerprint": {
+          "title": "Fingerprint",
+          "type": "string"
+        },
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "author": {
+          "title": "Author",
+          "type": "string"
+        },
+        "accepted_at": {
+          "title": "Accepted At",
+          "type": "string"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expires At"
+        }
+      },
+      "required": [
+        "fingerprint",
+        "rule_id",
+        "reason",
+        "author",
+        "accepted_at"
+      ],
+      "title": "AppliedSuppression",
+      "type": "object"
+    },
+    "CacheSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "used": {
+          "default": false,
+          "title": "Used",
+          "type": "boolean"
+        },
+        "hits": {
+          "default": 0,
+          "title": "Hits",
+          "type": "integer"
+        },
+        "misses": {
+          "default": 0,
+          "title": "Misses",
+          "type": "integer"
+        },
+        "directory": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Directory"
+        }
+      },
+      "title": "CacheSummary",
+      "type": "object"
+    },
+    "CoverageSnapshot": {
+      "additionalProperties": false,
+      "description": "Distributions present in a source. This is not a quality score.",
+      "properties": {
+        "episodes": {
+          "default": 0,
+          "title": "Episodes",
+          "type": "integer"
+        },
+        "frames": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Frames"
+        },
+        "messages": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Messages"
+        },
+        "streams": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Streams",
+          "type": "array"
+        },
+        "tasks": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Tasks",
+          "type": "object"
+        },
+        "length_min": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length Min"
+        },
+        "length_max": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length Max"
+        },
+        "robot_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Robot Type"
+        },
+        "fps": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fps"
+        }
+      },
+      "title": "CoverageSnapshot",
+      "type": "object"
+    },
+    "Finding": {
+      "additionalProperties": false,
+      "description": "Actionable evidence produced by one rule.",
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "impact": {
+          "title": "Impact",
+          "type": "string"
+        },
+        "remediation": {
+          "title": "Remediation",
+          "type": "string"
+        },
+        "observed": {
+          "default": null,
+          "title": "Observed"
+        },
+        "expected": {
+          "default": null,
+          "title": "Expected"
+        },
+        "location": {
+          "$ref": "#/$defs/Location"
+        },
+        "evidence": {
+          "additionalProperties": true,
+          "title": "Evidence",
+          "type": "object"
+        },
+        "fingerprint": {
+          "title": "Fingerprint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_version",
+        "severity",
+        "title",
+        "message",
+        "impact",
+        "remediation",
+        "fingerprint"
+      ],
+      "title": "Finding",
+      "type": "object"
+    },
+    "Location": {
+      "additionalProperties": false,
+      "properties": {
+        "episode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Episode"
+        },
+        "stream": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stream"
+        },
+        "sample_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sample Index"
+        },
+        "timestamp": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timestamp"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        }
+      },
+      "title": "Location",
+      "type": "object"
+    },
+    "RuleResult": {
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "rule_version": {
+          "title": "Rule Version",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/RuleStatus"
+        },
+        "duration_ms": {
+          "title": "Duration Ms",
+          "type": "number"
+        },
+        "findings": {
+          "items": {
+            "$ref": "#/$defs/Finding"
+          },
+          "title": "Findings",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "error_kind": {
+          "anyOf": [
+            {
+              "enum": [
+                "adapter",
+                "rule"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Kind"
+        },
+        "cached": {
+          "default": false,
+          "title": "Cached",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "rule_id",
+        "rule_version",
+        "status",
+        "duration_ms"
+      ],
+      "title": "RuleResult",
+      "type": "object"
+    },
+    "RuleStatus": {
+      "enum": [
+        "passed",
+        "failed",
+        "not_run",
+        "errored"
+      ],
+      "title": "RuleStatus",
+      "type": "string"
+    },
+    "RunSummary": {
+      "properties": {
+        "passed": {
+          "default": 0,
+          "title": "Passed",
+          "type": "integer"
+        },
+        "failed": {
+          "default": 0,
+          "title": "Failed",
+          "type": "integer"
+        },
+        "not_run": {
+          "default": 0,
+          "title": "Not Run",
+          "type": "integer"
+        },
+        "errored": {
+          "default": 0,
+          "title": "Errored",
+          "type": "integer"
+        },
+        "findings": {
+          "default": 0,
+          "title": "Findings",
+          "type": "integer"
+        }
+      },
+      "title": "RunSummary",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "critical",
+        "error",
+        "warning",
+        "notice"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Versioned JSON report. New fields may be added compatibly in schema 1.x.",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "physlint_version": {
+      "title": "Physlint Version",
+      "type": "string"
+    },
+    "adapter": {
+      "title": "Adapter",
+      "type": "string"
+    },
+    "adapter_version": {
+      "title": "Adapter Version",
+      "type": "string"
+    },
+    "dataset": {
+      "title": "Dataset",
+      "type": "string"
+    },
+    "source_revision": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Revision"
+    },
+    "dataset_path": {
+      "title": "Dataset Path",
+      "type": "string"
+    },
+    "source_fingerprint": {
+      "title": "Source Fingerprint",
+      "type": "string"
+    },
+    "source_fingerprint_method": {
+      "default": "metadata-and-file-stat-sha256-v1",
+      "title": "Source Fingerprint Method",
+      "type": "string"
+    },
+    "configuration_digest": {
+      "title": "Configuration Digest",
+      "type": "string"
+    },
+    "configuration_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Configuration Path"
+    },
+    "plugin_policy": {
+      "default": "installed-only",
+      "enum": [
+        "installed-only",
+        "config-enabled"
+      ],
+      "title": "Plugin Policy",
+      "type": "string"
+    },
+    "ignored_config_plugins": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Ignored Config Plugins",
+      "type": "array"
+    },
+    "started_at": {
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "finished_at": {
+      "format": "date-time",
+      "title": "Finished At",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "passed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "sampled": {
+      "default": false,
+      "title": "Sampled",
+      "type": "boolean"
+    },
+    "results": {
+      "items": {
+        "$ref": "#/$defs/RuleResult"
+      },
+      "title": "Results",
+      "type": "array"
+    },
+    "summary": {
+      "$ref": "#/$defs/RunSummary"
+    },
+    "coverage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CoverageSnapshot"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "cache": {
+      "$ref": "#/$defs/CacheSummary"
+    },
+    "suppressed": {
+      "items": {
+        "$ref": "#/$defs/AppliedSuppression"
+      },
+      "title": "Suppressed",
+      "type": "array"
+    },
+    "plugins": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Plugins",
+      "type": "array"
+    }
+  },
+  "required": [
+    "physlint_version",
+    "adapter",
+    "adapter_version",
+    "dataset",
+    "dataset_path",
+    "source_fingerprint",
+    "configuration_digest",
+    "started_at",
+    "finished_at",
+    "status",
+    "results",
+    "summary"
+  ],
+  "title": "Report",
+  "type": "object"
+}

@@ -33,7 +33,7 @@ h1 { max-width:1020px; margin:0; font-size:clamp(50px,8.2vw,104px); line-height:
 .core { position:absolute; inset:50%; display:grid; place-items:center; width:82px; height:82px; transform:translate(-50%,-50%); background:var(--acid); border-radius:50%; font:800 21px/1 var(--font-geist-mono); }
 .signal { position:absolute; width:11px; height:11px; border-radius:50%; background:var(--teal); box-shadow:0 0 0 6px var(--paper); }
 .signal-a { top:18%; left:17%; } .signal-b { right:3%; top:48%; } .signal-c { bottom:7%; left:43%; background:var(--red); }
-.summary { position:relative; z-index:2; display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); background:rgba(255,255,255,.42); backdrop-filter:blur(5px); }
+.summary { position:relative; z-index:2; display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--line); background:rgba(255,255,255,.42); backdrop-filter:blur(5px); }
 .summary div { display:flex; flex-direction:column; gap:7px; padding:23px; border-right:1px solid var(--line); }
 .summary div:last-child { border:0; }
 .summary strong { font:650 31px/1 var(--font-geist-mono); }
@@ -116,7 +116,7 @@ tbody tr:hover { background:rgba(255,255,255,.45); }
 @media (max-width:720px) {
   .shell { width:min(100% - 24px,1180px); }.nav { height:68px; }.nav-links a:not(.github) { display:none; }.hero { padding-top:70px; }
   h1 { font-size:clamp(45px,14vw,70px); }.lede { font-size:17px; }.hero-actions { flex-direction:column; align-items:stretch; }
-  .summary { grid-template-columns:1fr 1fr; }.summary div:nth-child(2) { border-right:0; }.summary div:nth-child(-n+2) { border-bottom:1px solid var(--line); }
+  .summary { grid-template-columns:1fr; }.summary div { border-right:0; border-bottom:1px solid var(--line); }
   .section-heading { display:block; }.section-heading>p { margin-top:14px; }.toolbar { align-items:stretch; flex-direction:column; }.search { width:100%; }
   .method { padding:80px 0; }.principles,.story-grid { grid-template-columns:1fr; }.principles article { min-height:180px; }.story-grid article { min-height:310px; }.contribute { padding:80px 0; }.cta { padding:85px 0; }.cta>div { flex-direction:column; }
   .workflow-grid { grid-template-columns:1fr; }

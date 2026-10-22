@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — Unreleased
+
+- Accept revision-qualified Hugging Face dataset sources through `hf://datasets/owner/name@revision`, with explicit offline and cache controls.
+- Ignore executable plugins declared by dataset configuration by default; trusted callers can opt in explicitly.
+- Add a zero-setup `physlint demo` command with one healthy and one deterministically corrupted dataset.
+- Publish CLI JSON Schemas, structured JSON operational errors, and JSON output for rule explanations.
+- Add an agent operating guide, reusable agent skill, Python API guide, and `llms.txt` index.
+- Add a reusable GitHub Action that preserves reports even when validation blocks CI.
+- Add general bug and feature issue forms.
+
 ## 0.3.2 — 2026-09-06
 
 - Launch the Physlint Community Evidence Atlas with 23 published observations, community survey context, real defect stories, and stable evidence links.

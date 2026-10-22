@@ -73,13 +73,18 @@ class ConfigurationError(ValueError):
     """Invalid or unreadable user configuration."""
 
 
-def load_config(path: Path | None, dataset_path: Path | None = None) -> Config:
+def resolve_config_path(path: Path | None, dataset_path: Path | None = None) -> Path | None:
     candidate = path
     if candidate is None and dataset_path is not None:
         base = dataset_path if dataset_path.is_dir() else dataset_path.parent
         local = base / "physlint.yaml"
         cwd = Path.cwd() / "physlint.yaml"
         candidate = local if local.is_file() else cwd if cwd.is_file() else None
+    return candidate
+
+
+def load_config(path: Path | None, dataset_path: Path | None = None) -> Config:
+    candidate = resolve_config_path(path, dataset_path)
     if candidate is None:
         return Config()
     try:

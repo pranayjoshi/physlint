@@ -12,17 +12,18 @@ async function render() {
   }, { waitUntil() {}, passThroughOnException() {} });
 }
 
-test("server-renders the Physlint Observatory", async () => {
+test("server-renders the Physlint Evidence Atlas", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   const html = await response.text();
   assert.match(html, developmentPreviewMeta);
-  assert.match(html, /Physlint Observatory/);
-  assert.match(html, /The public map of/);
-  assert.match(html, /Community evidence atlas/i);
-  assert.match(html, /What a real defect looks like/);
-  assert.match(html, /Put your robot data/);
-  assert.doesNotMatch(html, /Regressions, not a leaderboard/);
+  assert.match(html, /Physlint Evidence Atlas/);
+  assert.match(html, /Know your robot data/);
+  assert.match(html, /Evidence atlas/i);
+  assert.match(html, /Concrete defects/);
+  assert.match(html, /Add your robot data/);
+  assert.doesNotMatch(html, /Data-engineer workflow/);
+  assert.doesNotMatch(html, /How to read the index/);
   assert.match(html, /physlint-observatory-social\.png/);
 });
