@@ -9,7 +9,8 @@
 - Add an agent operating guide, reusable agent skill, Python API guide, and `llms.txt` index.
 - Add a reusable GitHub Action that preserves reports even when validation blocks CI.
 - Add general bug and feature issue forms.
-- Add a reproducible, publication-safe 45-second launch video and sanitized terminal images.
+- Add an 18-second animated launch clip in widescreen and 4:5 social formats, generated from freshly executed demo evidence.
+- Verify the final Hub snapshot commit rather than an ancestor cache directory when recording source provenance.
 
 ## 0.3.2 — 2026-09-06
 

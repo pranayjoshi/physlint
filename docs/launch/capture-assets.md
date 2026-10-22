@@ -89,28 +89,26 @@ Render the README on GitHub and capture the format compatibility table. The visi
 
 Store selected source captures in `docs/assets/launch/source/` and final crops in `docs/assets/launch/export/`. Do not commit redundant takes or video source files unless repository size has been considered.
 
-## 4. Render the 45-second launch video
+## 4. Render the 18-second launch video
 
-The repository includes a deterministic renderer. It uses sanitized terminal cards instead of recording a desktop, so notifications, usernames, hostnames, shell history, and private paths cannot leak into the result:
+The renderer runs the built-in demo and extracts the actual corrupted action values and finding. Each render stops if the demo no longer produces one expected defect. It draws the animation directly, without capturing a desktop:
 
 ```bash
 uv run --extra launch python scripts/render_launch_video.py
 ```
 
-The command regenerates the two README terminal images and writes `docs/assets/launch/exports/physlint-launch.mp4` as a silent, captioned 1920×1080 H.264 MP4 at 30 fps.
+It writes two silent H.264 MP4s at 30 fps: `physlint-launch.mp4` (1920×1080) and `physlint-launch-social.mp4` (1080×1350), plus the poster and `physlint-launch-evidence.json`, under `docs/assets/launch/exports/`. The separate WebVTT transcript is maintained alongside them. Select a single layout with `--format landscape` or `--format social`, or send a render to another directory with `--output-dir PATH`.
 
 Storyboard:
 
 | Time | Visual | On-screen message |
 |---:|---|---|
-| 0–4 s | Title card | “Bad robot data is expensive.” |
-| 4–11 s | Run clean check | “Validate locally before training.” |
-| 11–22 s | Run NaN corruption check | “Exact rule, episode, stream, and sample evidence.” |
-| 22–30 s | Show validation SVG | “4 public snapshots · 31,258 frames · 3/3 corruptions.” |
-| 30–38 s | Show compatibility matrix | “LeRobot v3, generic MCAP, and ROS 2 over MCAP implemented.” |
-| 38–45 s | Repository and CTA | “Try your dataset, add it to CI, or contribute an adapter.” |
+| 0–3 s | Scan the action values and stop at NaN | “One bad sample. Catch it before training.” |
+| 3–7 s | Type the demo command; reveal pass/fail | “Check the dataset.” |
+| 7–12 s | Reveal the finding and its exact location | “Found. Sample 4.” |
+| 12–18 s | Product name, supported formats, and demo link | “Lint before you train.” |
 
-The generated terminal cards summarize the exact built-in demo contract; they do not imitate a live shell session. The renderer uses simple dissolves, a restrained push-in, and captions sized for phones. Create platform crops only from the 1080p master.
+The clip uses large typography, a moving sample cursor, command typing, and sequential finding reveals. It depicts a synthetic corruption with edited timing. It makes no claim about training outcomes or scan speed. Layouts are rendered separately so feed text remains legible.
 
 Listen once with audio, watch once muted, and watch once on a phone. Verify every technical claim against `summary.json` immediately before upload.
 

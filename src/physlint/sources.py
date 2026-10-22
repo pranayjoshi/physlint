@@ -61,7 +61,9 @@ def resolve_source(
         mode = "offline cache" if offline else "Hugging Face Hub"
         raise AdapterError(f"cannot resolve {raw} from the {mode}: {exc}") from exc
 
-    revision = _snapshot_revision(snapshot) or requested_revision
+    revision = _snapshot_revision(snapshot)
+    if revision is None:
+        raise AdapterError("Hub download did not return an immutable snapshot commit; cannot record source provenance")
     display_path = f"{HF_PREFIX}{repo_id}@{revision}"
     return ResolvedSource(path=snapshot, display_path=display_path, revision=revision, remote=True)
 
@@ -81,8 +83,6 @@ def parse_hugging_face_source(value: str) -> tuple[str, str]:
 
 
 def _snapshot_revision(path: Path) -> str | None:
-    parts = path.parts
-    for index, part in enumerate(parts):
-        if part == "snapshots" and index + 1 < len(parts):
-            return parts[index + 1]
+    if path.parent.name == "snapshots" and re.fullmatch(r"[0-9a-fA-F]{40}", path.name):
+        return path.name
     return None

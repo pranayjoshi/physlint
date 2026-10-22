@@ -65,7 +65,14 @@ physlint check /path/to/recording.mcap
 physlint inspect /path/to/recording.mcap --profile ros2
 ```
 
-To try the current source checkout without finding a dataset first:
+The demo, Hub sources, and agent additions below are in the source checkout and staged for 0.4.0; the PyPI 0.3.2 release does not include them. To try the demo without finding a dataset first:
+
+```bash
+python -m pip install "physlint[all] @ git+https://github.com/pranayjoshi/physlint.git@1f5d5d16225056527af518a211dd76da648081a1"
+physlint demo
+```
+
+For development, install from an existing repository checkout:
 
 ```bash
 python -m pip install -e ".[all]"
@@ -127,11 +134,11 @@ Safe mode is the default. Installed plugin packages remain available, but Python
 
 Read the [agent operating guide](docs/agents.md), use the reusable [agent skill](integrations/agents/physlint/SKILL.md), or integrate the typed [Python API](docs/python-api.md). Committed contracts are under [`schemas/`](schemas/).
 
-## Watch the 45-second demo
+## Watch the 18-second demo
 
-[![Play the 45-second Physlint launch video](docs/assets/launch/exports/physlint-launch-poster.png)](docs/assets/launch/exports/physlint-launch.mp4)
+[![One bad sample: watch Physlint locate it in an 18-second demo](docs/assets/launch/exports/physlint-launch-poster.png)](docs/assets/launch/exports/physlint-launch.mp4)
 
-[Download or play the captioned launch video](docs/assets/launch/exports/physlint-launch.mp4), or read its [accessible transcript](docs/assets/launch/exports/physlint-launch.vtt). It is silent by design, readable without audio, and generated entirely from publication-safe assets.
+[Watch widescreen](docs/assets/launch/exports/physlint-launch.mp4), download the [4:5 social clip](docs/assets/launch/exports/physlint-launch-social.mp4), or read the [transcript](docs/assets/launch/exports/physlint-launch.vtt). The animation uses actual findings from the synthetic demo; its pacing is edited.
 
 ## See it catch a real defect
 
