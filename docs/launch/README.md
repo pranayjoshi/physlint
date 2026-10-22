@@ -27,9 +27,9 @@ Nothing in this directory publishes externally. Complete the account and communi
 - [ ] Enable two-factor authentication on the PyPI owner account.
 - [ ] Configure a PyPI Trusted Publisher for owner `pranayjoshi`, repository `physlint`, workflow `publish.yml`, environment `pypi`.
 - [ ] Configure the equivalent TestPyPI publisher for workflow `publish-testpypi.yml` and environment `testpypi`; run it before the production release.
-- [ ] Create and publish GitHub release/tag `v0.1.0a1`; do not upload with a long-lived API token.
+- [ ] Create and publish GitHub release/tag `v0.4.0`; do not upload with a long-lived API token.
 - [ ] Verify the published wheel and source distribution hashes and project links.
-- [ ] Test in a new environment: `pipx run --spec 'physlint[video]==0.1.0a1' physlint --version`.
+- [ ] Test in a new environment: `pipx run --spec 'physlint[all]==0.4.0' physlint --version`.
 - [ ] Test one public dataset from the published artifact, not the editable checkout.
 
 ## Launch sequence
@@ -40,7 +40,7 @@ Nothing in this directory publishes externally. Complete the account and communi
 4. Share a feedback-oriented message in LeRobot Discord and the Hugging Face forum.
 5. Publish LinkedIn and X posts using the same measured claims.
 6. Submit Show HN only after anonymous users can install and run the tool without signup.
-7. Share with ROS/MCAP communities as a design-partner request, clearly stating that MCAP is planned.
+7. Share the implemented MCAP/ROS 2 profile with those communities and request representative recordings that broaden the evidence.
 8. Contact the four tested dataset publishers privately with the report and attribution.
 
 ## First two-week success criteria

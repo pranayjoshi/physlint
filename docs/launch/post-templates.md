@@ -6,7 +6,7 @@ Replace `[LINK]` only after the repository and package are public. Recheck every
 
 **Headline:** Physlint catches physical-AI data integrity defects before training.
 
-**Scope sentence:** The public alpha ships with a tested LeRobot v3 adapter; MCAP/ROS 2 and Robomimic are planned, and design partners are welcome.
+**Scope sentence:** Physlint validates LeRobot v3 datasets, generic MCAP containers, and ROS 2-over-MCAP recordings; Robomimic HDF5 and RLDS remain roadmap formats.
 
 Do not use “supports all robot data,” “production ready,” “guarantees dataset quality,” or “prevents bad policies.”
 
@@ -14,40 +14,40 @@ Do not use “supports all robot data,” “production ready,” “guarantees 
 
 Bad robot data is expensive to discover after training starts.
 
-I built Physlint, an open-source, local-first integrity validator for physical-AI recordings and robot-learning datasets. The first public alpha supports LeRobot v3 and checks schemas, episode boundaries, timestamps, actions, observations, video decoding, frozen cameras, and black frames.
+I built Physlint, an open-source, local-first integrity validator for physical-AI recordings and robot-learning datasets. It validates LeRobot v3 datasets, generic MCAP containers, and ROS 2-over-MCAP recordings. Its 32 deterministic rules cover schemas, episode boundaries, timestamps, numeric streams, video decoding, frozen cameras, black frames, container/index health, and ROS 2 topic semantics.
 
 For the release gate I tested four immutable public repositories from four producers: 74 episodes and 31,258 frames. All four clean snapshots passed with no findings or rule errors, and Physlint detected 3/3 controlled corruptions. The manifest, corruption recipes, sanitized JSON reports, and checksums are public and reproducible.
 
-The broader engine is format-extensible. MCAP/ROS 2 recording validation and Robomimic HDF5 are next—not features hidden behind the alpha label. I am looking for maintainers who can test another LeRobot dataset and ROS teams willing to share a small representative MCAP schema or recording.
+The CLI now accepts revision-pinned Hugging Face sources, emits versioned machine-readable reports, runs safely around dataset-local configuration, and ships as a reusable GitHub Action. I am looking for maintainers who can test another dataset or recording and contributors interested in Robomimic HDF5, RLDS, or another explicit adapter.
 
 [LINK]
 
 ## X thread
 
 1. Bad robot data is expensive to discover after training begins. I built Physlint: a local-first integrity validator for physical-AI data. [LINK]
-2. The public alpha supports LeRobot v3: schemas, boundaries, timestamps, numeric streams, video decode, frozen cameras, and black frames—with exact CI-safe evidence.
+2. Physlint has 32 deterministic, format-aware rules for LeRobot v3, generic MCAP, and ROS 2 over MCAP—with JSON, JUnit, SARIF, and HTML reports for CI and coding agents.
 3. Reproducible release gate: 4 public snapshots, 74 episodes, 31,258 frames, 4/4 clean passes, and 3/3 controlled corruptions detected. Manifest, recipes, reports, and hashes are committed.
-4. The vision is cross-format. MCAP/ROS 2 and Robomimic are next. Try it on a LeRobot dataset—or share a representative MCAP schema and help design the recording profile.
+4. Run the built-in demo, check a revision-pinned Hugging Face dataset, or add the reusable GitHub Action. Robomimic HDF5 and RLDS remain explicit roadmap formats.
 
 ## LeRobot Discord or Hugging Face forum
 
-I have released an early alpha of Physlint, a local-first LeRobot v3 integrity checker. I validated it against four pinned public repositories and three reproducible corruptions; all evidence is committed here: [LINK].
+I have released Physlint, a local-first integrity checker for LeRobot v3 datasets and robot recordings. I validated its LeRobot contract against four pinned public repositories and three reproducible corruptions; all evidence is committed here: [LINK].
 
 I am specifically looking for false positives and unsupported-but-valid v3 layouts. If you maintain a public dataset, please share an immutable revision and the expected behavior. This is an alpha feedback request, not a claim that passing guarantees training quality.
 
 ## ROS/MCAP community
 
-I am designing the next Physlint adapter for MCAP/ROS 2 recording integrity. MCAP is not supported in the current alpha; LeRobot v3 is the implemented release gate.
+Physlint now includes generic MCAP integrity checks and an optional ROS 2 semantic profile. The implementation has pinned public and deterministic evidence, while the four-snapshot LeRobot gate remains a separate claim.
 
-The proposed first layer checks container/index/schema health, per-channel timing, rate gaps, clock skew, and image decoding without assuming training semantics. An optional profile would map topics to actions, state, cameras, and episode markers.
+The generic layer checks record and CRC readability, summary/index coverage, channel/schema coherence, timestamp order, duplicates, and sequence continuity. The ROS 2 profile adds portable CDR decoding, required-topic checks, cadence gaps, header/log skew, known-message invariants, and TF parent consistency.
 
-I am looking for small public recordings and real failure modes to prevent the profile from being designed around synthetic assumptions: [LINK TO DESIGN ISSUE].
+I am looking for small public recordings and real failure modes to broaden the evidence without overstating format coverage: [LINK TO ADAPTER ISSUE].
 
 ## Show HN
 
 **Title:** Show HN: Physlint – a local-first linter for robot-learning datasets
 
-**First comment:** Explain why the project exists, give the one-command install and a public dataset command, link the reproducible validation directory, state that LeRobot v3 is the current adapter, and remain available to answer technical questions. Do not ask anyone to upvote.
+**First comment:** Explain why the project exists, give the one-command demo and a revision-pinned public dataset command, link the reproducible validation directories, state the exact implemented adapters and boundaries, and remain available to answer technical questions. Do not ask anyone to upvote.
 
 ## Direct maintainer outreach
 
