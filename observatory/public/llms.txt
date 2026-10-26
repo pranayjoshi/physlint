@@ -3,6 +3,7 @@
 Physlint is a local-first, deterministic integrity validator for robot-learning datasets and recordings.
 
 - Project: https://github.com/pranayjoshi/physlint
+- Documentation: https://pranayjoshi.github.io/physlint/
 - Agent workflow: https://github.com/pranayjoshi/physlint/blob/master/docs/agents.md
 - Python API: https://github.com/pranayjoshi/physlint/blob/master/docs/python-api.md
 - JSON Schemas: https://github.com/pranayjoshi/physlint/tree/master/schemas
@@ -12,4 +13,4 @@ Safe machine workflow:
 `physlint inspect SOURCE --format json`
 `physlint check SOURCE --format json --safe`
 
-Parse stdout on exit 0 or 1. Parse the JSON error on stderr for exit 2, 3, 4, or 130. A pass is not proof of task success, policy quality, calibration, or robot safety.
+Parse stdout on exit 0 or 1. Handled operational errors return JSON on stderr; parser errors on exit 2 may be text. Doctor returns diagnostics on stdout even on exit 2. A pass is not proof of task success, policy quality, calibration, or robot safety.

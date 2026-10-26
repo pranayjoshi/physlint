@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.4.0 — Unreleased
+## 0.4.0 — 2026-10-26
+
+- Read native LeRobot v2.0/v2.1 per-episode Parquet/MP4 and JSONL metadata, with public and controlled compatibility evidence.
+- Add `physlint doctor` for runtime, dependency, configuration, and source-layout diagnostics.
+- Return versioned JSON write envelopes and operational errors for `init` and `baseline`.
+- Publish searchable documentation with automatically deployed GitHub Pages builds.
+- Add fresh 0.4.0 release evidence while preserving historical manifests and reports.
 
 - Accept revision-qualified Hugging Face dataset sources through `hf://datasets/owner/name@revision`, with explicit offline and cache controls.
 - Ignore executable plugins declared by dataset configuration by default; trusted callers can opt in explicitly.

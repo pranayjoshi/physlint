@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import math
+import re
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
@@ -31,10 +33,13 @@ class LeRobotAdapter:
 
     name = "lerobot"
     version = "3.0"
+    version_pattern = r"v3\.\d+"
+    version_label = "v3.x"
 
     def __init__(self, root: Path):
         self.root = root
         self._info = self._read_info()
+        self.version = str(self._info["codebase_version"]).removeprefix("v")
         self._features = self._read_features()
         self._episodes = self._read_episodes()
         self._schema_cache: dict[Path, pa.Schema] = {}
@@ -70,10 +75,15 @@ class LeRobotAdapter:
         if not isinstance(payload, dict):
             raise AdapterError(f"LeRobot info must be an object: {path}")
         version = str(payload.get("codebase_version", ""))
-        if not version.startswith("v3"):
-            raise AdapterError(f"unsupported LeRobot version {version or 'missing'}; Physlint supports v3.x")
+        if not re.fullmatch(self.version_pattern, version):
+            raise AdapterError(f"unsupported LeRobot version {version or 'missing'}; expected {self.version_label}")
         if not isinstance(payload.get("features"), dict) or "fps" not in payload:
             raise AdapterError("LeRobot info.json is missing features or fps")
+        try:
+            if not math.isfinite(float(payload["fps"])) or float(payload["fps"]) <= 0:
+                raise ValueError("fps must be finite and positive")
+        except (TypeError, ValueError) as exc:
+            raise AdapterError("LeRobot fps must be finite and positive") from exc
         return payload
 
     def _read_features(self) -> list[Stream]:

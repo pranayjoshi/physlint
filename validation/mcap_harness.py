@@ -13,7 +13,7 @@ import yaml
 from mcap.writer import CompressionType
 from mcap_ros2.writer import Writer as Ros2Writer
 
-from physlint.config import Config, RuleSettings
+from physlint.config import CacheSettings, Config, RuleSettings
 from physlint.engine.discovery import discover
 from physlint.engine.runner import run_validation
 from physlint.models.finding import Report, RuleStatus
@@ -184,7 +184,8 @@ def run(args: argparse.Namespace) -> None:
         else:
             write_ros2_recording(path, corrupt=str(record["recipe"]) != "joint_state_clean")
         dataset = discover(path, profile=str(record["profile"]))
-        report = run_validation(dataset, config_for(record))
+        config = config_for(record).model_copy(update={"cache": CacheSettings(enabled=False)})
+        report = run_validation(dataset, config, extra_rules=[], allow_config_plugins=False)
         assert_expected(report, record)
         safe = sanitized(report, record, path)
         artifact = f"{record['id']}.json"

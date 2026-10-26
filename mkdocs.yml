@@ -1,0 +1,38 @@
+site_name: Physlint
+site_description: Find integrity defects in robot datasets and recordings before training.
+site_url: https://pranayjoshi.github.io/physlint/
+repo_url: https://github.com/pranayjoshi/physlint
+edit_uri: edit/master/docs/
+strict: true
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: black
+    accent: lime
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight
+nav:
+  - Start here: index.md
+  - CLI and diagnostics: cli.md
+  - Quality contracts: configuration.md
+  - Formats:
+      - LeRobot v2 and v3: adapters/lerobot.md
+      - MCAP and ROS 2: adapters/mcap-ros2.md
+  - Rules:
+      - Dataset rules: rules/mvp-rules.md
+      - Recording rules: rules/mcap-ros2-rules.md
+  - Integration:
+      - Coding agents: agents.md
+      - Python API: python-api.md
+      - Plugins: plugins.md
+  - Release and evidence: release-0.4.0.md
+  - Roadmap: roadmap.md

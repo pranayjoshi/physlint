@@ -10,6 +10,7 @@ Safe mode controls plugin loading; configuration can still change rule selection
 
 ```bash
 physlint inspect DATASET_OR_RECORDING --format json
+physlint doctor DATASET_OR_RECORDING --format json
 physlint check DATASET_OR_RECORDING --format json --safe
 ```
 
@@ -44,9 +45,13 @@ physlint schema report
 physlint schema error
 physlint schema inventory
 physlint schema comparison
+physlint schema doctor
+physlint schema write
 ```
 
 Every rule result is `passed`, `failed`, `not_run`, or `errored`. Never describe `not_run` as a pass. Never describe an overall pass as proof of task success, policy quality, calibration, or robot safety.
+
+`init --format json` and `baseline --format json` return a `WriteResult` on stdout when a file is created, and a `CliError` on stderr for handled failures. They preserve existing files unless `--force` is supplied. `doctor --format json` returns diagnostics on stdout and exits 2 if a diagnostic fails; missing optional dependencies are warnings, not failures. Doctor does not execute configuration plugins or validation rules.
 
 ## Recommended agent policy
 

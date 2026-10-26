@@ -18,10 +18,11 @@ from physlint.adapters.base import AdapterError
 from physlint.api import check_dataset, compare_sources, inspect_dataset, resolve_report
 from physlint.config import DEFAULT_CONFIG, CacheSettings, Config, ConfigurationError, load_config
 from physlint.demo import write_demo_dataset
+from physlint.doctor import diagnose
 from physlint.engine.baseline import baseline_from_report, write_baseline
 from physlint.engine.discovery import discover
 from physlint.engine.runner import run_validation
-from physlint.models.cli import CliError, DemoResult
+from physlint.models.cli import CliError, DemoResult, DoctorResult, WriteResult
 from physlint.models.comparison import Comparison
 from physlint.models.dataset import DatasetInventory
 from physlint.models.finding import Report
@@ -66,6 +67,8 @@ class SchemaChoice(StrEnum):
     COMPARISON = "comparison"
     ERROR = "error"
     DEMO = "demo"
+    DOCTOR = "doctor"
+    WRITE = "write"
 
 
 def _version_callback(value: bool) -> None:
@@ -271,6 +274,8 @@ def show_schema(
         SchemaChoice.COMPARISON: Comparison,
         SchemaChoice.ERROR: CliError,
         SchemaChoice.DEMO: DemoResult,
+        SchemaChoice.DOCTOR: DoctorResult,
+        SchemaChoice.WRITE: WriteResult,
     }
     typer.echo(json.dumps(models[name].model_json_schema(by_alias=True), indent=2))
 
@@ -330,15 +335,53 @@ def demo(
 def init(
     path: Annotated[Path, typer.Option("--path", "-p", help="Configuration file to create.")] = Path("physlint.yaml"),
     force: Annotated[bool, typer.Option("--force", help="Overwrite an existing file.")] = False,
+    output: Annotated[OutputFormat, typer.Option("--format", "-f")] = OutputFormat.TERMINAL,
 ) -> None:
     """Generate a documented quality-contract configuration."""
-    destination = path.expanduser().resolve()
-    if destination.exists() and not force:
-        error_console.print(f"[red]Refusing to overwrite existing file:[/red] {destination}")
-        raise typer.Exit(2)
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(DEFAULT_CONFIG, encoding="utf-8")
-    console.print(f"Created {destination}")
+    try:
+        destination = path.expanduser().resolve()
+        if destination.exists() and not force:
+            raise ConfigurationError(f"Refusing to overwrite existing file: {destination}")
+        write_atomic_text(destination, DEFAULT_CONFIG)
+        if output == OutputFormat.JSON:
+            typer.echo(WriteResult(operation="init", path=str(destination)).model_dump_json(indent=2))
+        else:
+            console.print(f"Created {destination}")
+    except KeyboardInterrupt as exc:
+        _render_error("interrupted", "configuration creation interrupted", 130, output)
+        raise typer.Exit(130) from exc
+    except (ConfigurationError, OSError) as exc:
+        _render_error("configuration", str(exc), 2, output)
+        raise typer.Exit(2) from exc
+
+
+@app.command()
+def doctor(
+    source: Annotated[str | None, typer.Argument(help="Optional source to inspect without running rules.")] = None,
+    config: Annotated[Path | None, typer.Option("--config", "-c")] = None,
+    offline: Annotated[bool, typer.Option("--offline")] = False,
+    output: Annotated[OutputFormat, typer.Option("--format", "-f")] = OutputFormat.TERMINAL,
+) -> None:
+    """Diagnose runtime, optional dependencies, source layout, and configuration."""
+    try:
+        result = diagnose(source, config_path=config, offline=offline)
+        if output == OutputFormat.JSON:
+            typer.echo(result.model_dump_json(indent=2))
+        else:
+            for item in result.checks:
+                console.print(f"{item.status.upper()}: {item.name}: {item.detail}")
+                if item.remediation:
+                    console.print(f"  {item.remediation}")
+        if result.status == "failed":
+            raise typer.Exit(2)
+    except typer.Exit:
+        raise
+    except KeyboardInterrupt as exc:
+        _render_error("interrupted", "diagnostics interrupted", 130, output)
+        raise typer.Exit(130) from exc
+    except Exception as exc:
+        _render_error("internal", f"{type(exc).__name__}: {exc}", 4, output)
+        raise typer.Exit(4) from exc
 
 
 @app.command()
@@ -412,6 +455,7 @@ def baseline(
     expires: Annotated[str | None, typer.Option("--expires", help="Optional expiry date YYYY-MM-DD.")] = None,
     config: Annotated[Path | None, typer.Option("--config", "-c", help="Quality contract YAML file.")] = None,
     force: Annotated[bool, typer.Option("--force", help="Overwrite an existing baseline.")] = False,
+    output: Annotated[OutputFormat, typer.Option("--format", "-f")] = OutputFormat.TERMINAL,
     offline: Annotated[
         bool, typer.Option("--offline", help="Use only files already present in the Hub cache.")
     ] = False,
@@ -425,8 +469,7 @@ def baseline(
     try:
         destination = output_path.expanduser().resolve()
         if destination.exists() and not force:
-            error_console.print(f"[red]Refusing to overwrite existing file:[/red] {destination}")
-            raise typer.Exit(2)
+            raise ConfigurationError(f"Refusing to overwrite existing file: {destination}")
         report = resolve_report(
             source,
             config_path=config,
@@ -434,23 +477,40 @@ def baseline(
             cache_dir=hub_cache,
             allow_config_plugins=not safe,
         )
+        _raise_for_report_errors(report)
         expires_at = date.fromisoformat(expires) if expires else None
         document = baseline_from_report(report, author=author, reason=reason, expires_at=expires_at)
         write_baseline(document, destination)
-        console.print(f"Wrote {len(document.suppressions)} suppression(s) to {destination}")
+        if output == OutputFormat.JSON:
+            typer.echo(
+                WriteResult(
+                    operation="baseline", path=str(destination), suppressions=len(document.suppressions)
+                ).model_dump_json(indent=2)
+            )
+        else:
+            console.print(f"Wrote {len(document.suppressions)} suppression(s) to {destination}")
     except KeyboardInterrupt as exc:
+        _render_error("interrupted", "baseline creation interrupted", 130, output)
         raise typer.Exit(130) from exc
     except (ConfigurationError, ValueError) as exc:
-        error_console.print(f"[red]Configuration error:[/red] {exc}")
+        _render_error("configuration", str(exc), 2, output)
         raise typer.Exit(2) from exc
     except AdapterError as exc:
-        error_console.print(f"[red]Source error:[/red] {exc}")
+        _render_error("source", str(exc), 3, output)
         raise typer.Exit(3) from exc
     except typer.Exit:
         raise
     except Exception as exc:  # noqa: BLE001 - CLI must preserve the documented code
-        error_console.print(f"[red]Internal Physlint error:[/red] {type(exc).__name__}: {exc}")
+        _render_error("internal", f"{type(exc).__name__}: {exc}", 4, output)
         raise typer.Exit(4) from exc
+
+
+def _raise_for_report_errors(report: Report) -> None:
+    for result in report.results:
+        if result.error_kind == "adapter":
+            raise AdapterError(result.reason or "Source validation could not complete")
+        if result.error_kind == "rule":
+            raise RuntimeError(result.reason or "Rule validation could not complete")
 
 
 def _rules_for_display(config_path: Path | None, *, allow_config_plugins: bool = False) -> list[Rule]:

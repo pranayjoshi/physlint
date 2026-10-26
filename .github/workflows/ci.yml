@@ -25,3 +25,51 @@ jobs:
       - run: ruff format --check .
       - run: mypy
       - run: pytest --cov=physlint --cov-report=term-missing
+
+  action-smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        corrupted: [false, true]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install .
+      - name: Prepare synthetic source
+        env:
+          CORRUPTED: ${{ matrix.corrupted }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from physlint.demo import write_demo_dataset
+          write_demo_dataset(Path('.physlint/action-source'), corrupted=os.environ['CORRUPTED'] == 'true')
+          PY
+      - uses: ./
+        id: validate
+        continue-on-error: true
+        with:
+          source: .physlint/action-source
+          artifact-name: action-reports-${{ matrix.corrupted }}
+      - name: Verify contract, reports, and final enforcement
+        env:
+          CORRUPTED: ${{ matrix.corrupted }}
+          EXIT_CODE: ${{ steps.validate.outputs.exit-code }}
+          OUTCOME: ${{ steps.validate.outcome }}
+          JSON_REPORT: ${{ steps.validate.outputs.json-report }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from physlint.models.finding import Report
+          corrupted = os.environ['CORRUPTED'] == 'true'
+          assert os.environ['EXIT_CODE'] == ('1' if corrupted else '0')
+          assert os.environ['OUTCOME'] == ('failure' if corrupted else 'success')
+          report_path = Path(os.environ['JSON_REPORT'])
+          report = Report.model_validate_json(report_path.read_text())
+          assert report.status == ('failed' if corrupted else 'passed')
+          for name in ['report.json', 'report.junit.xml', 'report.sarif', 'report.html']:
+              assert (report_path.parent / name).stat().st_size > 0
+          PY

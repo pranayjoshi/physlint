@@ -44,9 +44,9 @@ def test_rejects_legacy_or_malformed_metadata(dataset_factory):
     root = dataset_factory()
     info_path = root / "meta" / "info.json"
     info = json.loads(info_path.read_text(encoding="utf-8"))
-    info["codebase_version"] = "v2.1"
+    info["codebase_version"] = "v1.0"
     info_path.write_text(json.dumps(info), encoding="utf-8")
-    with pytest.raises(AdapterError, match="supports v3"):
+    with pytest.raises(AdapterError, match="expected v3"):
         discover(root, "lerobot")
 
 

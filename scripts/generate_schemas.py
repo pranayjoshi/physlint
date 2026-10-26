@@ -8,7 +8,7 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from physlint.config import Config
-from physlint.models.cli import CliError, DemoResult
+from physlint.models.cli import CliError, DemoResult, DoctorResult, WriteResult
 from physlint.models.comparison import Comparison
 from physlint.models.dataset import DatasetInventory
 from physlint.models.finding import Report
@@ -20,6 +20,8 @@ SCHEMAS: dict[str, type[BaseModel]] = {
     "comparison-1.0.json": Comparison,
     "error-1.0.json": CliError,
     "demo-1.0.json": DemoResult,
+    "doctor-1.0.json": DoctorResult,
+    "write-1.0.json": WriteResult,
 }
 
 

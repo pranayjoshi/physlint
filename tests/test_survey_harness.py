@@ -14,7 +14,7 @@ from validation.survey_harness import load_survey_manifest, run
 def test_survey_manifest_is_pinned_and_versioned():
     root = Path(__file__).resolve().parents[1]
     manifest = load_survey_manifest(root / "validation" / "survey_manifest.yaml")
-    assert manifest["physlint_version"] == __version__
+    assert manifest["physlint_version"] == "0.3.2"
     assert manifest["tier"] == "compatibility-survey"
     assert len(manifest["datasets"]) >= 10
     assert len(manifest["screens"]) >= 5
@@ -65,7 +65,7 @@ def test_survey_harness_records_failures_and_rejects_v2(dataset_factory, tmp_pat
                 "title": "v2.1 fixture",
                 "repo_id": "tests/v2",
                 "revision": "1" * 40,
-                "expected_error": "unsupported LeRobot version v2.1",
+                "expected_error": "episodes.jsonl",
                 "reason": "fail closed",
                 "cells": ["version-v2.1"],
             }

@@ -4,10 +4,11 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
+from physlint import __version__
 from physlint.config import Config
 from physlint.engine.discovery import discover
 from physlint.engine.runner import run_validation
-from physlint.models.cli import CliError, DemoResult
+from physlint.models.cli import CliError, DemoResult, DoctorResult, WriteResult
 from physlint.models.comparison import Comparison
 from physlint.models.dataset import DatasetInventory
 from physlint.models.finding import Report
@@ -20,7 +21,7 @@ def test_report_schema_and_atomic_writer(dataset_factory, tmp_path):
     destination = write_json_report(report, tmp_path / "nested" / "report.json")
     payload = json.loads(destination.read_text(encoding="utf-8"))
     assert payload["schema_version"] == "1.0"
-    assert payload["physlint_version"] == "0.3.2"
+    assert payload["physlint_version"] == __version__
     assert payload["source_fingerprint_method"] == "metadata-and-file-stat-sha256-v1"
     assert payload["coverage"]["episodes"] == 2
     assert "observation.state" in payload["coverage"]["streams"]
@@ -50,6 +51,8 @@ def test_committed_json_schemas_are_current():
         "comparison-1.0.json": Comparison,
         "error-1.0.json": CliError,
         "demo-1.0.json": DemoResult,
+        "doctor-1.0.json": DoctorResult,
+        "write-1.0.json": WriteResult,
     }
     for filename, model in expected.items():
         assert json.loads((root / filename).read_text(encoding="utf-8")) == model.model_json_schema(by_alias=True)

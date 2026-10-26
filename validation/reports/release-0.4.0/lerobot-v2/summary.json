@@ -1,0 +1,31 @@
+{
+  "physlint_version": "0.4.0",
+  "tier": "public-v2-compatibility",
+  "results": [
+    {
+      "id": "so101-v21",
+      "source": "hf://datasets/rshoff/lerobot@876192fd1bad1ef4992a0b2f059be0f90718d935",
+      "format": "v2.1",
+      "episodes": 2,
+      "frames": 1699,
+      "status": "passed",
+      "findings": 0,
+      "errored": 0,
+      "artifact": "so101-v21.json",
+      "sha256": "cc5622120aa8f5fdaf781d205a4ba4804b7ba14cd6673434b4b3b2d7b3cd04c4"
+    },
+    {
+      "id": "koch-v20",
+      "source": "hf://datasets/rgarreta/koch_pick_place_lego_v8@bdaa738541e52caa64508283b7a8eef7bfcfd9e8",
+      "format": "v2.0",
+      "episodes": 50,
+      "frames": 14932,
+      "status": "passed",
+      "findings": 0,
+      "errored": 0,
+      "artifact": "koch-v20.json",
+      "sha256": "b2c43602a56aa695ff366ea38b0f76ac6f67aadb5c4d4d078b788d1364af9dec"
+    }
+  ],
+  "controlled_cases": "tests/test_lerobot_v2.py: clean, NaN, video, malformed v2.0/v2.1 metadata"
+}

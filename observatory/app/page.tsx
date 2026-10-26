@@ -54,7 +54,7 @@ export default function Home() {
     <main>
       <nav className="nav shell">
         <a className="brand" href="#top" aria-label="Physlint Evidence Atlas home"><span className="brand-mark">P/</span><span>Evidence Atlas <small>by Physlint</small></span></a>
-        <div className="nav-links"><a href="#index">Atlas</a><a href="#stories">Findings</a><a href="#contribute">Contribute</a><a className="github" href={repo}>GitHub ↗</a></div>
+        <div className="nav-links"><a href="#index">Atlas</a><a href="#stories">Findings</a><a href="#contribute">Contribute</a><a href="https://pranayjoshi.github.io/physlint/">Docs</a><a className="github" href={repo}>GitHub ↗</a></div>
       </nav>
 
       <section className="hero shell" id="top">
