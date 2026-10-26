@@ -1,0 +1,47 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "const": "created",
+      "default": "created",
+      "title": "Status",
+      "type": "string"
+    },
+    "operation": {
+      "enum": [
+        "init",
+        "baseline"
+      ],
+      "title": "Operation",
+      "type": "string"
+    },
+    "path": {
+      "title": "Path",
+      "type": "string"
+    },
+    "suppressions": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Suppressions"
+    }
+  },
+  "required": [
+    "operation",
+    "path"
+  ],
+  "title": "WriteResult",
+  "type": "object"
+}

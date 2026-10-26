@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.4.0",
+  "adapter": "mcap",
+  "adapter_version": "1.0",
+  "dataset": "Controlled ROS 2 cadence and dimensions corruption",
+  "source_revision": "recipe:joint_state_gap_and_dimension_mismatch",
+  "dataset_path": "generated://joint_state_gap_and_dimension_mismatch",
+  "source_fingerprint": "7982bfa6b6a89f4a66e63e1e9a13a3fd8bb9c82aeeca16d77c64742454507a5a",
+  "source_fingerprint_method": "file-content-sha256-v1",
+  "configuration_digest": "fa85e9a803702ca2f5de921f9e7ac844f29495bc66f90817324fe4c865435145",
+  "configuration_path": null,
+  "plugin_policy": "installed-only",
+  "ignored_config_plugins": [],
+  "started_at": "2026-10-26T21:51:47.092578Z",
+  "finished_at": "2026-10-26T21:51:47.093957Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "mcap.readable",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.6374581716954708,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "mcap.summary_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0028330832719802856,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "mcap.index_coverage",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0006668269634246826,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "mcap.channel_schema",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0021657906472682953,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "mcap.timestamp_order",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0013327226042747498,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "mcap.duplicate_timestamps",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0007092021405696869,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "mcap.sequence_continuity",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.000583939254283905,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "ros2.encoding",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.000791158527135849,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "ros2.decode",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0007092021405696869,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "ros2.required_topics",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0012079253792762756,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "ros2.topic_gaps",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 0.05020899698138237,
+      "findings": [
+        {
+          "rule_id": "ros2.topic_gaps",
+          "rule_version": "1.0.0",
+          "severity": "warning",
+          "title": "ROS 2 topic gaps stay within the cadence contract",
+          "message": "/joint_states has a gap above 500.0 ms",
+          "impact": "Long per-topic gaps indicate message loss, recorder backpressure, or a stalled sensor.",
+          "remediation": "Inspect publisher health, QoS, transport loss, and recorder backpressure around the cited gap.",
+          "observed": {
+            "max_gap_ms": 900.0
+          },
+          "expected": {
+            "max_gap_ms": 500.0
+          },
+          "location": {
+            "episode": null,
+            "stream": "/joint_states",
+            "sample_index": 2,
+            "timestamp": 2.0,
+            "source": "ros2-joint-state-corrupt.mcap"
+          },
+          "evidence": {},
+          "fingerprint": "0c8e4c3130ffd9230c77176f4f5df94793d34cd9fe8f18376c942145b35a7293"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "ros2.header_clock_skew",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.001125037670135498,
+      "findings": [],
+      "reason": "no maximum ROS header/log skew configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "ros2.semantic_consistency",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 0.024040695279836655,
+      "findings": [
+        {
+          "rule_id": "ros2.semantic_consistency",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "Known ROS 2 message invariants remain consistent",
+          "message": "position has 1 values but name has 2 entries",
+          "impact": "Broken JointState dimensions, image payload sizes, or TF frame identifiers corrupt downstream consumers.",
+          "remediation": "Fix the publisher or recorder so every message satisfies its ROS message-level invariants.",
+          "observed": {
+            "inconsistent_message": "position has 1 values but name has 2 entries",
+            "total_semantic_errors": 1
+          },
+          "expected": "ROS message invariants satisfied",
+          "location": {
+            "episode": null,
+            "stream": "/joint_states",
+            "sample_index": null,
+            "timestamp": null,
+            "source": "ros2-joint-state-corrupt.mcap"
+          },
+          "evidence": {},
+          "fingerprint": "d4dd44614f22537d88a17e467718f0749fd0e829e108bbe2c7e160abb2a84be2"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "ros2.tf_tree",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0017499551177024841,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "failed": 2,
+    "not_run": 1,
+    "errored": 0,
+    "findings": 2
+  },
+  "coverage": {
+    "episodes": 1,
+    "frames": null,
+    "messages": 3,
+    "streams": [
+      "/joint_states"
+    ],
+    "tasks": {
+      "(unlabeled)": 1
+    },
+    "length_min": 3,
+    "length_max": 3,
+    "robot_type": null,
+    "fps": null
+  },
+  "cache": {
+    "used": false,
+    "hits": 0,
+    "misses": 0,
+    "directory": null
+  },
+  "suppressed": [],
+  "plugins": []
+}

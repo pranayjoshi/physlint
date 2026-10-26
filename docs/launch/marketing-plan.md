@@ -12,7 +12,7 @@ Use the 18-second social clip as the opening demonstration. It shows a deliberat
 
 ## Before announcing
 
-The released PyPI package is 0.3.2. The built-in demo, direct Hub sources, and new agent interfaces are staged for 0.4.0. Until that release is published and checked in a clean environment, link to the README's pinned source-install command. A bare `pip install physlint` followed by `physlint demo` does not work on the currently published release.
+For the 0.4.0 launch, install `physlint[all]==0.4.0` and run `physlint doctor` followed by `physlint demo`. Verify the published wheel in a clean environment before posting. The older 0.3.2 package does not include the demo; use the current version-pinned command from the README.
 
 Use the repository README as the main destination for the launch. It has the installation and demo instructions. The evidence atlas at physlint.com supports technical due diligence, but a visitor should not need to understand the atlas to try the CLI.
 

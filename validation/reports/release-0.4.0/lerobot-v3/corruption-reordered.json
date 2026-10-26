@@ -1,0 +1,366 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.4.0",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "ViaCatalyst/robomimic-can-ph-lerobot-v3 [corruption:reordered]",
+  "source_revision": "71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "dataset_path": "generated://reordered@71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "source_fingerprint": "ec0a70c05299794560f99552b5f3c1b51f1252fefefd65f5a87bb0a97440e462",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "cf10b26723af4a210ef8b914f61c1af759cb9badd47d809a1d223792e2a31689",
+  "configuration_path": null,
+  "plugin_policy": "installed-only",
+  "ignored_config_plugins": [],
+  "started_at": "2026-10-26T21:51:40.061722Z",
+  "finished_at": "2026-10-26T21:51:40.311624Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0955839641392231,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.2049594186246395,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.001541338860988617,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0021671876311302185,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 3.108041826635599,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 69.72112506628036,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 3.158208914101124,
+      "findings": [
+        {
+          "rule_id": "temporal.monotonic",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "Timestamps are strictly monotonic",
+          "message": "Timestamp did not increase at sample 11",
+          "impact": "Reordered or repeated timestamps break sequence order and synchronization.",
+          "remediation": "Repair collection clock ordering or recollect the affected episode.",
+          "observed": -0.050000011920928955,
+          "expected": "delta > 0 seconds",
+          "location": {
+            "episode": "episode_000000",
+            "stream": "timestamp",
+            "sample_index": 11,
+            "timestamp": 0.5,
+            "source": "data/chunk-000/file-000.parquet"
+          },
+          "evidence": {},
+          "fingerprint": "e85a0cfb69fbe09a3ab1bdb7d63cede59d8bb08dfa4c3aedf391a5d6808f2dcf"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 3.2318751327693462,
+      "findings": [
+        {
+          "rule_id": "temporal.sampling_interval",
+          "rule_version": "1.0.0",
+          "severity": "warning",
+          "title": "Sampling interval matches declared FPS",
+          "message": "Unexpected sampling interval in episode_000000",
+          "impact": "Unstable sample cadence changes the physical meaning of actions and velocities.",
+          "remediation": "Check recorder scheduling and clock sources; recollect unstable episodes.",
+          "observed": {
+            "interval_ms": 100.00002384185791
+          },
+          "expected": {
+            "interval_ms": 50.0,
+            "tolerance_ms": 10.000000000000002
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "timestamp",
+            "sample_index": 9,
+            "timestamp": 0.550000011920929,
+            "source": null
+          },
+          "evidence": {},
+          "fingerprint": "68ef3ce617d8abcabbd733d43b2c7e9046847a49b34d1909427d5b8047873361"
+        },
+        {
+          "rule_id": "temporal.sampling_interval",
+          "rule_version": "1.0.0",
+          "severity": "warning",
+          "title": "Sampling interval matches declared FPS",
+          "message": "Unexpected sampling interval in episode_000000",
+          "impact": "Unstable sample cadence changes the physical meaning of actions and velocities.",
+          "remediation": "Check recorder scheduling and clock sources; recollect unstable episodes.",
+          "observed": {
+            "interval_ms": 100.00002384185791
+          },
+          "expected": {
+            "interval_ms": 50.0,
+            "tolerance_ms": 10.000000000000002
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "timestamp",
+            "sample_index": 11,
+            "timestamp": 0.6000000238418579,
+            "source": null
+          },
+          "evidence": {},
+          "fingerprint": "8046fe565068019792c52dab0889fd320f54646d6bccba711366ca3a357bc4e5"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "failed",
+      "duration_ms": 3.256457857787609,
+      "findings": [
+        {
+          "rule_id": "temporal.max_gap",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Timestamp gaps stay below the limit",
+          "message": "1 timestamp gap(s) exceed 100.0 ms",
+          "impact": "Large gaps indicate dropped samples or a stalled collection process.",
+          "remediation": "Inspect transport/recorder drops and recollect the affected time range.",
+          "observed": {
+            "count": 1,
+            "start_sample": 10,
+            "end_sample": 10,
+            "max_gap_ms": 100.00002384185791
+          },
+          "expected": {
+            "max_gap_ms": 100.0,
+            "basis": "declared_fps"
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "timestamp",
+            "sample_index": 10,
+            "timestamp": 0.550000011920929,
+            "source": null
+          },
+          "evidence": {},
+          "fingerprint": "4bd238ac19e3f51504c878862a2f29d784e26eab8875e22fac91610bd6c0f23f"
+        },
+        {
+          "rule_id": "temporal.max_gap",
+          "rule_version": "1.1.0",
+          "severity": "error",
+          "title": "Timestamp gaps stay below the limit",
+          "message": "1 timestamp gap(s) exceed 100.0 ms",
+          "impact": "Large gaps indicate dropped samples or a stalled collection process.",
+          "remediation": "Inspect transport/recorder drops and recollect the affected time range.",
+          "observed": {
+            "count": 1,
+            "start_sample": 12,
+            "end_sample": 12,
+            "max_gap_ms": 100.00002384185791
+          },
+          "expected": {
+            "max_gap_ms": 100.0,
+            "basis": "declared_fps"
+          },
+          "location": {
+            "episode": "episode_000000",
+            "stream": "timestamp",
+            "sample_index": 12,
+            "timestamp": 0.6000000238418579,
+            "source": null
+          },
+          "evidence": {},
+          "fingerprint": "e2c7f25e5dcedeb169c9dffcdaf944304e29ad9898dc799ab79bfada205b729e"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 62.18470772728324,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 52.856083028018475,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0034999102354049683,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.00125030055642128,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false
+    },
+    {
+      "rule_id": "duplication.exact_episodes",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 51.007125061005354,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "failed": 3,
+    "not_run": 6,
+    "errored": 0,
+    "findings": 5
+  },
+  "coverage": {
+    "episodes": 10,
+    "frames": 1160,
+    "messages": null,
+    "streams": [
+      "action",
+      "episode_index",
+      "frame_index",
+      "index",
+      "observation.state",
+      "task_index",
+      "timestamp"
+    ],
+    "tasks": {
+      "Place the can in the target bin": 10
+    },
+    "length_min": 98,
+    "length_max": 134,
+    "robot_type": "Panda",
+    "fps": 20.0
+  },
+  "cache": {
+    "used": false,
+    "hits": 0,
+    "misses": 0,
+    "directory": null
+  },
+  "suppressed": [],
+  "plugins": []
+}

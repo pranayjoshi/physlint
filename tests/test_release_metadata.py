@@ -18,9 +18,10 @@ def test_package_and_validation_versions_are_synchronized():
     mcap_manifest = load_mcap_manifest(root / "validation" / "mcap_manifest.yaml")
     survey_manifest = load_survey_manifest(root / "validation" / "survey_manifest.yaml")
     assert project["project"]["version"] == __version__
-    assert manifest["physlint_version"] == __version__
-    assert mcap_manifest["physlint_version"] == __version__
-    assert survey_manifest["physlint_version"] == __version__
+    # Historical manifests describe historical runs, not the current package.
+    assert manifest["physlint_version"] == "0.3.2"
+    assert mcap_manifest["physlint_version"] == "0.3.2"
+    assert survey_manifest["physlint_version"] == "0.3.2"
 
 
 def test_github_action_is_safe_by_default():

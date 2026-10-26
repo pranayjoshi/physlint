@@ -21,7 +21,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
 
-The released `0.3.2` supports **LeRobot Dataset v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. It also launches the [Community Evidence Atlas](https://physlint.com), where maintainers can explore reproducible findings and submit public robot data for inclusion. Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
+Release `0.4.0` supports **LeRobot Dataset v2.0/v2.1 and v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Read the [documentation](https://pranayjoshi.github.io/physlint/) or explore the [Community Evidence Atlas](https://physlint.com). Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
 
 The download badge above is refreshed daily from PyPI Stats and reports downloads from the preceding month.
 
@@ -43,13 +43,14 @@ Physlint requires Python 3.11 or newer.
 ### Install from PyPI
 
 ```bash
-python -m pip install "physlint[video]==0.3.2"
+python -m pip install "physlint[all]==0.4.0"
+physlint doctor
 ```
 
 To test the exact tagged source instead of the PyPI distribution, install the GitHub release directly:
 
 ```bash
-python -m pip install "physlint[video] @ git+https://github.com/pranayjoshi/physlint.git@v0.3.2"
+python -m pip install "physlint[all] @ git+https://github.com/pranayjoshi/physlint.git@v0.4.0"
 ```
 
 ### Check a LeRobot dataset or MCAP recording
@@ -65,10 +66,9 @@ physlint check /path/to/recording.mcap
 physlint inspect /path/to/recording.mcap --profile ros2
 ```
 
-The demo, Hub sources, and agent additions below are in the source checkout and staged for 0.4.0; the PyPI 0.3.2 release does not include them. To try the demo without finding a dataset first:
+Try the demo without finding a dataset first:
 
 ```bash
-python -m pip install "physlint[all] @ git+https://github.com/pranayjoshi/physlint.git@1f5d5d16225056527af518a211dd76da648081a1"
 physlint demo
 ```
 
@@ -86,7 +86,7 @@ The demo validates one healthy miniature dataset and proves that a deterministic
 Install the optional Hub client, then use an explicit revision:
 
 ```bash
-python -m pip install -e ".[hub,video]"
+python -m pip install "physlint[hub,video]==0.4.0"
 physlint check hf://datasets/owner/dataset@REVISION
 ```
 
@@ -270,7 +270,7 @@ Unknown top-level keys, rule IDs, rule options, duplicate required streams, and 
 The CLI has stable exit codes and writes reports atomically, so a basic GitHub Actions gate is small:
 
 ```yaml
-- uses: pranayjoshi/physlint@master # Pin a release tag or commit in production.
+- uses: pranayjoshi/physlint@v1 # Pin a full commit for an immutable workflow.
   with:
     source: data/
     config: physlint.yaml
@@ -282,7 +282,7 @@ The equivalent manual workflow is:
 
 ```yaml
 - name: Install Physlint
-  run: python -m pip install "physlint[video]==0.3.2"
+  run: python -m pip install "physlint[video]==0.4.0"
 
 - name: Validate robot dataset
   run: |
@@ -354,7 +354,7 @@ The storage format is an adapter boundary, not the product boundary.
 
 | Format | Status | Intended mode |
 |---|---|---|
-| LeRobot Dataset v3.x | **Alpha—implemented and publicly validated** | Training datasets |
+| LeRobot Dataset v2.0/v2.1 and v3.x | **Alpha—implemented and publicly validated** | Training datasets |
 | Generic MCAP | **Alpha preview—implemented and validated** | Recording/container integrity |
 | ROS 2 over MCAP | **Alpha preview—implemented and validated** | Topic/schema/semantic recording checks |
 | Robomimic HDF5 | Planned | Demonstration datasets |
@@ -369,6 +369,7 @@ Use the adapter-request issue form to contribute an immutable public example and
 
 Supported:
 
+- LeRobot v2.0/v2.1 JSONL episode metadata and per-episode Parquet/MP4 files
 - LeRobot v3.x `meta/info.json` schema and path templates
 - Chunked Parquet episode metadata and sample shards
 - Multiple episodes per shared Parquet/MP4 file
@@ -378,7 +379,6 @@ Supported:
 
 Not currently supported:
 
-- LeRobot v2.0/v2.1
 - Image-directory features in the video rule set
 - Arbitrary codecs unavailable to the installed OpenCV build
 - Inferred safety, calibration, task-success, or coordinate-frame conclusions

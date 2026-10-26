@@ -26,7 +26,8 @@ class RequiredFilesRule:
     )
 
     def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
-        required = [dataset.root / "meta" / "info.json", dataset.root / "meta" / "episodes"]
+        episodes_path = "episodes.jsonl" if dataset.inventory.format_version in {"v2.0", "v2.1"} else "episodes"
+        required = [dataset.root / "meta" / "info.json", dataset.root / "meta" / episodes_path]
         referenced: set[Path] = set(required)
         for episode in dataset.inventory.episodes:
             if episode.data_file:

@@ -17,7 +17,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 import yaml
 
-from physlint.config import Config
+from physlint.config import CacheSettings, Config
 from physlint.engine.discovery import discover
 from physlint.engine.runner import run_validation
 from physlint.models.finding import Report, RuleStatus
@@ -229,7 +229,9 @@ def run(args: argparse.Namespace) -> None:
         root = overrides.get(identifier) or download_dataset(record, args.cache_dir)
         roots[identifier] = root
         dataset = discover(root)
-        report = run_validation(dataset, Config())
+        report = run_validation(
+            dataset, Config(cache=CacheSettings(enabled=False)), extra_rules=[], allow_config_plugins=False
+        )
         assert_clean(report, identifier)
         safe = sanitized_report(
             report,
@@ -254,7 +256,9 @@ def run(args: argparse.Namespace) -> None:
         destination = args.work / f"corruption-{recipe['id']}"
         copy_and_corrupt(roots[str(recipe["base_dataset"])], destination, recipe)
         dataset = discover(destination)
-        report = run_validation(dataset, Config())
+        report = run_validation(
+            dataset, Config(cache=CacheSettings(enabled=False)), extra_rules=[], allow_config_plugins=False
+        )
         assert_corruption(report, recipe)
         safe = sanitized_report(
             report,

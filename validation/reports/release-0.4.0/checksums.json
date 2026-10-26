@@ -1,0 +1,18 @@
+{
+  "lerobot-v2/koch-v20.json": "b2c43602a56aa695ff366ea38b0f76ac6f67aadb5c4d4d078b788d1364af9dec",
+  "lerobot-v2/so101-v21.json": "cc5622120aa8f5fdaf781d205a4ba4804b7ba14cd6673434b4b3b2d7b3cd04c4",
+  "lerobot-v2/summary.json": "8d58efa01358cc0b7c3f52f18a27d8ae8820bff06d1ef759dbe5bb435cb15f96",
+  "lerobot-v3/clean-panda.json": "58b80acaf43cf5b1771ceb9f4d49b4dfcdbbe0abb4fbd724d1ba5a25644bfd76",
+  "lerobot-v3/clean-rover.json": "91454afb5377c194990ba77f38981a29d8842179861e27b2e54e2a9541f37d76",
+  "lerobot-v3/clean-sentinel.json": "1f3718f2424a24a2359983d8c643191e923d7e59899877477bf120146e656614",
+  "lerobot-v3/clean-so101.json": "715856abcde04b3a97fe8cc3bd7ee3b318cd70b29605f8900a7d24f5c5779e64",
+  "lerobot-v3/corruption-nan.json": "e3ec179fd8ecfacc702e4954c8b37ea089b6457591360e863fc88806fbd4fdad",
+  "lerobot-v3/corruption-reordered.json": "a16d948b6f6c0c3eeb44552861ed9375b934d82486fc87824f9f795237fb240b",
+  "lerobot-v3/corruption-truncated.json": "e91dae6d1f3df6cf7f7a3dacb257d67992f7c245cc02c9be10c0bfe6438421e4",
+  "lerobot-v3/summary.json": "8e63710a7c8fbff2e567f6b390c96eafde5f7b068c10b88c2aae23df5752667d",
+  "mcap/foxglove-ten-messages.json": "bc06b31768e90487fafb27c56c242e4dd2015f041cf08ddc4b93a977d38451dd",
+  "mcap/robotis-arx5-button.json": "08aa45879110ce7bbb1d4dbcbdce5fc9c60f9b9cfc47ef9805048d7d6f4fb448",
+  "mcap/ros2-joint-state-clean.json": "ebdabf9afa1c34ae11fbee14a958b001a12827fc982ef2630dfee0463d561fc1",
+  "mcap/ros2-joint-state-corrupt.json": "89044bcaaba4f2873c276401ab1d6f2e105f1101ed781a4e88d536b9f6b5c573",
+  "mcap/summary.json": "a4a72ab6e2301d5a83b0b215baafa66b308fd01ae4b073c2298b95ade7d70cfe"
+}

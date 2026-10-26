@@ -2,7 +2,7 @@
 
 Replace `[LINK]` only after the repository and package are public. Recheck every number against the committed summary before posting.
 
-For the current 18-second clip and source-only demo launch, use the [October 22 marketing plan](marketing-plan.md). The demo, direct Hub sources, and new agent interfaces remain staged for 0.4.0; link the README's pinned source install until that release is published. The templates below describe feature scope, not a completed 0.4.0 release.
+For the 18-second clip, use the [marketing plan](marketing-plan.md). Version 0.4.0 includes the demo, direct Hub sources, native LeRobot v2 support, doctor, and JSON interfaces. Link the README's version-pinned installation command.
 
 ## Core positioning
 

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from physlint.adapters.base import AdapterError, UnsupportedDatasetError
 from physlint.adapters.lerobot import LeRobotAdapter
+from physlint.adapters.lerobot_v2 import LeRobotV2Adapter
 from physlint.adapters.mcap import McapAdapter, has_mcap_magic
 from physlint.models.dataset import DatasetView
 
@@ -22,7 +23,12 @@ def discover(path: str | Path, adapter: str = "auto", profile: str = "auto") -> 
     if adapter == "lerobot" or (adapter == "auto" and source.is_dir() and is_lerobot(source)):
         if not source.is_dir():
             raise AdapterError(f"LeRobot source must be a directory: {source}")
-        return LeRobotAdapter(source)
+        try:
+            info = json.loads((source / "meta" / "info.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            raise AdapterError(f"cannot read LeRobot info.json: {exc}") from exc
+        version = str(info.get("codebase_version", "")) if isinstance(info, dict) else ""
+        return LeRobotV2Adapter(source) if version in {"v2.0", "v2.1"} else LeRobotAdapter(source)
     mcap_path = resolve_mcap_source(source)
     if adapter == "mcap" or (adapter == "auto" and mcap_path is not None):
         if mcap_path is None:
@@ -33,7 +39,9 @@ def discover(path: str | Path, adapter: str = "auto", profile: str = "auto") -> 
             "ROS 2 SQLite .db3 bags are not supported in this alpha; convert with "
             "`ros2 bag convert` to MCAP and rerun Physlint"
         )
-    raise UnsupportedDatasetError(f"no adapter recognizes {source}; expected a LeRobot v3 directory or MCAP recording")
+    raise UnsupportedDatasetError(
+        f"no adapter recognizes {source}; expected a LeRobot v2/v3 directory or MCAP recording"
+    )
 
 
 def resolve_mcap_source(source: Path) -> Path | None:

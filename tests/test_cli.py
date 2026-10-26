@@ -5,6 +5,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from physlint import __version__
 from physlint.cli import app
 
 runner = CliRunner()
@@ -73,7 +74,7 @@ def test_init_refuses_overwrite(tmp_path):
 def test_version_command():
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
-    assert result.stdout.strip() == "0.3.2"
+    assert result.stdout.strip() == __version__
 
 
 def test_cli_checks_and_inspects_mcap(mcap_factory, tmp_path):
