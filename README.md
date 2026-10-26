@@ -31,7 +31,7 @@ The download badge above is refreshed daily from PyPI Stats and reports download
 ## Why Physlint?
 
 - **Catch failures before GPU time:** malformed manifests, broken episode ranges, reordered clocks, missing values, corrupt video, frozen cameras, and black frames become actionable findings.
-- **Keep robot data local:** `physlint check` performs no network requests and never modifies its source dataset.
+- **Keep robot data local:** local-source checks do not need network access and never modify the source dataset. Explicit Hub references download to your local cache; use `--offline` for cached sources.
 - **Get evidence, not a mystery score:** every finding includes a stable rule ID, severity, source location, observed condition, expected condition, impact, and remediation.
 - **Use it in CI:** deterministic execution, versioned JSON, atomic report writes, strict configuration, and documented exit codes.
 - **Trust scoped claims:** the public release gate pins exact dataset revisions and commits sanitized reports, corruption recipes, checksums, and publication metrics.
