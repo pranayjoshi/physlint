@@ -11,7 +11,6 @@ public_recordings:
     sha256: 358413d53e6fb2753efb3eac682bc9d776bb2afb1de5e395817efd8f16303fbc
     expected_status: failed
     expected_failed_rules:
-      - mcap.timestamp_order
       - mcap.duplicate_timestamps
     source_name: foxglove/mcap
     source_page: https://github.com/foxglove/mcap/tree/main/tests/conformance/data/TenMessages

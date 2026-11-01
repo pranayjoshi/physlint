@@ -1,0 +1,3567 @@
+{
+  "schema_version": 1,
+  "run_id": "corruption-benchmark-2026-10-31",
+  "macro_detection": 0.6922,
+  "defect_types": 58,
+  "trials": 3836,
+  "skipped_trials": 303,
+  "by_split": {
+    "heldout": {
+      "macro_detection": 0.6337,
+      "detected": {
+        "hits": 1425,
+        "trials": 2208,
+        "rate": 0.6454,
+        "ci95": [
+          0.6252,
+          0.6651
+        ]
+      },
+      "benign_false_alarm": {
+        "hits": 2,
+        "trials": 41,
+        "rate": 0.0488,
+        "ci95": [
+          0.0135,
+          0.1614
+        ]
+      }
+    },
+    "synthetic": {
+      "macro_detection": 0.6937,
+      "detected": {
+        "hits": 543,
+        "trials": 880,
+        "rate": 0.617,
+        "ci95": [
+          0.5845,
+          0.6486
+        ]
+      },
+      "benign_false_alarm": {
+        "hits": 6,
+        "trials": 22,
+        "rate": 0.2727,
+        "ci95": [
+          0.1315,
+          0.4815
+        ]
+      }
+    },
+    "tuned": {
+      "macro_detection": 0.6252,
+      "detected": {
+        "hits": 475,
+        "trials": 748,
+        "rate": 0.635,
+        "ci95": [
+          0.5999,
+          0.6688
+        ]
+      },
+      "benign_false_alarm": {
+        "hits": 1,
+        "trials": 14,
+        "rate": 0.0714,
+        "ci95": [
+          0.0127,
+          0.3147
+        ]
+      }
+    }
+  },
+  "by_category": {
+    "index": {
+      "macro_detection": 1.0
+    },
+    "mcap": {
+      "macro_detection": 1.0
+    },
+    "metadata": {
+      "macro_detection": 1.0
+    },
+    "numeric": {
+      "macro_detection": 0.2785
+    },
+    "temporal": {
+      "macro_detection": 0.7934
+    },
+    "video": {
+      "macro_detection": 0.4646
+    }
+  },
+  "recipes": [
+    {
+      "recipe": "nan_action",
+      "category": "numeric",
+      "description": "NaN in action samples",
+      "detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "levels": {
+        "1": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        },
+        "10": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "numeric.finite_values": 114
+      }
+    },
+    {
+      "recipe": "inf_state",
+      "category": "numeric",
+      "description": "Infinity in observed state",
+      "detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "levels": {
+        "1": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        },
+        "10": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "numeric.finite_values": 114
+      }
+    },
+    {
+      "recipe": "null_action_row",
+      "category": "numeric",
+      "description": "Null action row in the stored column",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 15,
+        "trials": 57,
+        "rate": 0.2632,
+        "ci95": [
+          0.1665,
+          0.3898
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "manifest.shape_consistency": 57,
+        "temporal.stream_overlap": 57,
+        "duplication.exact_episodes": 42,
+        "numeric.finite_values": 42,
+        "video.frozen_frames": 39
+      }
+    },
+    {
+      "recipe": "action_spike",
+      "category": "numeric",
+      "description": "Single-sample action spike, in multiples of the stream range",
+      "detected": {
+        "hits": 0,
+        "trials": 171,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.022
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 171,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.022
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 171,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.022
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 170,
+        "trials": 171,
+        "rate": 0.9942,
+        "ci95": [
+          0.9676,
+          0.999
+        ]
+      },
+      "levels": {
+        "1.0": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        },
+        "10.0": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        },
+        "1000.0": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "unit_flip",
+      "category": "numeric",
+      "description": "State changes from radians to degrees mid-episode",
+      "detected": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "sign_flip_joint",
+      "category": "numeric",
+      "description": "One state joint changes sign mid-episode",
+      "detected": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 52,
+        "trials": 57,
+        "rate": 0.9123,
+        "ci95": [
+          0.8105,
+          0.9619
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "stuck_joint",
+      "category": "numeric",
+      "description": "One state joint is constant for the whole episode",
+      "detected": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "dead_action",
+      "category": "numeric",
+      "description": "Every action in the episode is exactly zero",
+      "detected": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 33,
+        "trials": 57,
+        "rate": 0.5789,
+        "ci95": [
+          0.4498,
+          0.6981
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "action_state_swap",
+      "category": "numeric",
+      "description": "Action and state columns are swapped in one episode",
+      "detected": {
+        "hits": 0,
+        "trials": 42,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0838
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 42,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0838
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 42,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0838
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 24,
+        "trials": 42,
+        "rate": 0.5714,
+        "ci95": [
+          0.4221,
+          0.7088
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 42,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0838
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "action_shift",
+      "category": "numeric",
+      "description": "Actions are rolled against observations by N frames",
+      "detected": {
+        "hits": 4,
+        "trials": 171,
+        "rate": 0.0234,
+        "ci95": [
+          0.0091,
+          0.0586
+        ]
+      },
+      "blocks_ci": {
+        "hits": 4,
+        "trials": 171,
+        "rate": 0.0234,
+        "ci95": [
+          0.0091,
+          0.0586
+        ]
+      },
+      "localized": {
+        "hits": 4,
+        "trials": 171,
+        "rate": 0.0234,
+        "ci95": [
+          0.0091,
+          0.0586
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 94,
+        "trials": 171,
+        "rate": 0.5497,
+        "ci95": [
+          0.4749,
+          0.6224
+        ]
+      },
+      "levels": {
+        "1": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        },
+        "5": {
+          "hits": 1,
+          "trials": 57,
+          "rate": 0.0175,
+          "ci95": [
+            0.0031,
+            0.0929
+          ]
+        },
+        "30": {
+          "hits": 3,
+          "trials": 57,
+          "rate": 0.0526,
+          "ci95": [
+            0.0181,
+            0.1437
+          ]
+        }
+      },
+      "rules": {
+        "video.frozen_frames": 4
+      }
+    },
+    {
+      "recipe": "joint_permutation",
+      "category": "numeric",
+      "description": "Two state joints are swapped in one episode",
+      "detected": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 38,
+        "trials": 57,
+        "rate": 0.6667,
+        "ci95": [
+          0.5372,
+          0.7751
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "sensor_noise",
+      "category": "numeric",
+      "description": "Gaussian noise in multiples of each joint's standard deviation",
+      "detected": {
+        "hits": 0,
+        "trials": 114,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0326
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 114,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0326
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 114,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0326
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "levels": {
+        "0.5": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        },
+        "5.0": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "exact_duplicate",
+      "category": "numeric",
+      "description": "One episode's numeric streams are copied into another",
+      "detected": {
+        "hits": 28,
+        "trials": 32,
+        "rate": 0.875,
+        "ci95": [
+          0.7193,
+          0.9503
+        ]
+      },
+      "blocks_ci": {
+        "hits": 28,
+        "trials": 32,
+        "rate": 0.875,
+        "ci95": [
+          0.7193,
+          0.9503
+        ]
+      },
+      "localized": {
+        "hits": 28,
+        "trials": 32,
+        "rate": 0.875,
+        "ci95": [
+          0.7193,
+          0.9503
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 28,
+        "trials": 32,
+        "rate": 0.875,
+        "ci95": [
+          0.7193,
+          0.9503
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 28,
+          "trials": 32,
+          "rate": 0.875,
+          "ci95": [
+            0.7193,
+            0.9503
+          ]
+        }
+      },
+      "rules": {
+        "duplication.exact_episodes": 28
+      }
+    },
+    {
+      "recipe": "near_duplicate",
+      "category": "numeric",
+      "description": "One episode is copied with 1e-6 noise",
+      "detected": {
+        "hits": 0,
+        "trials": 31,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1103
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 31,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1103
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 31,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1103
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 4,
+        "trials": 31,
+        "rate": 0.129,
+        "ci95": [
+          0.0513,
+          0.2885
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 31,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.1103
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "nan_timestamp",
+      "category": "temporal",
+      "description": "NaN timestamps",
+      "detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "levels": {
+        "1": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        },
+        "10": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "temporal.monotonic": 114
+      }
+    },
+    {
+      "recipe": "swapped_timestamps",
+      "category": "temporal",
+      "description": "Two adjacent timestamps are swapped",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "temporal.monotonic": 57,
+        "temporal.sampling_interval": 57,
+        "temporal.max_gap": 25
+      }
+    },
+    {
+      "recipe": "repeated_timestamp",
+      "category": "temporal",
+      "description": "One timestamp repeats its predecessor",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "temporal.monotonic": 57,
+        "temporal.sampling_interval": 57,
+        "temporal.max_gap": 16
+      }
+    },
+    {
+      "recipe": "timestamp_gap",
+      "category": "temporal",
+      "description": "A gap of N sample intervals, then shifted time",
+      "detected": {
+        "hits": 171,
+        "trials": 171,
+        "rate": 1.0,
+        "ci95": [
+          0.978,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 171,
+        "trials": 171,
+        "rate": 1.0,
+        "ci95": [
+          0.978,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 171,
+        "trials": 171,
+        "rate": 1.0,
+        "ci95": [
+          0.978,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 171,
+        "trials": 171,
+        "rate": 1.0,
+        "ci95": [
+          0.978,
+          1.0
+        ]
+      },
+      "levels": {
+        "1.5": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        },
+        "3.0": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        },
+        "20.0": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "temporal.max_gap": 171,
+        "temporal.sampling_interval": 171
+      }
+    },
+    {
+      "recipe": "timestamp_jitter",
+      "category": "temporal",
+      "description": "Random timing noise in fractions of the sample interval",
+      "detected": {
+        "hits": 92,
+        "trials": 114,
+        "rate": 0.807,
+        "ci95": [
+          0.7251,
+          0.869
+        ]
+      },
+      "blocks_ci": {
+        "hits": 6,
+        "trials": 114,
+        "rate": 0.0526,
+        "ci95": [
+          0.0243,
+          0.1101
+        ]
+      },
+      "localized": {
+        "hits": 92,
+        "trials": 114,
+        "rate": 0.807,
+        "ci95": [
+          0.7251,
+          0.869
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 92,
+        "trials": 114,
+        "rate": 0.807,
+        "ci95": [
+          0.7251,
+          0.869
+        ]
+      },
+      "levels": {
+        "0.05": {
+          "hits": 35,
+          "trials": 57,
+          "rate": 0.614,
+          "ci95": [
+            0.4843,
+            0.7294
+          ]
+        },
+        "0.2": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "temporal.sampling_interval": 92,
+        "temporal.max_gap": 5,
+        "temporal.monotonic": 2
+      }
+    },
+    {
+      "recipe": "clock_scale",
+      "category": "temporal",
+      "description": "Episode clock runs fast by a factor",
+      "detected": {
+        "hits": 57,
+        "trials": 171,
+        "rate": 0.3333,
+        "ci95": [
+          0.267,
+          0.407
+        ]
+      },
+      "blocks_ci": {
+        "hits": 54,
+        "trials": 171,
+        "rate": 0.3158,
+        "ci95": [
+          0.2508,
+          0.3889
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 171,
+        "rate": 0.3333,
+        "ci95": [
+          0.267,
+          0.407
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 57,
+        "trials": 171,
+        "rate": 0.3333,
+        "ci95": [
+          0.267,
+          0.407
+        ]
+      },
+      "levels": {
+        "1.01": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        },
+        "1.1": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        },
+        "2.0": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "temporal.sampling_interval": 57,
+        "temporal.max_gap": 54
+      }
+    },
+    {
+      "recipe": "timestamp_offset",
+      "category": "temporal",
+      "description": "Episode time starts 1000 seconds late",
+      "detected": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 57,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0631
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "deleted_rows",
+      "category": "temporal",
+      "description": "Rows deleted mid-episode, metadata unchanged",
+      "detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "levels": {
+        "1": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        },
+        "10": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.index_columns": 114,
+        "episode.valid_boundaries": 114,
+        "temporal.sampling_interval": 114,
+        "temporal.max_gap": 76
+      }
+    },
+    {
+      "recipe": "duplicated_rows",
+      "category": "temporal",
+      "description": "Rows duplicated mid-episode, metadata unchanged",
+      "detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "levels": {
+        "1": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        },
+        "10": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.index_columns": 114,
+        "episode.valid_boundaries": 114,
+        "temporal.monotonic": 114,
+        "video.frozen_frames": 2
+      }
+    },
+    {
+      "recipe": "frame_index_reset",
+      "category": "index",
+      "description": "frame_index restarts mid-episode",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.index_columns": 57
+      }
+    },
+    {
+      "recipe": "global_index_shift",
+      "category": "index",
+      "description": "Global index is offset by 7 in one episode",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.index_columns": 57
+      }
+    },
+    {
+      "recipe": "episode_label_bleed",
+      "category": "index",
+      "description": "Trailing rows are labeled with the next episode",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.valid_boundaries": 57
+      }
+    },
+    {
+      "recipe": "unknown_task",
+      "category": "index",
+      "description": "task_index references a task that does not exist",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.task_references": 57
+      }
+    },
+    {
+      "recipe": "wrong_totals",
+      "category": "metadata",
+      "description": "total_frames and total_episodes in info.json are stale",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "manifest.declared_totals": 57
+      }
+    },
+    {
+      "recipe": "wrong_length",
+      "category": "metadata",
+      "description": "Episode length in metadata is off by N",
+      "detected": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 114,
+        "trials": 114,
+        "rate": 1.0,
+        "ci95": [
+          0.9674,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "1": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        },
+        "50": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.valid_boundaries": 114,
+        "manifest.declared_totals": 114,
+        "video.decode": 54
+      }
+    },
+    {
+      "recipe": "stale_file_pointer",
+      "category": "metadata",
+      "description": "LeRobot issue 2401: boundary episode metadata names the previous data file",
+      "detected": {
+        "hits": 44,
+        "trials": 44,
+        "rate": 1.0,
+        "ci95": [
+          0.9197,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 44,
+        "trials": 44,
+        "rate": 1.0,
+        "ci95": [
+          0.9197,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 44,
+        "trials": 44,
+        "rate": 1.0,
+        "ci95": [
+          0.9197,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 44,
+          "trials": 44,
+          "rate": 1.0,
+          "ci95": [
+            0.9197,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.valid_boundaries": 44,
+        "manifest.orphan_files": 5
+      }
+    },
+    {
+      "recipe": "overlapping_range",
+      "category": "metadata",
+      "description": "dataset_from_index overlaps the previous episode",
+      "detected": {
+        "hits": 51,
+        "trials": 51,
+        "rate": 1.0,
+        "ci95": [
+          0.93,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 51,
+        "trials": 51,
+        "rate": 1.0,
+        "ci95": [
+          0.93,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 51,
+        "trials": 51,
+        "rate": 1.0,
+        "ci95": [
+          0.93,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 51,
+          "trials": 51,
+          "rate": 1.0,
+          "ci95": [
+            0.93,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "episode.index_columns": 51,
+        "episode.valid_boundaries": 51
+      }
+    },
+    {
+      "recipe": "missing_data_file",
+      "category": "metadata",
+      "description": "A referenced Parquet file is deleted",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "duplication.exact_episodes": 57,
+        "episode.index_columns": 57,
+        "episode.task_references": 57,
+        "episode.valid_boundaries": 57,
+        "manifest.required_files": 57,
+        "manifest.schema_matches": 57,
+        "manifest.shape_consistency": 57,
+        "numeric.finite_values": 57,
+        "temporal.max_gap": 57,
+        "temporal.monotonic": 57,
+        "temporal.sampling_interval": 57,
+        "temporal.stream_overlap": 57,
+        "video.frozen_frames": 54
+      }
+    },
+    {
+      "recipe": "dropped_column",
+      "category": "metadata",
+      "description": "A declared stream is absent from storage",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "manifest.schema_matches": 57
+      }
+    },
+    {
+      "recipe": "wrong_declared_shape",
+      "category": "metadata",
+      "description": "info.json declares the wrong action shape",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "manifest.shape_consistency": 57
+      }
+    },
+    {
+      "recipe": "wrong_declared_dtype",
+      "category": "metadata",
+      "description": "info.json declares a different numeric type",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "manifest.schema_matches": 57
+      }
+    },
+    {
+      "recipe": "wrong_declared_fps",
+      "category": "metadata",
+      "description": "info.json declares double the true FPS",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 54,
+        "trials": 57,
+        "rate": 0.9474,
+        "ci95": [
+          0.8563,
+          0.9819
+        ]
+      },
+      "localized": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "temporal.sampling_interval": 57,
+        "temporal.max_gap": 54,
+        "video.decode": 6
+      }
+    },
+    {
+      "recipe": "orphan_parquet",
+      "category": "metadata",
+      "description": "A stored Parquet file is not referenced by any episode",
+      "detected": {
+        "hits": 57,
+        "trials": 57,
+        "rate": 1.0,
+        "ci95": [
+          0.9369,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 57,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0631
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 57,
+          "trials": 57,
+          "rate": 1.0,
+          "ci95": [
+            0.9369,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "manifest.orphan_files": 57
+      }
+    },
+    {
+      "recipe": "video_bitflips",
+      "category": "video",
+      "description": "Random byte corruption inside the video payload",
+      "detected": {
+        "hits": 132,
+        "trials": 162,
+        "rate": 0.8148,
+        "ci95": [
+          0.748,
+          0.8671
+        ]
+      },
+      "blocks_ci": {
+        "hits": 132,
+        "trials": 162,
+        "rate": 0.8148,
+        "ci95": [
+          0.748,
+          0.8671
+        ]
+      },
+      "localized": {
+        "hits": 132,
+        "trials": 162,
+        "rate": 0.8148,
+        "ci95": [
+          0.748,
+          0.8671
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "1": {
+          "hits": 35,
+          "trials": 54,
+          "rate": 0.6481,
+          "ci95": [
+            0.5148,
+            0.7618
+          ]
+        },
+        "20": {
+          "hits": 47,
+          "trials": 54,
+          "rate": 0.8704,
+          "ci95": [
+            0.7558,
+            0.9358
+          ]
+        },
+        "200": {
+          "hits": 50,
+          "trials": 54,
+          "rate": 0.9259,
+          "ci95": [
+            0.8245,
+            0.9708
+          ]
+        }
+      },
+      "rules": {
+        "video.decode": 125,
+        "video.frozen_frames": 13
+      }
+    },
+    {
+      "recipe": "video_truncated",
+      "category": "video",
+      "description": "The video file loses a fraction of its tail",
+      "detected": {
+        "hits": 108,
+        "trials": 108,
+        "rate": 1.0,
+        "ci95": [
+          0.9657,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 108,
+        "trials": 108,
+        "rate": 1.0,
+        "ci95": [
+          0.9657,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 36,
+        "trials": 108,
+        "rate": 0.3333,
+        "ci95": [
+          0.2515,
+          0.4266
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "0.05": {
+          "hits": 54,
+          "trials": 54,
+          "rate": 1.0,
+          "ci95": [
+            0.9336,
+            1.0
+          ]
+        },
+        "0.5": {
+          "hits": 54,
+          "trials": 54,
+          "rate": 1.0,
+          "ci95": [
+            0.9336,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "video.decode": 108,
+        "video.black_frames": 72,
+        "video.frozen_frames": 72
+      }
+    },
+    {
+      "recipe": "video_missing",
+      "category": "video",
+      "description": "A referenced video file is deleted",
+      "detected": {
+        "hits": 54,
+        "trials": 54,
+        "rate": 1.0,
+        "ci95": [
+          0.9336,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 54,
+        "trials": 54,
+        "rate": 1.0,
+        "ci95": [
+          0.9336,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 54,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0664
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 54,
+          "trials": 54,
+          "rate": 1.0,
+          "ci95": [
+            0.9336,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "manifest.required_files": 54,
+        "video.black_frames": 54,
+        "video.decode": 54,
+        "video.frozen_frames": 54
+      }
+    },
+    {
+      "recipe": "frozen_camera",
+      "category": "video",
+      "description": "Camera repeats one frame for N frames",
+      "detected": {
+        "hits": 50,
+        "trials": 84,
+        "rate": 0.5952,
+        "ci95": [
+          0.4883,
+          0.6938
+        ]
+      },
+      "blocks_ci": {
+        "hits": 50,
+        "trials": 84,
+        "rate": 0.5952,
+        "ci95": [
+          0.4883,
+          0.6938
+        ]
+      },
+      "localized": {
+        "hits": 50,
+        "trials": 84,
+        "rate": 0.5952,
+        "ci95": [
+          0.4883,
+          0.6938
+        ]
+      },
+      "control_masked": 9,
+      "oracle_detected": null,
+      "levels": {
+        "10": {
+          "hits": 24,
+          "trials": 42,
+          "rate": 0.5714,
+          "ci95": [
+            0.4221,
+            0.7088
+          ]
+        },
+        "60": {
+          "hits": 26,
+          "trials": 42,
+          "rate": 0.619,
+          "ci95": [
+            0.4681,
+            0.75
+          ]
+        }
+      },
+      "rules": {
+        "video.frozen_frames": 50
+      }
+    },
+    {
+      "recipe": "black_frames",
+      "category": "video",
+      "description": "N black frames",
+      "detected": {
+        "hits": 84,
+        "trials": 84,
+        "rate": 1.0,
+        "ci95": [
+          0.9563,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 84,
+        "trials": 84,
+        "rate": 1.0,
+        "ci95": [
+          0.9563,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 84,
+        "trials": 84,
+        "rate": 1.0,
+        "ci95": [
+          0.9563,
+          1.0
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "3": {
+          "hits": 42,
+          "trials": 42,
+          "rate": 1.0,
+          "ci95": [
+            0.9162,
+            1.0
+          ]
+        },
+        "60": {
+          "hits": 42,
+          "trials": 42,
+          "rate": 1.0,
+          "ci95": [
+            0.9162,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "video.black_frames": 84,
+        "video.frozen_frames": 25
+      }
+    },
+    {
+      "recipe": "saturated_frames",
+      "category": "video",
+      "description": "N fully saturated white frames",
+      "detected": {
+        "hits": 28,
+        "trials": 84,
+        "rate": 0.3333,
+        "ci95": [
+          0.2418,
+          0.4395
+        ]
+      },
+      "blocks_ci": {
+        "hits": 28,
+        "trials": 84,
+        "rate": 0.3333,
+        "ci95": [
+          0.2418,
+          0.4395
+        ]
+      },
+      "localized": {
+        "hits": 28,
+        "trials": 84,
+        "rate": 0.3333,
+        "ci95": [
+          0.2418,
+          0.4395
+        ]
+      },
+      "control_masked": 7,
+      "oracle_detected": null,
+      "levels": {
+        "3": {
+          "hits": 1,
+          "trials": 42,
+          "rate": 0.0238,
+          "ci95": [
+            0.0042,
+            0.1232
+          ]
+        },
+        "60": {
+          "hits": 27,
+          "trials": 42,
+          "rate": 0.6429,
+          "ci95": [
+            0.4917,
+            0.7701
+          ]
+        }
+      },
+      "rules": {
+        "video.frozen_frames": 28
+      }
+    },
+    {
+      "recipe": "dropped_frames",
+      "category": "video",
+      "description": "N frames dropped mid-episode, permanently desynchronizing it",
+      "detected": {
+        "hits": 15,
+        "trials": 84,
+        "rate": 0.1786,
+        "ci95": [
+          0.1113,
+          0.2739
+        ]
+      },
+      "blocks_ci": {
+        "hits": 15,
+        "trials": 84,
+        "rate": 0.1786,
+        "ci95": [
+          0.1113,
+          0.2739
+        ]
+      },
+      "localized": {
+        "hits": 15,
+        "trials": 84,
+        "rate": 0.1786,
+        "ci95": [
+          0.1113,
+          0.2739
+        ]
+      },
+      "control_masked": 7,
+      "oracle_detected": null,
+      "levels": {
+        "1": {
+          "hits": 0,
+          "trials": 42,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0838
+          ]
+        },
+        "5": {
+          "hits": 15,
+          "trials": 42,
+          "rate": 0.3571,
+          "ci95": [
+            0.2299,
+            0.5083
+          ]
+        }
+      },
+      "rules": {
+        "video.decode": 14,
+        "video.frozen_frames": 1
+      }
+    },
+    {
+      "recipe": "half_rate_camera",
+      "category": "video",
+      "description": "Every second frame repeats, as from a half-rate camera",
+      "detected": {
+        "hits": 0,
+        "trials": 42,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0838
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 42,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0838
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 42,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.0838
+        ]
+      },
+      "control_masked": 2,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 42,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0838
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "reversed_episode",
+      "category": "video",
+      "description": "An episode's frames play in reverse",
+      "detected": {
+        "hits": 4,
+        "trials": 42,
+        "rate": 0.0952,
+        "ci95": [
+          0.0377,
+          0.2207
+        ]
+      },
+      "blocks_ci": {
+        "hits": 4,
+        "trials": 42,
+        "rate": 0.0952,
+        "ci95": [
+          0.0377,
+          0.2207
+        ]
+      },
+      "localized": {
+        "hits": 4,
+        "trials": 42,
+        "rate": 0.0952,
+        "ci95": [
+          0.0377,
+          0.2207
+        ]
+      },
+      "control_masked": 1,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 4,
+          "trials": 42,
+          "rate": 0.0952,
+          "ci95": [
+            0.0377,
+            0.2207
+          ]
+        }
+      },
+      "rules": {
+        "video.frozen_frames": 4
+      }
+    },
+    {
+      "recipe": "video_range_drift",
+      "category": "video",
+      "description": "LeRobot issue 3177 class: from/to_timestamp drift by N frames",
+      "detected": {
+        "hits": 9,
+        "trials": 96,
+        "rate": 0.0938,
+        "ci95": [
+          0.0501,
+          0.1687
+        ]
+      },
+      "blocks_ci": {
+        "hits": 9,
+        "trials": 96,
+        "rate": 0.0938,
+        "ci95": [
+          0.0501,
+          0.1687
+        ]
+      },
+      "localized": {
+        "hits": 9,
+        "trials": 96,
+        "rate": 0.0938,
+        "ci95": [
+          0.0501,
+          0.1687
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "1": {
+          "hits": 0,
+          "trials": 48,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.0741
+          ]
+        },
+        "15": {
+          "hits": 9,
+          "trials": 48,
+          "rate": 0.1875,
+          "ci95": [
+            0.1019,
+            0.3194
+          ]
+        }
+      },
+      "rules": {
+        "video.decode": 9
+      }
+    },
+    {
+      "recipe": "swapped_cameras",
+      "category": "video",
+      "description": "Two camera streams are swapped",
+      "detected": {
+        "hits": 0,
+        "trials": 30,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1135
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 30,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1135
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 30,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1135
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 0,
+          "trials": 30,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.1135
+          ]
+        }
+      },
+      "rules": {}
+    },
+    {
+      "recipe": "log_rollback",
+      "category": "mcap",
+      "description": "One log timestamp pair is written backward",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "mcap.timestamp_order": 3
+      }
+    },
+    {
+      "recipe": "duplicate_log_time",
+      "category": "mcap",
+      "description": "One message repeats its predecessor's log time",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "mcap.duplicate_timestamps": 3
+      }
+    },
+    {
+      "recipe": "cadence_gap",
+      "category": "mcap",
+      "description": "A 2 second gap on a topic contracted at 100 Hz",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "ros2.topic_gaps": 3
+      }
+    },
+    {
+      "recipe": "lost_message",
+      "category": "mcap",
+      "description": "One message is lost; the sequence counter skips it",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "mcap.sequence_continuity": 3
+      }
+    },
+    {
+      "recipe": "nan_joint",
+      "category": "mcap",
+      "description": "NaN in one JointState position",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "ros2.semantic_consistency": 3
+      }
+    },
+    {
+      "recipe": "joint_dimension",
+      "category": "mcap",
+      "description": "One JointState has the wrong position length",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "ros2.semantic_consistency": 3
+      }
+    },
+    {
+      "recipe": "missing_topic",
+      "category": "mcap",
+      "description": "A contracted topic is absent",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "ros2.required_topics": 3
+      }
+    },
+    {
+      "recipe": "chunk_byte_flip",
+      "category": "mcap",
+      "description": "One byte flipped inside a CRC-protected chunk",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "mcap.readable": 3,
+        "mcap.summary_consistency": 3,
+        "ros2.required_topics": 3,
+        "mcap.channel_schema": 1,
+        "mcap.duplicate_timestamps": 1,
+        "mcap.index_coverage": 1,
+        "mcap.sequence_continuity": 1,
+        "mcap.timestamp_order": 1,
+        "ros2.decode": 1,
+        "ros2.encoding": 1,
+        "ros2.semantic_consistency": 1,
+        "ros2.tf_tree": 1,
+        "ros2.topic_gaps": 1
+      }
+    },
+    {
+      "recipe": "truncated_5pct",
+      "category": "mcap",
+      "description": "The recording loses 5% of its tail",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "mcap.index_coverage": 3,
+        "mcap.readable": 3
+      }
+    },
+    {
+      "recipe": "truncated_50pct",
+      "category": "mcap",
+      "description": "The recording loses 50% of its tail",
+      "detected": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "blocks_ci": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "localized": {
+        "hits": 0,
+        "trials": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "control_masked": 0,
+      "oracle_detected": null,
+      "levels": {
+        "None": {
+          "hits": 3,
+          "trials": 3,
+          "rate": 1.0,
+          "ci95": [
+            0.4385,
+            1.0
+          ]
+        }
+      },
+      "rules": {
+        "mcap.index_coverage": 3,
+        "mcap.readable": 3
+      }
+    }
+  ],
+  "benign": {
+    "benign_row_groups": {
+      "false_alarm": {
+        "hits": 0,
+        "trials": 19,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1682
+        ]
+      },
+      "rules": []
+    },
+    "benign_compression": {
+      "false_alarm": {
+        "hits": 0,
+        "trials": 19,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1682
+        ]
+      },
+      "rules": []
+    },
+    "benign_column_order": {
+      "false_alarm": {
+        "hits": 0,
+        "trials": 19,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.1682
+        ]
+      },
+      "rules": []
+    },
+    "benign_reencode": {
+      "false_alarm": {
+        "hits": 3,
+        "trials": 14,
+        "rate": 0.2143,
+        "ci95": [
+          0.0757,
+          0.4759
+        ]
+      },
+      "rules": [
+        "video.frozen_frames"
+      ]
+    },
+    "benign_arrival_reorder": {
+      "false_alarm": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "rules": [
+        "mcap.timestamp_order"
+      ]
+    },
+    "benign_two_publishers": {
+      "false_alarm": {
+        "hits": 3,
+        "trials": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      },
+      "rules": [
+        "mcap.timestamp_order"
+      ]
+    }
+  },
+  "clean_corpus": [
+    {
+      "dataset": "aloha-battery",
+      "split": "heldout",
+      "episodes": 5,
+      "frames": 3000,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "koch-v20",
+      "split": "heldout",
+      "episodes": 50,
+      "frames": 14932,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "lekiwi-go2",
+      "split": "heldout",
+      "episodes": 40,
+      "frames": 14391,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "libero-spatial",
+      "split": "heldout",
+      "episodes": 432,
+      "frames": 52970,
+      "status": "failed",
+      "flagged_rules": {
+        "video.frozen_frames": 1
+      }
+    },
+    {
+      "dataset": "panda",
+      "split": "tuned",
+      "episodes": 10,
+      "frames": 1160,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "pusht",
+      "split": "heldout",
+      "episodes": 206,
+      "frames": 25650,
+      "status": "failed",
+      "flagged_rules": {
+        "video.frozen_frames": 688
+      }
+    },
+    {
+      "dataset": "rover",
+      "split": "tuned",
+      "episodes": 3,
+      "frames": 4176,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "rshoff-v21",
+      "split": "heldout",
+      "episodes": 2,
+      "frames": 1699,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "sentinel",
+      "split": "tuned",
+      "episodes": 11,
+      "frames": 13983,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "so100-pickplace",
+      "split": "heldout",
+      "episodes": 50,
+      "frames": 19631,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "so101",
+      "split": "tuned",
+      "episodes": 50,
+      "frames": 11939,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "so101-teleop",
+      "split": "heldout",
+      "episodes": 50,
+      "frames": 18250,
+      "status": "failed",
+      "flagged_rules": {
+        "video.frozen_frames": 65
+      }
+    },
+    {
+      "dataset": "synth-arm-large",
+      "split": "synthetic",
+      "episodes": 4,
+      "frames": 600,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "synth-arm-slow",
+      "split": "synthetic",
+      "episodes": 4,
+      "frames": 600,
+      "status": "failed",
+      "flagged_rules": {
+        "video.frozen_frames": 60
+      }
+    },
+    {
+      "dataset": "synth-arm-small",
+      "split": "synthetic",
+      "episodes": 4,
+      "frames": 600,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "synth-ros2",
+      "split": "synthetic",
+      "episodes": 1,
+      "frames": 2000,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "synth-still-jitter",
+      "split": "synthetic",
+      "episodes": 4,
+      "frames": 600,
+      "status": "failed",
+      "flagged_rules": {
+        "video.frozen_frames": 4
+      }
+    },
+    {
+      "dataset": "unitree-h1-greet",
+      "split": "heldout",
+      "episodes": 30,
+      "frames": 3750,
+      "status": "passed",
+      "flagged_rules": {}
+    },
+    {
+      "dataset": "ur10e-robotiq",
+      "split": "heldout",
+      "episodes": 55,
+      "frames": 21419,
+      "status": "failed",
+      "flagged_rules": {
+        "video.frozen_frames": 4
+      }
+    },
+    {
+      "dataset": "xarm-lift",
+      "split": "heldout",
+      "episodes": 800,
+      "frames": 20000,
+      "status": "passed",
+      "flagged_rules": {}
+    }
+  ]
+}

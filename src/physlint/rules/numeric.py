@@ -36,14 +36,8 @@ class FiniteValuesRule:
                     continue
                 offset = 0
                 for batch in dataset.iter_batches(episode, (stream,)):
-                    try:
-                        values = np.asarray(batch.columns[stream], dtype=float)
-                    except (TypeError, ValueError):
-                        continue
-                    flat = values.reshape(len(values), -1)
-                    bad_rows = np.flatnonzero(~np.all(np.isfinite(flat), axis=1))
-                    for row in bad_rows:
-                        bad_dimensions = np.flatnonzero(~np.isfinite(flat[row])).tolist()
+                    values = batch.columns[stream]
+                    for row, bad_dimensions in _non_finite_rows(values):
                         findings.append(
                             finding(
                                 self.metadata,
@@ -177,6 +171,29 @@ class DiscontinuityRule:
                         previous = values[-1]
                     offset += len(values)
         return findings
+
+
+def _non_finite_rows(values: np.ndarray) -> list[tuple[int, list[int]]]:
+    """Locate non-finite rows; null, ragged, or non-numeric rows belong to other rules."""
+    try:
+        array = np.asarray(values, dtype=float)
+    except (TypeError, ValueError):
+        return [(int(row), bad) for row, value in enumerate(values) if (bad := _non_finite_dimensions(value))]
+    flat = array.reshape(len(array), -1)
+    return [
+        (int(row), np.flatnonzero(~np.isfinite(flat[row])).tolist())
+        for row in np.flatnonzero(~np.all(np.isfinite(flat), axis=1))
+    ]
+
+
+def _non_finite_dimensions(value: object) -> list[int]:
+    if value is None:
+        return []
+    try:
+        array = np.asarray(value, dtype=float).reshape(-1)
+    except (TypeError, ValueError):
+        return []
+    return np.flatnonzero(~np.isfinite(array)).tolist()
 
 
 NUMERIC_RULES: list[Rule] = [FiniteValuesRule(), NumericBoundsRule(), DiscontinuityRule()]

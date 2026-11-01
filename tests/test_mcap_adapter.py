@@ -54,3 +54,15 @@ def test_timing_observations_are_bounded(mcap_factory):
     channel = next(iter(dataset.scan().channels.values()))
     assert channel.message_count == 5_000
     assert len(channel.positive_log_intervals_ns) == 4_096
+
+
+def test_interval_reservoir_replaces_more_than_one_slot() -> None:
+    from physlint.adapters.mcap import INTERVAL_RESERVOIR_SIZE, _sample_interval
+    from physlint.models.mcap import McapChannelObservation
+
+    observation = McapChannelObservation(channel_id=1, topic="/t", message_encoding="json", schema_id=0)
+    for index in range(INTERVAL_RESERVOIR_SIZE):
+        _sample_interval(observation, 1, index)
+    for index in range(INTERVAL_RESERVOIR_SIZE, INTERVAL_RESERVOIR_SIZE * 3):
+        _sample_interval(observation, 2, index)
+    assert observation.positive_log_intervals_ns.count(2) > 100

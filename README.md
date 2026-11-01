@@ -159,15 +159,16 @@ Physlint owns NaN and infinity semantics in `numeric.finite_values`; the same sa
 
 ## What Physlint checks
 
-Thirty-two deterministic rules are installed. Physlint plans only the rules for the detected adapter and profile:
+Forty-nine deterministic rules are installed. Physlint plans only the rules for the detected adapter and profile:
 
 | Area | Checks |
 |---|---|
-| **Manifest** | Required files, declared/stored schema agreement, required streams, and feature shapes |
-| **Episodes** | Unique identifiers, positive lengths, non-overlapping boundaries, and stored-row agreement |
-| **Temporal** | Strictly monotonic timestamps, FPS cadence, FPS-aware maximum gaps, complete stream overlap, and observation/action delay when independently timestamped |
+| **Manifest** | Required files, declared/stored schema agreement, required streams, feature shapes, declared totals, and unreferenced stored files |
+| **Episodes** | Unique identifiers, positive lengths, non-overlapping boundaries, stored-row agreement, frame/dataset index order, and task references |
+| **Temporal** | Finite, strictly monotonic timestamps, episode start and clock drift, FPS cadence, FPS-aware maximum gaps, complete stream overlap, and observation/action delay when independently timestamped |
 | **Numeric** | NaN/Inf, configured physical bounds, and configured discontinuity limits |
-| **Video** | Complete decode, motion-aware frozen-frame runs, and grouped black/near-empty frames |
+| **Video** | Complete decode, bitstream errors, stored frame times against episode ranges, motion-aware frozen and repeated frames, black or saturated frames, and camera identity |
+| **Statistical** | Warnings calibrated from the dataset itself: outlier jumps, range, stuck channels, noise, action/state coupling, signal alignment, and near-duplicate episodes |
 | **Duplication** | Exact numeric episode copies |
 | **MCAP** | Record/CRC readability, summary consistency, index coverage, channel/schema coherence, timestamp order, duplicate timestamps, and sequence continuity |
 | **ROS 2** | Portable CDR schemas, full decode, required topics, cadence gaps, configured header/log skew, known message invariants, and TF parent consistency |
@@ -228,6 +229,8 @@ rules:
   video.frozen_frames:
     options:
       max_consecutive_frames: 5
+      # A run counts only if motion streams moved this fraction of their range during it.
+      min_run_displacement: 0.05
       # Action is preferred over noisier observed state by default.
       motion_streams: [action, observation.state]
 
@@ -333,11 +336,13 @@ Runtime measurements are observations from the documented machine and run—not 
 
 A larger [compatibility survey](docs/validation/compatibility-survey.md) adds ten revision-pinned public LeRobot v3 snapshots (1,678 episodes, 182,128 frames) plus five fail-closed v2 screens. Five of the ten v3 snapshots passed the default contract; the rest are classified in that report. Those rows are Observatory survey evidence. They do not expand the four-snapshot release claim and they are not a Hugging Face quality score.
 
+The [corruption benchmark](docs/validation/corruption-benchmark.md) measures 58 defect types and benign transforms. On 5 datasets reserved from tuning, macro detection is **92%** including warnings and 66% counting only findings that fail CI by default. No real dataset fails the default contract, but 9 of 15 receive warnings that have not been manually classified. These figures depend on the recipe mix and are not a real-world catch rate.
+
 The MCAP/ROS 2 release gate additionally verifies an exact Foxglove conformance fixture, a public robot-captured RobotisAI episode, and two deterministic ROS 2 recordings:
 
 | Recording | Profile | Provenance | Checks | Expected outcome |
 |---|---|---|---:|---|
-| Foxglove `TenMessages` conformance case | Generic MCAP | Public, revision-pinned | 7 | Timestamp-order and duplicate-time findings reproduced |
+| Foxglove `TenMessages` conformance case | Generic MCAP | Public, revision-pinned | 7 | Duplicate-time findings reproduced |
 | RobotisAI ARX X5 elevator-button episode | ROS 2 | Public robot capture, revision-pinned | 12 | 7,047 messages decoded; configured topic contract and applicable checks pass |
 | JointState baseline | ROS 2 | Controlled recipe | 12 | Pass |
 | JointState cadence + dimension corruption | ROS 2 | Controlled recipe | 13 | Gap and semantic findings reproduced |

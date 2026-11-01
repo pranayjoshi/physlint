@@ -28,9 +28,9 @@ def _fps(dataset: DatasetView) -> float:
 class MonotonicTimestampsRule:
     metadata = RuleMetadata(
         id="temporal.monotonic",
-        version="1.0.0",
+        version="1.1.0",
         title="Timestamps are strictly monotonic",
-        description="Reordered or repeated timestamps break sequence order and synchronization.",
+        description="Non-finite, reordered, or repeated timestamps break sequence order and synchronization.",
         severity=Severity.ERROR,
         scope="episode",
         cost="linear",
@@ -48,11 +48,34 @@ class MonotonicTimestampsRule:
                 values = np.asarray(batch.columns["timestamp"], dtype=float).reshape(-1)
                 if values.size == 0:
                     continue
-                diffs = np.diff(values, prepend=previous if previous is not None else values[0] - 1)
-                bad = np.flatnonzero(diffs <= 0)
-                for index in bad:
-                    if previous is None and index == 0:
+                for index in np.flatnonzero(~np.isfinite(values)):
+                    findings.append(
+                        finding(
+                            self.metadata,
+                            severity,
+                            f"Timestamp is not finite at sample {sample_index + int(index)}",
+                            location=Location(
+                                episode=episode.identifier,
+                                stream="timestamp",
+                                sample_index=sample_index + int(index),
+                                source=episode.data_file,
+                            ),
+                            observed=str(values[index]),
+                            expected="finite timestamp in seconds",
+                        )
+                    )
+                    if len(findings) >= options["max_findings"]:
+                        return findings
+                positions = np.flatnonzero(np.isfinite(values))
+                if positions.size == 0:
+                    sample_index += len(values)
+                    continue
+                finite = values[positions]
+                diffs = np.diff(finite, prepend=previous if previous is not None else finite[0] - 1)
+                for offset in np.flatnonzero(diffs <= 0):
+                    if previous is None and offset == 0:
                         continue
+                    index = positions[offset]
                     findings.append(
                         finding(
                             self.metadata,
@@ -65,13 +88,13 @@ class MonotonicTimestampsRule:
                                 timestamp=float(values[index]),
                                 source=episode.data_file,
                             ),
-                            observed=float(diffs[index]),
+                            observed=float(diffs[offset]),
                             expected="delta > 0 seconds",
                         )
                     )
                     if len(findings) >= options["max_findings"]:
                         return findings
-                previous = float(values[-1])
+                previous = float(finite[-1])
                 sample_index += len(values)
         return findings
 
@@ -101,9 +124,9 @@ class SamplingIntervalRule:
                 values = np.asarray(batch.columns["timestamp"], dtype=float).reshape(-1)
                 combined = values if previous is None else np.concatenate(([previous], values))
                 diffs = np.diff(combined)
-                bad = np.flatnonzero((diffs > 0) & (np.abs(diffs - expected) > tolerance))
+                bad = np.flatnonzero(np.isfinite(diffs) & (diffs > 0) & (np.abs(diffs - expected) > tolerance))
                 for index in bad:
-                    sample = offset + int(index) + (0 if previous is None else 0)
+                    sample = offset + int(index) + (1 if previous is None else 0)
                     findings.append(
                         finding(
                             self.metadata,
@@ -160,7 +183,7 @@ class MaxGapRule:
             ]
             values = np.concatenate(chunks) if chunks else np.asarray([], dtype=float)
             diffs = np.diff(values)
-            for start, end in _contiguous_runs(np.flatnonzero(diffs > limit)):
+            for start, end in _contiguous_runs(np.flatnonzero(np.isfinite(diffs) & (diffs > limit))):
                 run = diffs[start : end + 1]
                 max_gap_ms = float(np.max(run) * 1000)
                 findings.append(
@@ -289,6 +312,95 @@ class ObservationActionDelayRule:
         return findings
 
 
+class EpisodeStartRule:
+    metadata = RuleMetadata(
+        id="temporal.episode_start",
+        version="1.0.0",
+        title="Episodes start at the dataset's usual time",
+        description="An offset episode clock makes timestamp-based video lookups return the wrong frames.",
+        severity=Severity.ERROR,
+        scope="episode",
+        cost="linear",
+        required_capabilities=frozenset({"timestamps", "episodes"}),
+        option_defaults={"max_findings": 50},
+        limitations="Compares each episode with the dataset median, so a shift shared by every episode passes.",
+        remediation="Rebase the episode's timestamps to the dataset convention.",
+    )
+
+    def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
+        interval = 1.0 / _fps(dataset)
+        starts = {
+            episode.identifier: values[0]
+            for episode, values in _episode_timestamps(dataset)
+            if values.size and np.isfinite(values[0])
+        }
+        if not starts:
+            return []
+        reference = float(np.median(list(starts.values())))
+        findings = [
+            finding(
+                self.metadata,
+                severity,
+                f"{identifier} starts {start - reference:.3f} s from the dataset's usual time",
+                location=Location(episode=identifier, stream="timestamp", sample_index=0),
+                observed=float(start),
+                expected={"start_seconds": reference, "tolerance_seconds": interval},
+            )
+            for identifier, start in starts.items()
+            if abs(start - reference) > interval
+        ]
+        return findings[: int(options["max_findings"])]
+
+
+class ClockDriftRule:
+    metadata = RuleMetadata(
+        id="temporal.clock_drift",
+        version="1.0.0",
+        title="Episode duration matches sample count and FPS",
+        description="A clock running fast or slow silently desynchronizes samples from video.",
+        severity=Severity.ERROR,
+        scope="episode",
+        cost="linear",
+        required_capabilities=frozenset({"timestamps", "episodes"}),
+        option_defaults={"max_drift_frames": 1.0, "max_findings": 50},
+        remediation="Correct the episode clock or the declared FPS, then re-export.",
+    )
+
+    def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
+        interval = 1.0 / _fps(dataset)
+        limit = interval * float(options["max_drift_frames"])
+        findings = []
+        for episode, values in _episode_timestamps(dataset):
+            finite = values[np.isfinite(values)]
+            if finite.size != values.size or values.size < 2:
+                continue
+            duration = float(values[-1] - values[0])
+            expected = (values.size - 1) * interval
+            if abs(duration - expected) > limit:
+                findings.append(
+                    finding(
+                        self.metadata,
+                        severity,
+                        f"{episode.identifier} lasts {duration:.3f} s; {values.size} samples imply {expected:.3f} s",
+                        location=Location(episode=episode.identifier, stream="timestamp"),
+                        observed={"duration_seconds": duration},
+                        expected={"duration_seconds": expected, "tolerance_seconds": limit},
+                    )
+                )
+                if len(findings) >= options["max_findings"]:
+                    return findings
+        return findings
+
+
+def _episode_timestamps(dataset: DatasetView) -> Iterator[tuple[Episode, np.ndarray]]:
+    for episode in dataset.inventory.episodes:
+        chunks = [
+            np.asarray(batch.columns["timestamp"], dtype=float).reshape(-1)
+            for batch in _timestamp_batches(dataset, episode)
+        ]
+        yield episode, np.concatenate(chunks) if chunks else np.asarray([], dtype=float)
+
+
 def _missing_rows(values: np.ndarray) -> np.ndarray:
     array = np.asarray(values)
     if array.dtype == object:
@@ -315,4 +427,6 @@ TEMPORAL_RULES: list[Rule] = [
     MaxGapRule(),
     StreamOverlapRule(),
     ObservationActionDelayRule(),
+    EpisodeStartRule(),
+    ClockDriftRule(),
 ]

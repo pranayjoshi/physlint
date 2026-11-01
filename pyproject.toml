@@ -37,9 +37,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-video = ["opencv-python-headless>=4.9"]
+video = ["av>=14,<16", "opencv-python-headless>=4.9"]
 hub = ["huggingface-hub>=0.27,<2"]
-all = ["huggingface-hub>=0.27,<2", "opencv-python-headless>=4.9"]
+all = ["av>=14,<16", "huggingface-hub>=0.27,<2", "opencv-python-headless>=4.9"]
 launch = ["av>=14,<16", "Pillow>=11,<13"]
 docs = ["mkdocs>=1.6,<2", "mkdocs-material>=9.6,<10"]
 dev = [

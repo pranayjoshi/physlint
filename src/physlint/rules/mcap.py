@@ -190,26 +190,32 @@ class McapChannelSchemaRule:
 class McapTimestampOrderRule:
     metadata = RuleMetadata(
         id="mcap.timestamp_order",
-        version="1.0.0",
-        title="MCAP channel timestamps do not move backward",
-        description="Backward log or publish time breaks replay ordering and synchronization.",
+        version="2.0.0",
+        title="MCAP channel clocks do not reset backward",
+        description="A large backward step in log time suggests a clock reset that breaks synchronization.",
         severity=Severity.ERROR,
         scope="channel",
         cost="linear",
         required_capabilities=frozenset({"mcap"}),
-        option_defaults={"max_findings": 50},
+        option_defaults={"max_reorder_ms": 100.0, "check_publish_time": False, "max_findings": 50},
+        limitations=(
+            "The MCAP specification does not require log-time order, so small reorderings are ignored. "
+            "Publish time is ignored by default because several publishers can legitimately interleave."
+        ),
         remediation="Fix recorder clock ordering or split the recording at the clock reset.",
     )
 
     def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
         findings: list[Finding] = []
+        limit_ns = float(options["max_reorder_ms"]) * 1_000_000
         for channel in _scan(dataset).channels.values():
-            evidence = (
-                ("log", channel.log_rollbacks, channel.log_rollback_count),
-                ("publish", channel.publish_rollbacks, channel.publish_rollback_count),
-            )
+            evidence = [("log", channel.log_rollbacks, channel.log_rollback_count)]
+            if options["check_publish_time"]:
+                evidence.append(("publish", channel.publish_rollbacks, channel.publish_rollback_count))
             for label, examples, total in evidence:
                 for index, timestamp, delta in examples:
+                    if abs(delta) <= limit_ns:
+                        continue
                     findings.append(
                         finding(
                             self.metadata,
@@ -222,7 +228,7 @@ class McapTimestampOrderRule:
                                 source=dataset.root.name,
                             ),
                             observed={"delta_ns": delta, "transition_count": total},
-                            expected="timestamp delta >= 0",
+                            expected={"max_backward_step_ms": options["max_reorder_ms"]},
                         )
                     )
                     if len(findings) >= int(options["max_findings"]):
@@ -497,10 +503,11 @@ class Ros2HeaderClockSkewRule:
 class Ros2SemanticConsistencyRule:
     metadata = RuleMetadata(
         id="ros2.semantic_consistency",
-        version="1.0.0",
+        version="1.1.0",
         title="Known ROS 2 message invariants remain consistent",
         description=(
-            "Broken JointState dimensions, image payload sizes, or TF frame identifiers corrupt downstream consumers."
+            "Broken JointState dimensions, non-finite joint or TF values, image payload sizes, or TF frame "
+            "identifiers corrupt downstream consumers."
         ),
         severity=Severity.ERROR,
         scope="topic",

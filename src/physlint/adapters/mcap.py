@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import struct
 from collections.abc import Iterator, Mapping
 from pathlib import Path
@@ -296,7 +297,8 @@ def _sample_interval(observation: McapChannelObservation, delta: int, index: int
     if len(sample) < INTERVAL_RESERVOIR_SIZE:
         sample.append(delta)
         return
-    slot = (index * 2_654_435_761) % index
+    # Deterministic Algorithm R: the wrapped product makes the slot depend on more than the index.
+    slot = ((index * 2_654_435_761) & 0xFFFFFFFF) % (index + 1)
     if slot < INTERVAL_RESERVOIR_SIZE:
         sample[slot] = delta
 
@@ -344,6 +346,7 @@ def _observe_ros2_semantics(observation: McapChannelObservation, message: Any) -
                 _add_semantic_error(
                     observation, f"{field_name} has {len(values)} values but name has {len(names)} entries"
                 )
+            _check_finite(observation, f"JointState {field_name}", values)
     elif schema_name.endswith("/TFMessage"):
         is_static = observation.topic == "/tf_static"
         for transform in _field(message, "transforms", []):
@@ -355,6 +358,11 @@ def _observe_ros2_semantics(observation: McapChannelObservation, message: Any) -
             elif parent == child:
                 _add_semantic_error(observation, f"TF transform self-references frame {parent!r}")
             observation.tf_edges.add((parent, child, is_static))
+            transform_value = _field(transform, "transform", None)
+            for part, axes in (("translation", "xyz"), ("rotation", "xyzw")):
+                vector = _field(transform_value, part, None)
+                if vector is not None:
+                    _check_finite(observation, f"TF {part}", [_field(vector, axis, 0.0) for axis in axes])
     elif schema_name.endswith("/Image"):
         height = int(_field(message, "height", 0))
         step = int(_field(message, "step", 0))
@@ -369,6 +377,11 @@ def _observe_ros2_semantics(observation: McapChannelObservation, message: Any) -
             _add_semantic_error(observation, "CompressedImage payload is empty")
         else:
             _validate_compressed_image(observation, bytes(data))
+
+
+def _check_finite(observation: McapChannelObservation, label: str, values: list[Any]) -> None:
+    if not all(math.isfinite(float(value)) for value in values):
+        _add_semantic_error(observation, f"{label} contains a non-finite value")
 
 
 def _add_semantic_error(observation: McapChannelObservation, message: str) -> None:

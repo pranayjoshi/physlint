@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased
+
+### Breaking
+
+- `video.frozen_frames` 2.0.0 is now a warning. `max_cell_difference` replaces `mean_absolute_difference`, and `min_run_displacement` replaces `min_motion_fraction`, so configurations using the old options are rejected.
+- `mcap.timestamp_order` 2.0.0 ignores backward steps of up to `max_reorder_ms` and ignores publish time unless `check_publish_time` is set.
+- The `video` and `all` extras now install PyAV.
+
+### Added
+
+- Rules: `episode.index_columns`, `episode.task_references`, `manifest.declared_totals`, `manifest.orphan_files`, `temporal.episode_start`, `temporal.clock_drift`, `video.bitstream`, `video.timeline`, `video.repeated_frames`, and `video.camera_identity`.
+- Warnings calibrated from the dataset: `numeric.outlier_jumps`, `numeric.episode_envelope`, `numeric.stuck_channels`, `numeric.noise_level`, `numeric.action_state_coupling`, `temporal.signal_alignment`, and `duplication.near_episodes`.
+- `findings_capped` on each rule result, also shown in terminal output.
+- A reproducible corruption benchmark with per-defect detection and false-alarm results.
+
+### Fixed
+
+- Detect non-finite timestamps in `temporal.monotonic`, non-finite `JointState` and TF values in `ros2.semantic_consistency`, and saturated frames in `video.black_frames`.
+- Fix masked NaNs after a null row, the first-batch sample index in `temporal.sampling_interval`, and the MCAP interval reservoir.
+- Report NaN and infinity evidence as text instead of failing the rule that found them.
+- Explain unreadable null rows in fixed-size list columns.
+- Decode shared Parquet columns once, making non-video validation linear in dataset size.
+
 ## 0.4.0 — 2026-10-26
 
 - Read native LeRobot v2.0/v2.1 per-episode Parquet/MP4 and JSONL metadata, with public and controlled compatibility evidence.

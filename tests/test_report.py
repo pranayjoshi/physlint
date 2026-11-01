@@ -56,3 +56,16 @@ def test_committed_json_schemas_are_current():
     }
     for filename, model in expected.items():
         assert json.loads((root / filename).read_text(encoding="utf-8")) == model.model_json_schema(by_alias=True)
+
+
+def test_rule_result_reports_when_findings_are_capped(dataset_factory):
+    from physlint.config import Config, RuleSettings
+    from physlint.engine.discovery import discover
+    from physlint.engine.runner import run_validation
+
+    actions = [[float("nan"), 0.0] for _ in range(12)]
+    settings = {"numeric.finite_values": RuleSettings(options={"max_findings": 2})}
+    report = run_validation(discover(dataset_factory(actions=actions)), Config(rules=settings))
+    result = next(item for item in report.results if item.rule_id == "numeric.finite_values")
+    assert result.findings_capped is True
+    assert len(result.findings) == 2

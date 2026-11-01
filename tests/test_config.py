@@ -36,8 +36,8 @@ def test_rejects_invalid_option_values(dataset_factory):
             dataset,
             Config(rules={"temporal.max_gap": {"options": {"max_gap_ms": -1}}}),
         )
-    with pytest.raises(ConfigurationError, match="at most 1"):
+    with pytest.raises(ConfigurationError, match="non-negative number"):
         plan_rules(
             dataset,
-            Config(rules={"video.frozen_frames": {"options": {"min_motion_fraction": 1.1}}}),
+            Config(rules={"video.repeated_frames": {"options": {"min_repeat_fraction": "high"}}}),
         )

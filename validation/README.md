@@ -40,6 +40,14 @@ python -m validation.survey_harness
 
 Pinned inputs are in [`survey_manifest.yaml`](survey_manifest.yaml). Sanitized evidence is written under [`reports/lerobot-survey-2026-08-30/`](reports/lerobot-survey-2026-08-30/).
 
+## Corruption benchmark
+
+The benchmark injects controlled defects and benign transforms, then reports detection and false alarms per defect. It works from local snapshots and never downloads anything. Method and limits are in [`docs/validation/corruption-benchmark.md`](../docs/validation/corruption-benchmark.md).
+
+```bash
+python -m validation.benchmark --seeds 3
+```
+
 ## MCAP and ROS 2 gate
 
 The second harness combines an exact upstream Foxglove conformance fixture, a revision-pinned real RobotisAI robot episode, and deterministic ROS 2 positive and negative recordings:

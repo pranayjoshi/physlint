@@ -5,12 +5,14 @@ from __future__ import annotations
 import json
 import math
 import re
+from collections import OrderedDict
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pyarrow as pa
+import pyarrow.compute as pc
 import pyarrow.parquet as pq
 from pydantic import ValidationError
 
@@ -22,10 +24,12 @@ from physlint.models.dataset import (
     Stream,
     VideoAnalysis,
     VideoFrame,
+    VideoProbe,
 )
 
 DEFAULT_DATA_PATH = "data/chunk-{chunk_index:03d}/file-{file_index:03d}.parquet"
 DEFAULT_VIDEO_PATH = "videos/{video_key}/chunk-{chunk_index:03d}/file-{file_index:03d}.mp4"
+COLUMN_CACHE_BYTES = 512 * 1024 * 1024
 
 
 class LeRobotAdapter:
@@ -43,6 +47,11 @@ class LeRobotAdapter:
         self._features = self._read_features()
         self._episodes = self._read_episodes()
         self._schema_cache: dict[Path, pa.Schema] = {}
+        self._column_cache: OrderedDict[tuple[Path, str], tuple[np.ndarray, int]] = OrderedDict()
+        self._column_cache_bytes = 0
+        self._episode_rows: dict[Path, dict[int, np.ndarray]] = {}
+        self._column_sizes: dict[Path, dict[str, int]] = {}
+        self._video_probes: dict[str, VideoProbe] = {}
         self._video_analysis_cache: dict[tuple[int, str], VideoAnalysis] = {}
         inferred_name, source_revision = _hugging_face_identity(root)
         capabilities = {"metadata", "episodes", "timestamps", "numeric"}
@@ -212,6 +221,16 @@ class LeRobotAdapter:
             missing = set(read_columns) - available
             if missing:
                 raise AdapterError(f"columns missing from {path}: {', '.join(sorted(missing))}")
+            sizes = self._column_sizes.get(path)
+            if sizes is None:
+                sizes = self._column_sizes[path] = _uncompressed_column_sizes(parquet)
+            if all(sizes.get(name, 0) <= COLUMN_CACHE_BYTES for name in read_columns):
+                rows = self._rows_for_episode(parquet, path, selector, episode)
+                loaded = {name: self._column(parquet, path, name, sizes.get(name, 0)) for name in requested}
+                for start in range(0, rows.size, batch_size):
+                    selected = rows[start : start + batch_size]
+                    yield SampleBatch(episode=episode, columns={name: loaded[name][selected] for name in requested})
+                return
             for raw in parquet.iter_batches(batch_size=batch_size, columns=read_columns):
                 selection = raw.column(raw.schema.get_field_index(selector)).to_numpy(zero_copy_only=False)
                 if selector == "episode_index":
@@ -231,6 +250,46 @@ class LeRobotAdapter:
             raise
         except (OSError, pa.ArrowException) as exc:
             raise AdapterError(f"cannot stream parquet data {path}: {exc}") from exc
+
+    def _column(self, parquet: pq.ParquetFile, path: Path, name: str, cost: int) -> np.ndarray:
+        """Decode a shared-file column once so per-episode reads stay linear in file size."""
+        key = (path, name)
+        cached = self._column_cache.get(key)
+        if cached is not None:
+            self._column_cache.move_to_end(key)
+            return cached[0]
+        try:
+            table = parquet.read(columns=[name])
+        except pa.ArrowInvalid as exc:
+            if "Expected all lists to be of size" in str(exc):
+                raise AdapterError(
+                    f"column {name} in {path.name} has null or short rows in a fixed-size list, "
+                    "which PyArrow and LeRobot cannot read; re-export the affected episodes"
+                ) from exc
+            raise
+        values = _arrow_to_numpy(table.column(0))
+        self._column_cache[key] = (values, cost)
+        self._column_cache_bytes += cost
+        while self._column_cache_bytes > COLUMN_CACHE_BYTES and len(self._column_cache) > 1:
+            _, (_, evicted) = self._column_cache.popitem(last=False)
+            self._column_cache_bytes -= evicted
+        return values
+
+    def _rows_for_episode(self, parquet: pq.ParquetFile, path: Path, selector: str, episode: Episode) -> np.ndarray:
+        if selector == "episode_index":
+            lookup = self._episode_rows.get(path)
+            if lookup is None:
+                values = _arrow_to_numpy(parquet.read(columns=[selector]).column(0))
+                order = np.argsort(values, kind="stable")
+                labels, starts = np.unique(values[order], return_index=True)
+                lookup = dict(zip(labels.tolist(), np.split(order, starts[1:]), strict=True)) if labels.size else {}
+                self._episode_rows[path] = lookup
+            return lookup.get(episode.index, np.empty(0, dtype=np.int64))
+        total = parquet.metadata.num_rows
+        if episode.from_index is None or episode.to_index is None:
+            return np.arange(total)
+        values = _arrow_to_numpy(parquet.read(columns=[selector]).column(0))
+        return np.flatnonzero((values >= episode.from_index) & (values < episode.to_index))
 
     def iter_video_frames(self, episode: Episode, stream: str, stride: int = 1) -> Iterator[VideoFrame]:
         try:
@@ -267,6 +326,40 @@ class LeRobotAdapter:
         finally:
             capture.release()
 
+    def video_probe(self, relative_path: str) -> VideoProbe | None:
+        """Decode a video once with PyAV, whose errors OpenCV hides; None when PyAV is unavailable."""
+        cached = self._video_probes.get(relative_path)
+        if cached is not None:
+            return cached
+        try:
+            import av
+        except ImportError:  # pragma: no cover - environment dependent
+            return None
+        times: list[float] = []
+        errors = 0
+        first_error: float | None = None
+        fps: float | None = None
+        try:
+            with av.logging.Capture(True) as logs, av.open(str(self.root / relative_path)) as container:
+                video = container.streams.video[0]
+                video.thread_type = "AUTO"
+                fps = float(video.average_rate) if video.average_rate else None
+                for packet in container.demux(video):
+                    try:
+                        for frame in video.decode(packet):
+                            if frame.pts is not None and frame.time_base is not None:
+                                times.append(float(frame.pts * frame.time_base))
+                    except av.error.FFmpegError:
+                        errors += 1
+                        if first_error is None and packet.pts is not None and packet.time_base is not None:
+                            first_error = float(packet.pts * packet.time_base)
+            errors += sum(1 for level, _name, _message in logs if level <= av.logging.ERROR)
+        except (OSError, av.error.FFmpegError, IndexError) as exc:
+            raise AdapterError(f"cannot decode video {relative_path}: {exc}") from exc
+        probe = VideoProbe(np.sort(np.asarray(times, dtype=float)), errors, first_error, fps)
+        self._video_probes[relative_path] = probe
+        return probe
+
     def video_analysis(self, episode: Episode, stream: str) -> VideoAnalysis:
         """Decode once and cache small, non-image statistics for every video rule."""
         key = (episode.index, stream)
@@ -279,7 +372,9 @@ class LeRobotAdapter:
         means: list[float] = []
         stddevs: list[float] = []
         differences: list[float] = []
+        cell_differences: list[float] = []
         previous: np.ndarray | None = None
+        total: np.ndarray | None = None
         for frame in self.iter_video_frames(episode, stream):
             small = _small_grayscale(frame.image)
             frame_indices.append(frame.frame_index)
@@ -287,14 +382,19 @@ class LeRobotAdapter:
             means.append(float(np.mean(small)))
             stddevs.append(float(np.std(small)))
             if previous is not None:
-                differences.append(float(np.mean(np.abs(small - previous))))
+                change = np.abs(small - previous)
+                differences.append(float(np.mean(change)))
+                cell_differences.append(float(np.max(change)))
             previous = small
+            total = small.copy() if total is None else total + small
         analysis = VideoAnalysis(
             frame_indices=np.asarray(frame_indices, dtype=np.int64),
             timestamps=np.asarray(timestamps, dtype=float),
             mean_intensities=np.asarray(means, dtype=float),
             stddevs=np.asarray(stddevs, dtype=float),
             mean_absolute_differences=np.asarray(differences, dtype=float),
+            max_cell_differences=np.asarray(cell_differences, dtype=float),
+            mean_frame=np.zeros(0) if total is None else total / len(frame_indices),
         )
         self._video_analysis_cache[key] = analysis
         return analysis
@@ -316,12 +416,13 @@ def _optional_int(value: Any) -> int | None:
 
 
 def _small_grayscale(image: np.ndarray) -> np.ndarray:
-    """Spatially sample first, avoiding full-resolution color reductions."""
-    row_stride = max(1, image.shape[0] // 64)
-    col_stride = max(1, image.shape[1] // 64)
-    small = image[::row_stride, ::col_stride]
-    gray = np.mean(small, axis=2) if small.ndim == 3 else small
-    return np.asarray(gray, dtype=np.float32)
+    """Average into a small grid: unlike point sampling, small moving objects still register."""
+    import cv2
+
+    gray = np.asarray(np.mean(image, axis=2) if image.ndim == 3 else image, dtype=np.float32)
+    width = min(64, gray.shape[1])
+    height = max(1, round(gray.shape[0] * width / gray.shape[1]))
+    return np.asarray(cv2.resize(gray, (width, height), interpolation=cv2.INTER_AREA), dtype=np.float32)
 
 
 def _hugging_face_identity(root: Path) -> tuple[str | None, str | None]:
@@ -339,8 +440,52 @@ def _hugging_face_identity(root: Path) -> tuple[str | None, str | None]:
     return None, None
 
 
-def _arrow_to_numpy(array: pa.Array) -> np.ndarray:
+def _uncompressed_column_sizes(parquet: pq.ParquetFile) -> dict[str, int]:
+    sizes: dict[str, int] = {}
+    metadata = parquet.metadata
+    fields = parquet.schema_arrow.names
+    for group in range(metadata.num_row_groups):
+        row_group = metadata.row_group(group)
+        for index in range(row_group.num_columns):
+            column = row_group.column(index)
+            name = column.path_in_schema
+            top_level = next(
+                (field for field in fields if name == field or name.startswith(f"{field}.")),
+                name,
+            )
+            sizes[top_level] = sizes.get(top_level, 0) + int(column.total_uncompressed_size)
+    return sizes
+
+
+def _dense_numpy(array: pa.Array) -> np.ndarray | None:
+    """Convert null-free numeric scalars and regular nested lists without Python objects."""
+    if array.null_count:
+        return None
+    kind = array.type
+    if pa.types.is_floating(kind) or pa.types.is_integer(kind) or pa.types.is_boolean(kind):
+        return np.asarray(array.to_numpy(zero_copy_only=False))
+    if pa.types.is_fixed_size_list(kind):
+        width = int(kind.list_size)
+    elif pa.types.is_list(kind) or pa.types.is_large_list(kind):
+        lengths = np.asarray(pc.list_value_length(array).to_numpy(zero_copy_only=False))
+        if lengths.size == 0 or np.any(lengths != lengths[0]):
+            return None
+        width = int(lengths[0])
+    else:
+        return None
+    inner = _dense_numpy(array.flatten())
+    if inner is None or width == 0:
+        return None
+    return inner.reshape((len(array), width, *inner.shape[1:]))
+
+
+def _arrow_to_numpy(array: pa.Array | pa.ChunkedArray) -> np.ndarray:
     """Preserve vector columns as a dense array when their shape is regular."""
+    if isinstance(array, pa.ChunkedArray):
+        array = array.chunk(0) if array.num_chunks == 1 else pa.concat_arrays(array.chunks)
+    dense = _dense_numpy(array)
+    if dense is not None:
+        return dense
     values = array.to_pylist()
     try:
         return np.asarray(values)

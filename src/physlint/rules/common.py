@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from typing import Any
 
 import numpy as np
@@ -68,4 +69,15 @@ def _json_default(value: Any) -> Any:
 def _json_value(value: Any) -> Any:
     if value is None:
         return None
-    return json.loads(json.dumps(value, default=_json_default, allow_nan=False))
+    return _without_non_finite(json.loads(json.dumps(value, default=_json_default)))
+
+
+def _without_non_finite(value: Any) -> Any:
+    """Keep evidence about NaN and infinity valid JSON instead of failing the rule that found them."""
+    if isinstance(value, float) and not math.isfinite(value):
+        return str(value)
+    if isinstance(value, list):
+        return [_without_non_finite(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _without_non_finite(item) for key, item in value.items()}
+    return value

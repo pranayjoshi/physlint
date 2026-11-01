@@ -10,7 +10,7 @@ The MCAP adapter installs seven container rules. The ROS 2 profile adds seven se
 | `mcap.summary_consistency` | error | Summary statistics agree with observed messages, channels, schemas, attachments, and metadata. |
 | `mcap.index_coverage` | notice | Efficient summary/chunk index coverage is present; fastwrite omissions remain informational. |
 | `mcap.channel_schema` | error | Schema references resolve and each topic has a stable channel declaration. |
-| `mcap.timestamp_order` | error | Per-channel log and publish timestamps do not move backward. |
+| `mcap.timestamp_order` | error | Per-channel log time does not step backward by more than `max_reorder_ms` (default 100). Publish time is checked only with `check_publish_time`. |
 | `mcap.duplicate_timestamps` | warning | Repeated per-channel log timestamps are visible. |
 | `mcap.sequence_continuity` | warning | Non-zero sequence counters advance by one. |
 

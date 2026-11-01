@@ -88,10 +88,22 @@ class VideoAnalysis:
     mean_intensities: np.ndarray
     stddevs: np.ndarray
     mean_absolute_differences: np.ndarray
+    max_cell_differences: np.ndarray = field(default_factory=lambda: np.zeros(0), repr=False)
+    mean_frame: np.ndarray = field(default_factory=lambda: np.zeros(0), repr=False)
 
     @property
     def decoded_frames(self) -> int:
         return int(self.frame_indices.size)
+
+
+@dataclass(frozen=True)
+class VideoProbe:
+    """Container-level facts about one video file, from decoding every packet."""
+
+    frame_times: np.ndarray
+    decode_errors: int
+    first_error_time: float | None
+    fps: float | None
 
 
 class DatasetView(Protocol):
