@@ -244,6 +244,7 @@ class LeRobotAdapter:
                 converted: dict[str, np.ndarray] = {}
                 for name in requested:
                     array = raw.column(raw.schema.get_field_index(name))
+                    _reject_null_fixed_size_rows(array, name, path)
                     converted[name] = _arrow_to_numpy(array)[mask]
                 yield SampleBatch(episode=episode, columns=converted)
         except AdapterError:
@@ -262,12 +263,11 @@ class LeRobotAdapter:
             table = parquet.read(columns=[name])
         except pa.ArrowInvalid as exc:
             if "Expected all lists to be of size" in str(exc):
-                raise AdapterError(
-                    f"column {name} in {path.name} has null or short rows in a fixed-size list, "
-                    "which PyArrow and LeRobot cannot read; re-export the affected episodes"
-                ) from exc
+                raise _null_fixed_size_rows(name, path) from exc
             raise
-        values = _arrow_to_numpy(table.column(0))
+        column = table.column(0)
+        _reject_null_fixed_size_rows(column, name, path)
+        values = _arrow_to_numpy(column)
         self._column_cache[key] = (values, cost)
         self._column_cache_bytes += cost
         while self._column_cache_bytes > COLUMN_CACHE_BYTES and len(self._column_cache) > 1:
@@ -455,6 +455,19 @@ def _uncompressed_column_sizes(parquet: pq.ParquetFile) -> dict[str, int]:
             )
             sizes[top_level] = sizes.get(top_level, 0) + int(column.total_uncompressed_size)
     return sizes
+
+
+def _null_fixed_size_rows(name: str, path: Path) -> AdapterError:
+    return AdapterError(
+        f"column {name} in {path.name} has null or short rows in a fixed-size list, "
+        "which LeRobot and PyArrow before 26 cannot read; re-export the affected episodes"
+    )
+
+
+def _reject_null_fixed_size_rows(array: pa.Array | pa.ChunkedArray, name: str, path: Path) -> None:
+    """Fail closed the same way on every PyArrow version; newer readers accept the null row."""
+    if pa.types.is_fixed_size_list(array.type) and array.null_count:
+        raise _null_fixed_size_rows(name, path)
 
 
 def _dense_numpy(array: pa.Array) -> np.ndarray | None:

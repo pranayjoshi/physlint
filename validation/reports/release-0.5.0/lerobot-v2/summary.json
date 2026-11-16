@@ -12,7 +12,7 @@
       "findings": 0,
       "errored": 0,
       "artifact": "so101-v21.json",
-      "sha256": "134997f8c14120ac6e4b7c52036e771728308c65836fd5cf46e09a4464bf0b82"
+      "sha256": "06dc70fabbe17af0f909f2fe8bd09ed904259ae5e4bab7c262c7a444ac95dc9a"
     },
     {
       "id": "koch-v20",
@@ -24,7 +24,7 @@
       "findings": 0,
       "errored": 0,
       "artifact": "koch-v20.json",
-      "sha256": "840da6cfb17aba0575296e74a2707ee68127ccbbc90dc421d974bd51afaf0011"
+      "sha256": "e928c2f242dacdefe1c6f481d39741250e08de175475fbddbb7e48f42df0f8be"
     }
   ],
   "controlled_cases": "tests/test_lerobot_v2.py: clean, NaN, video, malformed v2.0/v2.1 metadata"

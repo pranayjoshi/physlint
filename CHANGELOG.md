@@ -18,10 +18,10 @@
 
 ### Fixed
 
-- Detect non-finite timestamps in `temporal.monotonic`, non-finite `JointState` and TF values in `ros2.semantic_consistency`, and saturated frames in `video.black_frames`.
+- Detect non-finite timestamps in `temporal.monotonic`, non-finite `JointState` and TF values in `ros2.semantic_consistency`, and saturated frames in `video.black_frames` (mean ≥ 245, so decoded white still counts after video color conversion).
 - Fix masked NaNs after a null row, the first-batch sample index in `temporal.sampling_interval`, and the MCAP interval reservoir.
 - Report NaN and infinity evidence as text instead of failing the rule that found them.
-- Explain unreadable null rows in fixed-size list columns.
+- Fail closed with a clear reason on null rows in fixed-size list columns, on every PyArrow version; PyArrow 26 can read them, but LeRobot cannot load them.
 - Decode shared Parquet columns once, making non-video validation linear in dataset size.
 
 ## 0.4.0 — 2026-10-26

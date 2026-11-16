@@ -221,7 +221,7 @@ class BlackFramesRule:
         required_capabilities=frozenset({"video", "episodes"}),
         option_defaults={
             "max_mean_intensity": 3.0,
-            "min_saturated_intensity": 252.0,
+            "min_saturated_intensity": 245.0,
             "max_stddev": 3.0,
             "stride": 1,
             "max_findings": 50,
