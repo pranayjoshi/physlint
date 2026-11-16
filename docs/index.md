@@ -7,7 +7,7 @@ Physlint finds structural, timing, numeric, and video defects in robot-learning 
 Python 3.11 or newer is required.
 
 ```bash
-python -m pip install "physlint[all]==0.4.0"
+python -m pip install "physlint[all]==0.5.0"
 physlint doctor
 physlint demo
 ```

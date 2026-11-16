@@ -6,7 +6,7 @@ from pathlib import Path
 
 from physlint import __version__
 
-ROOT = Path(__file__).resolve().parents[1] / "validation/reports/release-0.4.0"
+ROOT = Path(__file__).resolve().parents[1] / "validation/reports/release-0.5.0"
 
 
 def test_current_release_reports_are_complete_and_sanitized():

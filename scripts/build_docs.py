@@ -29,6 +29,7 @@ PAGES = (
     "agents.md",
     "python-api.md",
     "plugins.md",
+    "release-0.5.0.md",
     "release-0.4.0.md",
     "roadmap.md",
 )

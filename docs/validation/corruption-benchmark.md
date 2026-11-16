@@ -1,6 +1,6 @@
 # Corruption benchmark
 
-Status: second measurement, 2026-10-31, on the working tree after the 0.4.0 release, with 49 rules. The first measurement, with 36 rules, is kept for comparison.
+Status: second measurement, 2026-10-31, on the code released as 0.5.0, with 49 rules. The first measurement, with 36 rules, is kept for comparison.
 
 The benchmark asks two questions per defect type: does Physlint report it, and does it stay quiet when nothing is wrong? Full results are in [`report.md`](../../validation/reports/corruption-benchmark-2026-10-31-v2/report.md), with per-trial outcomes in [`trials.csv`](../../validation/reports/corruption-benchmark-2026-10-31-v2/trials.csv). The earlier run is in [`corruption-benchmark-2026-10-31`](../../validation/reports/corruption-benchmark-2026-10-31/report.md).
 

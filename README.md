@@ -21,7 +21,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
 
-Release `0.4.0` supports **LeRobot Dataset v2.0/v2.1 and v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Read the [documentation](https://pranayjoshi.github.io/physlint/) or explore the [Community Evidence Atlas](https://physlint.com). Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
+Release `0.5.0` supports **LeRobot Dataset v2.0/v2.1 and v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Read the [documentation](https://pranayjoshi.github.io/physlint/) or explore the [Community Evidence Atlas](https://physlint.com). Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
 
 The download badge above is refreshed daily from PyPI Stats and reports downloads from the preceding month.
 
@@ -43,14 +43,14 @@ Physlint requires Python 3.11 or newer.
 ### Install from PyPI
 
 ```bash
-python -m pip install "physlint[all]==0.4.0"
+python -m pip install "physlint[all]==0.5.0"
 physlint doctor
 ```
 
 To test the exact tagged source instead of the PyPI distribution, install the GitHub release directly:
 
 ```bash
-python -m pip install "physlint[all] @ git+https://github.com/pranayjoshi/physlint.git@v0.4.0"
+python -m pip install "physlint[all] @ git+https://github.com/pranayjoshi/physlint.git@v0.5.0"
 ```
 
 ### Check a LeRobot dataset or MCAP recording
@@ -86,7 +86,7 @@ The demo validates one healthy miniature dataset and proves that a deterministic
 Install the optional Hub client, then use an explicit revision:
 
 ```bash
-python -m pip install "physlint[hub,video]==0.4.0"
+python -m pip install "physlint[hub,video]==0.5.0"
 physlint check hf://datasets/owner/dataset@REVISION
 ```
 
@@ -285,7 +285,7 @@ The equivalent manual workflow is:
 
 ```yaml
 - name: Install Physlint
-  run: python -m pip install "physlint[video]==0.4.0"
+  run: python -m pip install "physlint[video]==0.5.0"
 
 - name: Validate robot dataset
   run: |

@@ -16,7 +16,7 @@ Do not use “supports all robot data,” “production ready,” “guarantees 
 
 Bad robot data is expensive to discover after training starts.
 
-I built Physlint, an open-source, local-first integrity validator for physical-AI recordings and robot-learning datasets. It validates LeRobot v3 datasets, generic MCAP containers, and ROS 2-over-MCAP recordings. Its 32 deterministic rules cover schemas, episode boundaries, timestamps, numeric streams, video decoding, frozen cameras, black frames, container/index health, and ROS 2 topic semantics.
+I built Physlint, an open-source, local-first integrity validator for physical-AI recordings and robot-learning datasets. It validates LeRobot v3 datasets, generic MCAP containers, and ROS 2-over-MCAP recordings. Its 49 deterministic rules cover schemas, episode boundaries, timestamps, numeric streams, video decoding, frozen cameras, black frames, container/index health, and ROS 2 topic semantics.
 
 For the release gate I tested four immutable public repositories from four producers: 74 episodes and 31,258 frames. All four clean snapshots passed with no findings or rule errors, and Physlint detected 3/3 controlled corruptions. The manifest, corruption recipes, sanitized JSON reports, and checksums are public and reproducible.
 
@@ -27,7 +27,7 @@ The CLI now accepts revision-pinned Hugging Face sources, emits versioned machin
 ## X thread
 
 1. Bad robot data is expensive to discover after training begins. I built Physlint: a local-first integrity validator for physical-AI data. [LINK]
-2. Physlint has 32 deterministic, format-aware rules for LeRobot v3, generic MCAP, and ROS 2 over MCAP—with JSON, JUnit, SARIF, and HTML reports for CI and coding agents.
+2. Physlint has 49 deterministic, format-aware rules for LeRobot v3, generic MCAP, and ROS 2 over MCAP—with JSON, JUnit, SARIF, and HTML reports for CI and coding agents.
 3. Reproducible release gate: 4 public snapshots, 74 episodes, 31,258 frames, 4/4 clean passes, and 3/3 controlled corruptions detected. Manifest, recipes, reports, and hashes are committed.
 4. Run the built-in demo, check a revision-pinned Hugging Face dataset, or add the reusable GitHub Action. Robomimic HDF5 and RLDS remain explicit roadmap formats.
 

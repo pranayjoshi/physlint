@@ -1,0 +1,456 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.5.0",
+  "adapter": "lerobot",
+  "adapter_version": "3.0",
+  "dataset": "ViaCatalyst/robomimic-can-ph-lerobot-v3 [corruption:nan]",
+  "source_revision": "71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "dataset_path": "generated://nan@71bfefc1ff8ef8735840bb761d41f4fc3a527f20",
+  "source_fingerprint": "a794dba57da180f1134bc593c0d98a1be1c04a3fc4d121a12bdba5590b64f9a8",
+  "source_fingerprint_method": "metadata-and-file-stat-sha256-v1",
+  "configuration_digest": "cf10b26723af4a210ef8b914f61c1af759cb9badd47d809a1d223792e2a31689",
+  "configuration_path": null,
+  "plugin_policy": "installed-only",
+  "ignored_config_plugins": [],
+  "started_at": "2026-11-16T05:18:11.970241Z",
+  "finished_at": "2026-11-16T05:18:12.004645Z",
+  "status": "failed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "manifest.required_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.11620856821537018,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "manifest.schema_matches",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.23250002413988113,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "manifest.required_streams",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.01108366996049881,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "episode.unique_ids",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0026244670152664185,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "episode.valid_boundaries",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.5154583379626274,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "manifest.shape_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 8.236791007220745,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "episode.index_columns",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2.0404579117894173,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "manifest.declared_totals",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0894591212272644,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "episode.task_references",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.6477499157190323,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "manifest.orphan_files",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.2148328348994255,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "temporal.monotonic",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 1.3049161061644554,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "temporal.sampling_interval",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.1572092771530151,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "temporal.max_gap",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 1.1269161477684975,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "temporal.stream_overlap",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.1874577030539513,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "temporal.observation_action_delay",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: stream_timestamps",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "temporal.episode_start",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.1272076517343521,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "temporal.clock_drift",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.0688751935958862,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "numeric.finite_values",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 2.3181671276688576,
+      "findings": [
+        {
+          "rule_id": "numeric.finite_values",
+          "rule_version": "1.0.0",
+          "severity": "error",
+          "title": "Numeric values are finite",
+          "message": "Non-finite value in observation.state",
+          "impact": "NaN and infinite observations or actions poison losses and model parameters.",
+          "remediation": "Remove or recollect affected samples and fix the producing sensor or transform.",
+          "observed": {
+            "non_finite_dimensions": [
+              0
+            ]
+          },
+          "expected": "all values finite",
+          "location": {
+            "episode": "episode_000000",
+            "stream": "observation.state",
+            "sample_index": 5,
+            "timestamp": null,
+            "source": null
+          },
+          "evidence": {},
+          "fingerprint": "7732b21ad06db964e7a3dc09ee0cd8e1d98bbb8d0822eb11e4f1d65a51fcd0a3"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "numeric.configured_bounds",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.011208467185497284,
+      "findings": [],
+      "reason": "no numeric limits configured",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "numeric.discontinuity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0012498348951339722,
+      "findings": [],
+      "reason": "no discontinuity thresholds configured",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "video.decode",
+      "rule_version": "1.1.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "video.frozen_frames",
+      "rule_version": "2.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "video.repeated_frames",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "video.black_frames",
+      "rule_version": "1.2.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "video.bitstream",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "video.timeline",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "video.camera_identity",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0,
+      "findings": [],
+      "reason": "adapter lacks capabilities: video",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "duplication.exact_episodes",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 2.353500574827194,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "numeric.outlier_jumps",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 5.225708708167076,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "numeric.episode_envelope",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.3876257687807083,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "numeric.stuck_channels",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.2137916162610054,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "numeric.noise_level",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 1.4028334990143776,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "numeric.action_state_coupling",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.004999339580535889,
+      "findings": [],
+      "reason": "needs several episodes with matching action and state dimensions",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "duplication.near_episodes",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.1516249030828476,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    }
+  ],
+  "summary": {
+    "passed": 22,
+    "failed": 1,
+    "not_run": 11,
+    "errored": 0,
+    "findings": 1
+  },
+  "coverage": {
+    "episodes": 10,
+    "frames": 1160,
+    "messages": null,
+    "streams": [
+      "action",
+      "episode_index",
+      "frame_index",
+      "index",
+      "observation.state",
+      "task_index",
+      "timestamp"
+    ],
+    "tasks": {
+      "Place the can in the target bin": 10
+    },
+    "length_min": 98,
+    "length_max": 134,
+    "robot_type": "Panda",
+    "fps": 20.0
+  },
+  "cache": {
+    "used": false,
+    "hits": 0,
+    "misses": 0,
+    "directory": null
+  },
+  "suppressed": [],
+  "plugins": []
+}

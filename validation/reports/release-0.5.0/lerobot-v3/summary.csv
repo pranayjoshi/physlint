@@ -1,0 +1,8 @@
+id,repo_id,revision,robot,corruption,episodes,frames,status,applicable_rules,findings,errored,rule_time_seconds,baseline_rule_time_seconds,speedup,artifact,artifact_sha256
+panda,ViaCatalyst/robomimic-can-ph-lerobot-v3,71bfefc1ff8ef8735840bb761d41f4fc3a527f20,Panda,,10,1160,passed,23,0,0,0.077,0.21,2.72,clean-panda.json,1d371f9d847fac281f70dd546bfe9c09c0a43cf43d7562e662d8bbe0e699de0e
+rover,cagataydev/scout-earth-rover-mini-20260616-053232,8b160af785bedf7dfe7e6d9441beb35e23c28330,Earth Rover Mini,,3,4176,passed,26,0,0,9.074,11.6,1.28,clean-rover.json,1cafa95828f5c1617aec3a2013624e953395e62a30542cad72e978896c5afe1a
+so101,lerobot/svla_so101_pickplace,f641879e22172be7e8161d5e6c1503c2d2feb657,SO-101,,50,11939,passed,31,0,0,79.568,164.94,2.07,clean-so101.json,996a5dffa2385ee920931254091e9d07634eda19399aa9acdcb04fc69bcbe463
+sentinel,vikram-avea/sentinel-demo-09,4235380e380937a95ffb7b25ca82aa6b13645409,YAM humanoid,,11,13983,passed,30,0,0,95.205,187.73,1.97,clean-sentinel.json,61ad50ae8896ad864d7a65afc618148202e39d40eb2b73ab6e49e9e02853403e
+panda-nan,ViaCatalyst/robomimic-can-ph-lerobot-v3,71bfefc1ff8ef8735840bb761d41f4fc3a527f20,Panda,nan,10,1160,failed,23,1,0,0.033,,,corruption-nan.json,eb3a342983720c8976090246bd404ff7c210944a8b8128279b7574a886cdc66b
+panda-reordered,ViaCatalyst/robomimic-can-ph-lerobot-v3,71bfefc1ff8ef8735840bb761d41f4fc3a527f20,Panda,reordered,10,1160,failed,23,5,0,0.034,,,corruption-reordered.json,242886040f9ee1c36509f6106fa5e8ed724a1680aee0638d070e5c29f18203d7
+panda-truncated,ViaCatalyst/robomimic-can-ph-lerobot-v3,71bfefc1ff8ef8735840bb761d41f4fc3a527f20,Panda,truncated,10,1160,failed,23,4,0,0.039,,,corruption-truncated.json,b8a4b02a9ce9aa63c9f5bd4b763dfa82ce40e9e010c5d21410c002f854b58fbc
