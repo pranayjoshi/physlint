@@ -63,6 +63,7 @@ class RuleResult(BaseModel):
     reason: str | None = None
     error_kind: Literal["adapter", "rule"] | None = None
     cached: bool = False
+    findings_capped: bool = False
 
 
 class CoverageSnapshot(BaseModel):

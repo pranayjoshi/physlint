@@ -21,7 +21,7 @@ Local-first, deterministic validation for physical-AI recordings and robot-learn
 
 Physlint finds concrete integrity defects before robot data reaches training. It explains the impact, identifies the affected episode and stream, recommends remediation, writes a stable JSON report, and returns a CI-safe exit code.
 
-Release `0.4.0` supports **LeRobot Dataset v2.0/v2.1 and v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Read the [documentation](https://pranayjoshi.github.io/physlint/) or explore the [Community Evidence Atlas](https://physlint.com). Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
+Release `0.5.0` supports **LeRobot Dataset v2.0/v2.1 and v3.x**, generic **MCAP** container validation, and a **ROS 2-over-MCAP** semantic profile, plus dataset comparison, reviewed baselines, CI report formats, and a plugin SDK. Read the [documentation](https://pranayjoshi.github.io/physlint/) or explore the [Community Evidence Atlas](https://physlint.com). Claims stay scoped to pinned conformance data and controlled evidence. Native rosbag2 SQLite remains a conversion workflow.
 
 The download badge above is refreshed daily from PyPI Stats and reports downloads from the preceding month.
 
@@ -43,14 +43,14 @@ Physlint requires Python 3.11 or newer.
 ### Install from PyPI
 
 ```bash
-python -m pip install "physlint[all]==0.4.0"
+python -m pip install "physlint[all]==0.5.0"
 physlint doctor
 ```
 
 To test the exact tagged source instead of the PyPI distribution, install the GitHub release directly:
 
 ```bash
-python -m pip install "physlint[all] @ git+https://github.com/pranayjoshi/physlint.git@v0.4.0"
+python -m pip install "physlint[all] @ git+https://github.com/pranayjoshi/physlint.git@v0.5.0"
 ```
 
 ### Check a LeRobot dataset or MCAP recording
@@ -86,7 +86,7 @@ The demo validates one healthy miniature dataset and proves that a deterministic
 Install the optional Hub client, then use an explicit revision:
 
 ```bash
-python -m pip install "physlint[hub,video]==0.4.0"
+python -m pip install "physlint[hub,video]==0.5.0"
 physlint check hf://datasets/owner/dataset@REVISION
 ```
 
@@ -159,15 +159,16 @@ Physlint owns NaN and infinity semantics in `numeric.finite_values`; the same sa
 
 ## What Physlint checks
 
-Thirty-two deterministic rules are installed. Physlint plans only the rules for the detected adapter and profile:
+Forty-nine deterministic rules are installed; `temporal.signal_alignment` is opt-in. Physlint plans only the rules for the detected adapter and profile:
 
 | Area | Checks |
 |---|---|
-| **Manifest** | Required files, declared/stored schema agreement, required streams, and feature shapes |
-| **Episodes** | Unique identifiers, positive lengths, non-overlapping boundaries, and stored-row agreement |
-| **Temporal** | Strictly monotonic timestamps, FPS cadence, FPS-aware maximum gaps, complete stream overlap, and observation/action delay when independently timestamped |
+| **Manifest** | Required files, declared/stored schema agreement, required streams, feature shapes, declared totals, and unreferenced stored files |
+| **Episodes** | Unique identifiers, positive lengths, non-overlapping boundaries, stored-row agreement, frame/dataset index order, and task references |
+| **Temporal** | Finite, strictly monotonic timestamps, episode start and clock drift, FPS cadence, FPS-aware maximum gaps, complete stream overlap, and observation/action delay when independently timestamped |
 | **Numeric** | NaN/Inf, configured physical bounds, and configured discontinuity limits |
-| **Video** | Complete decode, motion-aware frozen-frame runs, and grouped black/near-empty frames |
+| **Video** | Complete decode, bitstream errors, stored frame times against episode ranges, motion-aware frozen and repeated frames, black or saturated frames, and camera identity |
+| **Statistical** | Warnings calibrated from the dataset itself: outlier jumps, range, stuck channels, noise, action/state coupling, near-duplicate episodes, and opt-in signal alignment |
 | **Duplication** | Exact numeric episode copies |
 | **MCAP** | Record/CRC readability, summary consistency, index coverage, channel/schema coherence, timestamp order, duplicate timestamps, and sequence continuity |
 | **ROS 2** | Portable CDR schemas, full decode, required topics, cadence gaps, configured header/log skew, known message invariants, and TF parent consistency |
@@ -228,6 +229,8 @@ rules:
   video.frozen_frames:
     options:
       max_consecutive_frames: 5
+      # A run counts only if motion streams moved this fraction of their range during it.
+      min_run_displacement: 0.05
       # Action is preferred over noisier observed state by default.
       motion_streams: [action, observation.state]
 
@@ -282,7 +285,7 @@ The equivalent manual workflow is:
 
 ```yaml
 - name: Install Physlint
-  run: python -m pip install "physlint[video]==0.4.0"
+  run: python -m pip install "physlint[video]==0.5.0"
 
 - name: Validate robot dataset
   run: |
@@ -333,11 +336,13 @@ Runtime measurements are observations from the documented machine and run—not 
 
 A larger [compatibility survey](docs/validation/compatibility-survey.md) adds ten revision-pinned public LeRobot v3 snapshots (1,678 episodes, 182,128 frames) plus five fail-closed v2 screens. Five of the ten v3 snapshots passed the default contract; the rest are classified in that report. Those rows are Observatory survey evidence. They do not expand the four-snapshot release claim and they are not a Hugging Face quality score.
 
+The [corruption benchmark](docs/validation/corruption-benchmark.md) measures 58 defect types and benign transforms. With the shipped defaults, macro detection on 5 datasets reserved from tuning is **89%** including warnings, and 66% counting only findings that fail CI by default. No real dataset fails the default contract, but some receive warnings that have not been manually classified. These figures depend on the recipe mix and are not a real-world catch rate.
+
 The MCAP/ROS 2 release gate additionally verifies an exact Foxglove conformance fixture, a public robot-captured RobotisAI episode, and two deterministic ROS 2 recordings:
 
 | Recording | Profile | Provenance | Checks | Expected outcome |
 |---|---|---|---:|---|
-| Foxglove `TenMessages` conformance case | Generic MCAP | Public, revision-pinned | 7 | Timestamp-order and duplicate-time findings reproduced |
+| Foxglove `TenMessages` conformance case | Generic MCAP | Public, revision-pinned | 7 | Duplicate-time findings reproduced |
 | RobotisAI ARX X5 elevator-button episode | ROS 2 | Public robot capture, revision-pinned | 12 | 7,047 messages decoded; configured topic contract and applicable checks pass |
 | JointState baseline | ROS 2 | Controlled recipe | 12 | Pass |
 | JointState cadence + dimension corruption | ROS 2 | Controlled recipe | 13 | Gap and semantic findings reproduced |

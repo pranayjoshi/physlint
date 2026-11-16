@@ -2,12 +2,17 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
+import numpy as np
+import pyarrow as pa
+import pyarrow.parquet as pq
+
 from physlint.models.dataset import DatasetView
 from physlint.models.finding import Finding, Location, Severity
-from physlint.models.rule import Rule, RuleMetadata
+from physlint.models.rule import Rule, RuleMetadata, RuleNotApplicable
 from physlint.rules.common import finding
 
 
@@ -271,6 +276,180 @@ class ShapeConsistencyRule:
         return findings
 
 
+class IndexColumnsRule:
+    metadata = RuleMetadata(
+        id="episode.index_columns",
+        version="1.0.0",
+        title="Frame and dataset indexes match row order",
+        description="Wrong frame or dataset indexes make samplers load the wrong frames without raising an error.",
+        severity=Severity.ERROR,
+        scope="episode",
+        cost="linear",
+        required_capabilities=frozenset({"episodes"}),
+        option_defaults={"max_findings": 50},
+        remediation="Rebuild frame_index and index from row order, then regenerate episode metadata.",
+    )
+
+    def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
+        findings: list[Finding] = []
+        for episode in dataset.inventory.episodes:
+            available = set(dataset.parquet_schema(episode))
+            starts = {"frame_index": 0, "index": episode.from_index}
+            for column, start in starts.items():
+                if column not in available or start is None:
+                    continue
+                offset = 0
+                for batch in dataset.iter_batches(episode, (column,)):
+                    values = np.asarray(batch.columns[column]).reshape(-1)
+                    expected = np.arange(start + offset, start + offset + values.size)
+                    bad = np.flatnonzero(values != expected)
+                    if bad.size:
+                        row = int(bad[0])
+                        findings.append(
+                            finding(
+                                self.metadata,
+                                severity,
+                                f"{column} does not follow row order in {episode.identifier}",
+                                location=Location(
+                                    episode=episode.identifier,
+                                    stream=column,
+                                    sample_index=offset + row,
+                                    source=episode.data_file,
+                                ),
+                                observed={"value": values[row].item(), "mismatched_in_batch": int(bad.size)},
+                                expected=int(expected[row]),
+                            )
+                        )
+                        if len(findings) >= options["max_findings"]:
+                            return findings
+                        break
+                    offset += values.size
+        return findings
+
+
+class DeclaredTotalsRule:
+    metadata = RuleMetadata(
+        id="manifest.declared_totals",
+        version="1.0.0",
+        title="Declared totals match episode metadata",
+        description="Stale totals in info.json indicate an incomplete export or a partial copy.",
+        severity=Severity.ERROR,
+        scope="dataset",
+        cost="metadata",
+        required_capabilities=frozenset({"metadata", "episodes"}),
+        option_defaults={},
+        remediation="Regenerate meta/info.json from the finalized episode metadata.",
+    )
+
+    def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
+        info = json.loads((dataset.root / "meta" / "info.json").read_text(encoding="utf-8"))
+        episodes = dataset.inventory.episodes
+        actual = {"total_frames": sum(episode.length for episode in episodes), "total_episodes": len(episodes)}
+        return [
+            finding(
+                self.metadata,
+                severity,
+                f"info.json declares {name}={info[name]} but episode metadata has {count}",
+                location=Location(source="meta/info.json"),
+                observed=info[name],
+                expected=count,
+            )
+            for name, count in actual.items()
+            if name in info and info[name] != count
+        ]
+
+
+class TaskReferencesRule:
+    metadata = RuleMetadata(
+        id="episode.task_references",
+        version="1.0.0",
+        title="Task indexes reference declared tasks",
+        description="An unknown task index breaks task-conditioned training or assigns the wrong instruction.",
+        severity=Severity.ERROR,
+        scope="episode",
+        cost="linear",
+        required_capabilities=frozenset({"metadata", "episodes"}),
+        option_defaults={"max_findings": 50},
+        limitations="Runs only when samples store task_index and task metadata can be read.",
+        remediation="Rebuild task metadata or correct task_index for the affected episodes.",
+    )
+
+    def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
+        known = _declared_task_indexes(dataset.root)
+        if known is None:
+            raise RuleNotApplicable("source has no readable task metadata")
+        findings: list[Finding] = []
+        for episode in dataset.inventory.episodes:
+            if "task_index" not in dataset.parquet_schema(episode):
+                continue
+            used: set[int] = set()
+            for batch in dataset.iter_batches(episode, ("task_index",)):
+                used.update(np.unique(np.asarray(batch.columns["task_index"]).reshape(-1)).tolist())
+            unknown = sorted(used - known)
+            if unknown:
+                findings.append(
+                    finding(
+                        self.metadata,
+                        severity,
+                        f"{episode.identifier} references undeclared task indexes",
+                        location=Location(episode=episode.identifier, stream="task_index"),
+                        observed=unknown[:20],
+                        expected="task_index declared in task metadata",
+                    )
+                )
+                if len(findings) >= options["max_findings"]:
+                    return findings
+        return findings
+
+
+class OrphanFilesRule:
+    metadata = RuleMetadata(
+        id="manifest.orphan_files",
+        version="1.0.0",
+        title="Stored samples are referenced by episode metadata",
+        description="Unreferenced Parquet or video files can mean episodes were dropped from metadata.",
+        severity=Severity.WARNING,
+        scope="dataset",
+        cost="metadata",
+        required_capabilities=frozenset({"metadata", "episodes"}),
+        option_defaults={"max_findings": 50},
+        remediation="Restore the missing episode metadata or remove the stale files.",
+    )
+
+    def run(self, dataset: DatasetView, options: dict[str, Any], severity: Severity) -> list[Finding]:
+        referenced: set[Path] = set()
+        for episode in dataset.inventory.episodes:
+            if episode.data_file:
+                referenced.add(dataset.root / episode.data_file)
+            referenced.update(dataset.root / path for path in episode.video_files.values())
+        stored = [*(dataset.root / "data").glob("**/*.parquet"), *(dataset.root / "videos").glob("**/*.mp4")]
+        return [
+            finding(
+                self.metadata,
+                severity,
+                f"Stored file is not referenced by episode metadata: {path.relative_to(dataset.root)}",
+                location=Location(source=str(path.relative_to(dataset.root))),
+                observed="unreferenced",
+                expected="referenced by at least one episode",
+            )
+            for path in sorted(set(stored) - referenced)[: int(options["max_findings"])]
+        ]
+
+
+def _declared_task_indexes(root: Path) -> set[int] | None:
+    try:
+        jsonl = root / "meta" / "tasks.jsonl"
+        if jsonl.is_file():
+            with jsonl.open(encoding="utf-8") as source:
+                return {int(json.loads(line)["task_index"]) for line in source if line.strip()}
+        parquet = root / "meta" / "tasks.parquet"
+        if parquet.is_file():
+            return {int(value) for value in pq.read_table(parquet, columns=["task_index"]).column(0).to_pylist()}
+    except (OSError, ValueError, KeyError, TypeError, pa.ArrowException):
+        return None
+    return None
+
+
 MANIFEST_RULES: list[Rule] = [
     RequiredFilesRule(),
     SchemaMatchesRule(),
@@ -278,6 +457,10 @@ MANIFEST_RULES: list[Rule] = [
     UniqueEpisodesRule(),
     EpisodeBoundariesRule(),
     ShapeConsistencyRule(),
+    IndexColumnsRule(),
+    DeclaredTotalsRule(),
+    TaskReferencesRule(),
+    OrphanFilesRule(),
 ]
 
 

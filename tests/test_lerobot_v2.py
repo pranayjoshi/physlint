@@ -43,6 +43,7 @@ def convert_fixture(root, version, *, chunks_size=1):
         )
     )
     shutil.rmtree(root / "meta/episodes")
+    (root / "data/chunk-000/file-000.parquet").unlink()
     info_path.write_text(json.dumps(info))
     return root
 

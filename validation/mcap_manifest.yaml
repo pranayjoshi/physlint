@@ -9,9 +9,9 @@ public_recordings:
     source_revision: 68f77c8c1bba4a17ebc6ba0c409ebb933adb791c
     source_url: https://media.githubusercontent.com/media/foxglove/mcap/68f77c8c1bba4a17ebc6ba0c409ebb933adb791c/tests/conformance/data/TenMessages/TenMessages-ch-chx-mx-pad-rch-rsh-st-sum.mcap
     sha256: 358413d53e6fb2753efb3eac682bc9d776bb2afb1de5e395817efd8f16303fbc
-    expected_status: failed
+    # Since 0.5.0, a one-nanosecond reorder is allowed and duplicate times are a warning.
+    expected_status: passed
     expected_failed_rules:
-      - mcap.timestamp_order
       - mcap.duplicate_timestamps
     source_name: foxglove/mcap
     source_page: https://github.com/foxglove/mcap/tree/main/tests/conformance/data/TenMessages

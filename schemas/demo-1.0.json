@@ -530,6 +530,11 @@
           "default": false,
           "title": "Cached",
           "type": "boolean"
+        },
+        "findings_capped": {
+          "default": false,
+          "title": "Findings Capped",
+          "type": "boolean"
         }
       },
       "required": [

@@ -35,6 +35,9 @@ def render_report(report: Report, report_path: Path | None = None, console: Cons
     for result in report.results:
         for item in result.findings:
             grouped[item.severity].append(item)
+    capped = [result.rule_id for result in report.results if result.findings_capped]
+    if capped:
+        console.print(f"[yellow]Findings were cut off at the configured limit for: {', '.join(capped)}[/yellow]")
     for severity in Severity:
         if not grouped[severity]:
             continue

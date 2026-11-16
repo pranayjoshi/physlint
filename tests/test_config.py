@@ -36,8 +36,16 @@ def test_rejects_invalid_option_values(dataset_factory):
             dataset,
             Config(rules={"temporal.max_gap": {"options": {"max_gap_ms": -1}}}),
         )
-    with pytest.raises(ConfigurationError, match="at most 1"):
+    with pytest.raises(ConfigurationError, match="non-negative number"):
         plan_rules(
             dataset,
-            Config(rules={"video.frozen_frames": {"options": {"min_motion_fraction": 1.1}}}),
+            Config(rules={"video.repeated_frames": {"options": {"min_repeat_fraction": "high"}}}),
         )
+
+
+def test_opt_in_rules_run_only_when_configured(dataset_factory):
+    dataset = discover(dataset_factory())
+    planned = {item.rule.metadata.id for item in plan_rules(dataset, Config())}
+    assert "temporal.signal_alignment" not in planned
+    enabled = Config(rules={"temporal.signal_alignment": {}})
+    assert "temporal.signal_alignment" in {item.rule.metadata.id for item in plan_rules(dataset, enabled)}

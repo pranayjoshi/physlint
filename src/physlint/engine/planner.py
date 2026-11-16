@@ -38,6 +38,8 @@ def plan_rules(dataset: DatasetView, config: Config, extra: Sequence[Rule] = ())
         settings = config.rules.get(rule.metadata.id)
         if settings is not None and not settings.enabled:
             continue
+        if settings is None and not rule.metadata.enabled_by_default:
+            continue
         configured = dict(settings.options) if settings else {}
         unknown_options = set(configured) - set(rule.metadata.option_defaults)
         if unknown_options:
@@ -59,7 +61,15 @@ def plan_rules(dataset: DatasetView, config: Config, extra: Sequence[Rule] = ())
 
 
 def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
-    for key in ("max_findings", "stride", "min_messages", "max_idle_samples"):
+    for key in (
+        "max_findings",
+        "stride",
+        "min_messages",
+        "max_idle_samples",
+        "min_moving_transitions",
+        "min_episodes",
+        "lag_tolerance_frames",
+    ):
         if key in options and (not isinstance(options[key], int) or options[key] <= 0):
             raise ConfigurationError(f"{rule_id}.{key} must be a positive integer")
     for key in ("max_consecutive_frames", "frame_count_tolerance"):
@@ -69,12 +79,27 @@ def _validate_options(rule_id: str, options: dict[str, Any]) -> None:
         "tolerance_fraction",
         "max_gap_multiplier",
         "max_delay_ms",
-        "mean_absolute_difference",
+        "max_cell_difference",
+        "min_repeat_fraction",
+        "min_changed_ratio",
         "max_mean_intensity",
         "max_stddev",
         "motion_delta_threshold",
         "min_motion_fraction",
+        "min_run_displacement",
         "max_header_skew_ms",
+        "max_reorder_ms",
+        "tolerance_frames",
+        "step_factor",
+        "min_range_fraction",
+        "spread_factor",
+        "min_varying_fraction",
+        "noise_ratio",
+        "min_usual_correlation",
+        "max_drop",
+        "min_strength",
+        "max_relative_distance",
+        "max_drift_frames",
         "idle_abs_tolerance",
     ):
         if (

@@ -7,10 +7,18 @@ from physlint.rules.duplication import DUPLICATION_RULES
 from physlint.rules.manifest import MANIFEST_RULES
 from physlint.rules.mcap import MCAP_RULES, ROS2_RULES
 from physlint.rules.numeric import NUMERIC_RULES
+from physlint.rules.statistics import STATISTICAL_RULES
 from physlint.rules.temporal import TEMPORAL_RULES
 from physlint.rules.video import VIDEO_RULES
 
-LEROBOT_RULES: list[Rule] = [*MANIFEST_RULES, *TEMPORAL_RULES, *NUMERIC_RULES, *VIDEO_RULES, *DUPLICATION_RULES]
+LEROBOT_RULES: list[Rule] = [
+    *MANIFEST_RULES,
+    *TEMPORAL_RULES,
+    *NUMERIC_RULES,
+    *VIDEO_RULES,
+    *DUPLICATION_RULES,
+    *STATISTICAL_RULES,
+]
 BUILTIN_RULES: list[Rule] = [*LEROBOT_RULES, *MCAP_RULES, *ROS2_RULES]
 
 

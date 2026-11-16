@@ -116,6 +116,7 @@ def _run_planned(dataset: DatasetView, planned: PlannedRule, cache: RuleCache) -
             status=RuleStatus.FAILED if findings else RuleStatus.PASSED,
             duration_ms=(time.perf_counter() - before) * 1000,
             findings=findings,
+            findings_capped="max_findings" in planned.options and len(findings) >= planned.options["max_findings"],
         )
         cache.put(planned, result)
         return result

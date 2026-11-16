@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.5.0",
+  "adapter": "mcap",
+  "adapter_version": "1.0",
+  "dataset": "Controlled ROS 2 JointState recording",
+  "source_revision": "recipe:joint_state_clean",
+  "dataset_path": "generated://joint_state_clean",
+  "source_fingerprint": "db8adb3a3cd8a4f448416efe5fc3b57ec0556a41dec065a77f9823e0aa98988d",
+  "source_fingerprint_method": "file-content-sha256-v1",
+  "configuration_digest": "164c54ef55f687617b21adb54fc3e20891aaea45821a3f5f250432c2d7b551c6",
+  "configuration_path": null,
+  "plugin_policy": "installed-only",
+  "ignored_config_plugins": [],
+  "started_at": "2026-11-16T07:31:57.802691Z",
+  "finished_at": "2026-11-16T07:31:57.803585Z",
+  "status": "passed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "mcap.readable",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.6632497534155846,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.summary_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0034170225262641907,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.index_coverage",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0007925555109977722,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.channel_schema",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0021243467926979065,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.timestamp_order",
+      "rule_version": "2.0.0",
+      "status": "passed",
+      "duration_ms": 0.0017499551177024841,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.duplicate_timestamps",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0008745118975639343,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.sequence_continuity",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0007906928658485413,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "ros2.encoding",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0014584511518478394,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "ros2.decode",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0007925555109977722,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "ros2.required_topics",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.001541338860988617,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "ros2.topic_gaps",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0013327226042747498,
+      "findings": [],
+      "reason": "no ROS 2 topic rates configured",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "ros2.header_clock_skew",
+      "rule_version": "1.0.0",
+      "status": "not_run",
+      "duration_ms": 0.0006249174475669861,
+      "findings": [],
+      "reason": "no maximum ROS header/log skew configured",
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "ros2.semantic_consistency",
+      "rule_version": "1.1.0",
+      "status": "passed",
+      "duration_ms": 0.0007906928658485413,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "ros2.tf_tree",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0024586915969848633,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    }
+  ],
+  "summary": {
+    "passed": 12,
+    "failed": 0,
+    "not_run": 2,
+    "errored": 0,
+    "findings": 0
+  },
+  "coverage": {
+    "episodes": 1,
+    "frames": null,
+    "messages": 3,
+    "streams": [
+      "/joint_states"
+    ],
+    "tasks": {
+      "(unlabeled)": 1
+    },
+    "length_min": 3,
+    "length_max": 3,
+    "robot_type": null,
+    "fps": null
+  },
+  "cache": {
+    "used": false,
+    "hits": 0,
+    "misses": 0,
+    "directory": null
+  },
+  "suppressed": [],
+  "plugins": []
+}

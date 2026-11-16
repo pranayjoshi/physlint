@@ -47,7 +47,7 @@ def test_truncated_mcap_becomes_actionable_finding(mcap_factory):
 
 def test_timestamp_rollback_and_sequence_gap_are_detected(mcap_factory):
     path = mcap_factory(
-        log_times_ns=[1_000_000_000, 900_000_000, 1_100_000_000],
+        log_times_ns=[1_000_000_000, 500_000_000, 1_100_000_000],
         sequences=[1, 3, 4],
     )
     report = run_validation(discover(path), Config())
@@ -108,3 +108,17 @@ def test_ros2_gap_and_joint_state_dimension_failures_are_detected(ros2_mcap_fact
     assert report.status == "failed"
     assert _result(report, "ros2.topic_gaps").status == RuleStatus.FAILED
     assert _result(report, "ros2.semantic_consistency").status == RuleStatus.FAILED
+
+
+def test_ros2_non_finite_joint_state_fails(ros2_mcap_factory):
+    assert (
+        _result(
+            run_validation(discover(ros2_mcap_factory()), Config()),
+            "ros2.semantic_consistency",
+        ).status
+        == RuleStatus.PASSED
+    )
+    report = run_validation(discover(ros2_mcap_factory(non_finite=True)), Config())
+    result = _result(report, "ros2.semantic_consistency")
+    assert result.status == RuleStatus.FAILED
+    assert "non-finite" in result.findings[0].message

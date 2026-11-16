@@ -1223,7 +1223,7 @@ wheels = [
 
 [[package]]
 name = "physlint"
-version = "0.4.0"
+version = "0.5.0"
 source = { editable = "." }
 dependencies = [
     { name = "mcap" },
@@ -1238,6 +1238,7 @@ dependencies = [
 
 [package.optional-dependencies]
 all = [
+    { name = "av" },
     { name = "huggingface-hub" },
     { name = "opencv-python-headless" },
 ]
@@ -1260,12 +1261,15 @@ launch = [
     { name = "pillow" },
 ]
 video = [
+    { name = "av" },
     { name = "opencv-python-headless" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "av", marker = "extra == 'all'", specifier = ">=14,<16" },
     { name = "av", marker = "extra == 'launch'", specifier = ">=14,<16" },
+    { name = "av", marker = "extra == 'video'", specifier = ">=14,<16" },
     { name = "huggingface-hub", marker = "extra == 'all'", specifier = ">=0.27,<2" },
     { name = "huggingface-hub", marker = "extra == 'hub'", specifier = ">=0.27,<2" },
     { name = "mcap", specifier = ">=1.4,<2" },

@@ -34,5 +34,6 @@ nav:
       - Coding agents: agents.md
       - Python API: python-api.md
       - Plugins: plugins.md
-  - Release and evidence: release-0.4.0.md
+  - Release and evidence: release-0.5.0.md
+  - Release 0.4.0: release-0.4.0.md
   - Roadmap: roadmap.md

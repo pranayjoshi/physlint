@@ -196,7 +196,7 @@ uint32 nanosec
 def ros2_mcap_factory(tmp_path: Path):
     counter = 0
 
-    def make(*, invalid_dimensions: bool = False, gap: bool = False) -> Path:
+    def make(*, invalid_dimensions: bool = False, gap: bool = False, non_finite: bool = False) -> Path:
         nonlocal counter
         counter += 1
         path = tmp_path / f"ros2-recording-{counter}.mcap"
@@ -214,7 +214,11 @@ def ros2_mcap_factory(tmp_path: Path):
                             "frame_id": "base_link",
                         },
                         "name": ["joint_1", "joint_2"],
-                        "position": [float(index)] if invalid_dimensions and index == 1 else [float(index), 0.0],
+                        "position": (
+                            [float(index)]
+                            if invalid_dimensions and index == 1
+                            else [float("nan") if non_finite else float(index), 0.0]
+                        ),
                         "velocity": [0.0, 0.0],
                         "effort": [],
                     },
@@ -240,8 +244,9 @@ def _write_video(root: Path, total: int, mode: str, first_length: int, fps: floa
         elif mode == "black" and index >= first_length:
             intensity = 0
         else:
-            intensity = 20 + index * 12
+            intensity = 20 + (index * 12) % 220
         image = np.full((48, 64, 3), intensity, dtype=np.uint8)
-        image[:, index % 64, :] = min(255, intensity + 10)
+        if mode != "frozen":
+            image[:, index % 64, :] = min(255, intensity + 10)
         writer.write(image)
     writer.release()

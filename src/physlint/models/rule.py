@@ -23,6 +23,7 @@ class RuleMetadata:
     option_defaults: dict[str, Any] = field(default_factory=dict)
     adapters: frozenset[str] = field(default_factory=frozenset)
     limitations: str = ""
+    enabled_by_default: bool = True
     remediation: str = "Inspect and recollect affected source data."
 
 

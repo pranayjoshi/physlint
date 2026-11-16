@@ -1,6 +1,6 @@
 # LeRobot adapter
 
-Physlint 0.4.0 recognizes LeRobot v2.0, v2.1, and v3.x directories through `meta/info.json`. It selects an explicit adapter for the metadata and file layout; no conversion or source mutation is performed.
+Physlint 0.5.0 recognizes LeRobot v2.0, v2.1, and v3.x directories through `meta/info.json`. It selects an explicit adapter for the metadata and file layout; no conversion or source mutation is performed.
 
 The adapter requires PyArrow `>=19.0.1`. PyArrow 19.0.0 can raise `Repetition level histogram size mismatch` on valid nested episode metadata; reinstall the project dependencies if that version is already present.
 

@@ -28,7 +28,7 @@ def test_core_cli_workflow(dataset_factory, tmp_path):
 
     rules = runner.invoke(app, ["rules", "--json"])
     assert rules.exit_code == 0
-    assert len(json.loads(rules.stdout)) == 32
+    assert len(json.loads(rules.stdout)) == 49
 
     explain = runner.invoke(app, ["explain", "temporal.max_gap"])
     assert explain.exit_code == 0

@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "physlint_version": "0.5.0",
+  "adapter": "mcap",
+  "adapter_version": "1.0",
+  "dataset": "Foxglove MCAP TenMessages conformance case",
+  "source_revision": "68f77c8c1bba4a17ebc6ba0c409ebb933adb791c",
+  "dataset_path": "github://foxglove/mcap@68f77c8c1bba4a17ebc6ba0c409ebb933adb791c/TenMessages-ch-chx-mx-pad-rch-rsh-st-sum.mcap",
+  "source_fingerprint": "358413d53e6fb2753efb3eac682bc9d776bb2afb1de5e395817efd8f16303fbc",
+  "source_fingerprint_method": "file-content-sha256-v1",
+  "configuration_digest": "be708f6065705aa6b83bfabc9f6b7e2fddb0cf222757e04c42bd98a116590187",
+  "configuration_path": null,
+  "plugin_policy": "installed-only",
+  "ignored_config_plugins": [],
+  "started_at": "2026-11-16T07:31:50.682299Z",
+  "finished_at": "2026-11-16T07:31:50.682921Z",
+  "status": "passed",
+  "sampled": false,
+  "results": [
+    {
+      "rule_id": "mcap.readable",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.38566626608371735,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.summary_consistency",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.007166527211666107,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.index_coverage",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0013345852494239807,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.channel_schema",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.002750195562839508,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.timestamp_order",
+      "rule_version": "2.0.0",
+      "status": "passed",
+      "duration_ms": 0.0036247074604034424,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.duplicate_timestamps",
+      "rule_version": "1.0.0",
+      "status": "failed",
+      "duration_ms": 0.050875358283519745,
+      "findings": [
+        {
+          "rule_id": "mcap.duplicate_timestamps",
+          "rule_version": "1.0.0",
+          "severity": "warning",
+          "title": "MCAP duplicate timestamps are visible",
+          "message": "example contains 1 duplicate log timestamp(s)",
+          "impact": "Repeated timestamps can make ordering ambiguous even when the clock never moves backward.",
+          "remediation": "Confirm the recorder provides sufficient timestamp resolution and a deterministic sequence field.",
+          "observed": {
+            "duplicate_transitions": 1
+          },
+          "expected": "unique log time or an explicit sequence contract",
+          "location": {
+            "episode": null,
+            "stream": "example",
+            "sample_index": null,
+            "timestamp": null,
+            "source": "foxglove-ten-messages.mcap"
+          },
+          "evidence": {},
+          "fingerprint": "a5c6c71fe49fb95fb579c1a2e5480a7930086c984316385970e62467c8cdd618"
+        }
+      ],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    },
+    {
+      "rule_id": "mcap.sequence_continuity",
+      "rule_version": "1.0.0",
+      "status": "passed",
+      "duration_ms": 0.0012498348951339722,
+      "findings": [],
+      "reason": null,
+      "error_kind": null,
+      "cached": false,
+      "findings_capped": false
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 1,
+    "not_run": 0,
+    "errored": 0,
+    "findings": 1
+  },
+  "coverage": {
+    "episodes": 1,
+    "frames": null,
+    "messages": 10,
+    "streams": [
+      "example"
+    ],
+    "tasks": {
+      "(unlabeled)": 1
+    },
+    "length_min": 10,
+    "length_max": 10,
+    "robot_type": null,
+    "fps": null
+  },
+  "cache": {
+    "used": false,
+    "hits": 0,
+    "misses": 0,
+    "directory": null
+  },
+  "suppressed": [],
+  "plugins": []
+}
