@@ -46,7 +46,7 @@ These compare an episode with its own dataset, so they report anomalies rather t
 - `numeric.stuck_channels`: a channel constant for an episode while it varies elsewhere.
 - `numeric.noise_level`: sample noise far above the dataset's usual level.
 - `numeric.action_state_coupling`: a state joint stops tracking its action.
-- `temporal.signal_alignment`: action, state, or video timing differs from the dataset's usual lag, or video matches motion better reversed. This rule is currently noisy; see the [benchmark](../validation/corruption-benchmark.md).
+- `temporal.signal_alignment` (opt-in): action, state, or video timing differs from the dataset's usual lag, or video matches motion better reversed. It is off by default because it flagged many clean episodes in the [benchmark](../validation/corruption-benchmark.md). Enable it with `rules: {temporal.signal_alignment: {}}`.
 - `duplication.near_episodes`: equal-length action trajectories that are nearly identical.
 - `video.repeated_frames`: a camera repeats many frames during motion.
 - `video.camera_identity`: a view looks like another camera's stream.

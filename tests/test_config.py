@@ -41,3 +41,11 @@ def test_rejects_invalid_option_values(dataset_factory):
             dataset,
             Config(rules={"video.repeated_frames": {"options": {"min_repeat_fraction": "high"}}}),
         )
+
+
+def test_opt_in_rules_run_only_when_configured(dataset_factory):
+    dataset = discover(dataset_factory())
+    planned = {item.rule.metadata.id for item in plan_rules(dataset, Config())}
+    assert "temporal.signal_alignment" not in planned
+    enabled = Config(rules={"temporal.signal_alignment": {}})
+    assert "temporal.signal_alignment" in {item.rule.metadata.id for item in plan_rules(dataset, enabled)}

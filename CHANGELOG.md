@@ -11,7 +11,8 @@
 ### Added
 
 - Rules: `episode.index_columns`, `episode.task_references`, `manifest.declared_totals`, `manifest.orphan_files`, `temporal.episode_start`, `temporal.clock_drift`, `video.bitstream`, `video.timeline`, `video.repeated_frames`, and `video.camera_identity`.
-- Warnings calibrated from the dataset: `numeric.outlier_jumps`, `numeric.episode_envelope`, `numeric.stuck_channels`, `numeric.noise_level`, `numeric.action_state_coupling`, `temporal.signal_alignment`, and `duplication.near_episodes`.
+- Warnings calibrated from the dataset: `numeric.outlier_jumps`, `numeric.episode_envelope`, `numeric.stuck_channels`, `numeric.noise_level`, `numeric.action_state_coupling`, and `duplication.near_episodes`.
+- `temporal.signal_alignment`, off by default; enable it in `physlint.yaml`. Rules can now be opt-in.
 - `findings_capped` on each rule result, also shown in terminal output.
 - A reproducible corruption benchmark with per-defect detection and false-alarm results.
 

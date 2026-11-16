@@ -370,9 +370,11 @@ class SignalAlignmentRule:
         required_streams=frozenset({"observation.state"}),
         option_defaults={"min_episodes": 5, "min_strength": 0.5, "lag_tolerance_frames": 2, "max_findings": 50},
         limitations=(
-            "Measures each episode's lag and compares it with the dataset, so a shift shared by every episode is "
-            "not detectable. Needs motion that cameras can see and several episodes."
+            "Opt-in: enable it under rules in physlint.yaml. It flags too many clean episodes on some datasets. "
+            "It measures each episode's lag and compares it with the dataset, so a shift shared by every episode "
+            "is not detectable."
         ),
+        enabled_by_default=False,
         remediation="Inspect recorder timing and video ranges for the cited episode.",
     )
 

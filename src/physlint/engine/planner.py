@@ -38,6 +38,8 @@ def plan_rules(dataset: DatasetView, config: Config, extra: Sequence[Rule] = ())
         settings = config.rules.get(rule.metadata.id)
         if settings is not None and not settings.enabled:
             continue
+        if settings is None and not rule.metadata.enabled_by_default:
+            continue
         configured = dict(settings.options) if settings else {}
         unknown_options = set(configured) - set(rule.metadata.option_defaults)
         if unknown_options:

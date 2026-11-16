@@ -14,6 +14,8 @@ Macro detection averages per defect type, so a defect with many severity levels 
 | Dev | 10 public datasets used to tune thresholds | – | 89% | 1/37 |
 | Synthetic | LeRobot scenes and one ROS 2 recording, clean by construction | – | 93% | 0/22 |
 
+**Shipped default: 89%.** `temporal.signal_alignment` is off by default after this run because of the false alarms below. Recomputing the same trials without it gives 89% on the final split, 87% on dev and 93% on synthetic. Detection drops mainly for `reversed_episode` (5%), `action_state_swap` (14%) and `action_shift` (50%).
+
 Quote the final figure, together with these two:
 
 - **Most of the gain comes from warnings.** Counting only findings that fail CI by default, detection on the final split is 66%. Statistical rules default to warnings because they report anomalies, not proof.
@@ -21,7 +23,7 @@ Quote the final figure, together with these two:
 
 ### Known weak spots
 
-- **`temporal.signal_alignment` is noisy.** On the final split it flagged 122 of 800 `xarm-lift` episodes and 25 of 432 `libero-spatial` episodes. This appeared only on the reserved datasets, so it was not tuned afterward. Expect this rule to need work, and fresh test data once it changes.
+- **`temporal.signal_alignment` is noisy, so it is now opt-in.** On the final split it flagged 122 of 800 `xarm-lift` episodes and 25 of 432 `libero-spatial` episodes. This appeared only on the reserved datasets, so it was not tuned afterward. Expect this rule to need work, and fresh test data once it changes.
 - **`video.frozen_frames` is improved but unresolved.** `pusht` went from 688 findings to none. It still reports 42 on `ur10e-robotiq` and 18 on `so101-teleop`. Inspected frames show no visible robot movement while recorded joint values change, which could be a real capture problem or a camera that cannot see the motion. It is now a warning.
 - **Low detection remains:** `swapped_cameras` 10%, `reversed_episode` 24%, `action_state_swap` 48%, and `action_shift` 57%.
 - **Some swaps cannot be detected.** When one video file holds every episode, swapping two files swaps every episode, leaving nothing to compare against.
